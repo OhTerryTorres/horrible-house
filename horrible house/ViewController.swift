@@ -21,7 +21,6 @@ class ViewController: UIViewController {
         
         let topRow = house.layout[1]
         let bottomRow = house.layout[0]
-        print("WHOOOAAAAA\r\r\r\r\r")
         
         print("top row is    \(topRow[0]) \(topRow[1])")
         print("bottom row is \(bottomRow[0]) \(bottomRow[1])")
