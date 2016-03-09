@@ -12,11 +12,28 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    struct LayoutOptions {
+        // 0 is a No Room (wall).
+        // 1 is a Room.
+        // 2 is the Foyer.
+        
+        // This gives us two rows with four rooms.
+        static let a = [
+            [1, 2],
+            [1, 1]
+        ]
+        static let b = [
+            [1, 1, 1],
+            [0, 2, 0]
+        ]
+    }
+    // .reverse makes it so that what you see is what you get: the bottom most array ends up being the first, and so on.
+    
     enum Direction: String {
         case North, South, East, West
     }
     
-    let house = House()
+    let house = House(layout: LayoutOptions.a)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,24 +54,15 @@ class ViewController: UIViewController {
         print("1, 1 \(roomForPositionInHouse((x:1, y:1))!.name)")
 
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
     // Get a room in the house for a set of x and y coordinates.
     func roomForPositionInHouse(position:(x: Int, y: Int)) -> Room? {
         var room = house.noRoom
         if ( position.y >= 0 && position.y < house.layout.count ) {
-            var row = house.layout[position.y]
+            let row = house.layout[position.y]
             if ( position.x >= 0 && position.x < row.count ) {
-                let name = row[position.x]
-                print("name is \(name)")
-                room = roomForName(name)!
-
+                room = self.house.map[position.y][position.x]
             }
-            
         }
         return room
     }
@@ -70,29 +78,18 @@ class ViewController: UIViewController {
         return room
     }
     
-    
-    // Get room data for a room number (a number for the house.rooms array)
-    func roomForRoomNumber(roomNumber: Int) -> Room? {
-        return house.rooms[roomNumber]
-    }
+
     
     // Checks if room exists at position
     func doesRoomExistAtPosition(position:(x: Int, y: Int)) -> Bool {
         let room = roomForPositionInHouse(position)
-        let maxY = house.layout.count - 1
-        let maxX = getMaxXForCurrentRow() - 1
-        if ( room!.name == "No Room" || position.y < 0 || position.x < 0 || position.x > maxX || position.y > maxY ) {
+        if ( room!.name == "No Room" || position.y < 0 || position.x < 0 || position.x >= house.width || position.y >= house.height ) {
             return false
         } else {
             return true
         }
     }
     
-    // Checks how mny rooms are in a row
-    func getMaxXForCurrentRow() -> Int {
-        let y = house.layout[house.playerPosition.y]
-        return y.count
-    }
     
     // Pass in a direction to move the player to a new room.
     // It also returns the data for the new room.
@@ -150,19 +147,19 @@ class ViewController: UIViewController {
         roomsAroundPlayer()
         print("current player position is \(house.playerPosition)")
     }
-    @IBAction func westRoom(sender: AnyObject) {
+    @IBAction func moveWest(sender: AnyObject) {
         let currentRoom = roomInDirection(Direction.West)
         print("\rMoving west, the room is the \(currentRoom!.name)")
         roomsAroundPlayer()
         print("current player position is \(house.playerPosition)")
     }
-    @IBAction func southRoom(sender: AnyObject) {
+    @IBAction func moveSouth(sender: AnyObject) {
         let currentRoom = roomInDirection(Direction.South)
         print("\rMoving south, the room is the \(currentRoom!.name)")
         roomsAroundPlayer()
         print("current player position is \(house.playerPosition)")
     }
-    @IBAction func eastRoom(sender: AnyObject) {
+    @IBAction func moveEast(sender: AnyObject) {
         let currentRoom = roomInDirection(Direction.East)
         print("\rMoving east, the room is the \(currentRoom!.name)")
         roomsAroundPlayer()
@@ -170,6 +167,11 @@ class ViewController: UIViewController {
     }
     
     
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
     
 }
 

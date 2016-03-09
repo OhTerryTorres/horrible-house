@@ -2,7 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>3</key>
+	<key>2</key>
 	<dict>
 		<key>name</key>
 		<string>Gallery</string>
@@ -17,7 +17,7 @@
 			<string>Look at the other large portrait</string>
 		</array>
 	</dict>
-	<key>2</key>
+	<key>1</key>
 	<dict>
 		<key>name</key>
 		<string>Parlor</string>
@@ -29,7 +29,7 @@
 			<string>Check the hole</string>
 		</array>
 	</dict>
-	<key>1</key>
+	<key>0</key>
 	<dict>
 		<key>name</key>
 		<string>Dining Room</string>
@@ -40,19 +40,6 @@
 			<string>Check the credenza</string>
 			<string>What is a credenza?</string>
 			<string>Sit at the table</string>
-		</array>
-	</dict>
-	<key>0</key>
-	<dict>
-		<key>name</key>
-		<string>Foyer</string>
-		<key>explanation</key>
-		<string>Less than a handful of lit wall sconces show only the dark wood of the entryway and three ways deeper into the house, along with the front door.</string>
-		<key>actions</key>
-		<array>
-			<string>Lick the wall</string>
-			<string>Fart</string>
-			<string>Leave</string>
 		</array>
 	</dict>
 </dict>

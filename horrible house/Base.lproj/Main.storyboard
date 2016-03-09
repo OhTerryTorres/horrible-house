@@ -28,21 +28,21 @@
                                 <rect key="frame" x="23" y="118" width="35" height="30"/>
                                 <state key="normal" title="West"/>
                                 <connections>
-                                    <action selector="westRoom:" destination="BYZ-38-t0r" eventType="touchUpInside" id="P5I-Rf-Vw1"/>
+                                    <action selector="moveWest:" destination="BYZ-38-t0r" eventType="touchUpInside" id="L9L-BP-q5Y"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dCh-du-Min">
                                 <rect key="frame" x="109" y="118" width="30" height="30"/>
                                 <state key="normal" title="East"/>
                                 <connections>
-                                    <action selector="eastRoom:" destination="BYZ-38-t0r" eventType="touchUpInside" id="LKY-z8-Yfl"/>
+                                    <action selector="moveEast:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Swp-Zn-XTg"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hHn-qa-NWu">
                                 <rect key="frame" x="61" y="150" width="41" height="30"/>
                                 <state key="normal" title="South"/>
                                 <connections>
-                                    <action selector="southRoom:" destination="BYZ-38-t0r" eventType="touchUpInside" id="i1Y-i2-1VW"/>
+                                    <action selector="moveSouth:" destination="BYZ-38-t0r" eventType="touchUpInside" id="TDu-Wy-mQx"/>
                                 </connections>
                             </button>
                         </subviews>
