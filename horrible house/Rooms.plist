@@ -10,11 +10,44 @@
 		<string>Tastefull stained hardwood and elegant crown moulding stand out under the dust. The room is vacant except for pieces of art along two of the walls. There are five paintings and a bust on a pedestal.</string>
 		<key>actions</key>
 		<array>
-			<string>Look at the large portrait</string>
-			<string>Look at the smaller portrait</string>
-			<string>Look at the bust</string>
-			<string>Look at the landscape</string>
-			<string>Look at the other large portrait</string>
+			<dict>
+				<key>name</key>
+				<string>Look at the large portrait</string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Look at the smaller portrait</string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Look at the bust</string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Look at the landscape</string>
+				<key>result</key>
+				<string>A tranquil farmland scene. It&apos;s surprisingly hard to see the details in the landscape. It&apos;s as though looking at this painting in particular impairs your vision. It&apos;s weird.</string>
+				<key>rules</key>
+				<array>
+					<string>\nopeHasGlasses</string>
+				</array>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Look at the landscape</string>
+				<key>result</key>
+				<string>With the glasses, you can actually see shapes in the trees that look a bit like letters.
+
+B U T T S</string>
+				<key>rules</key>
+				<array>
+					<string>\hasGlasses</string>
+				</array>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Look at the other large portrait</string>
+			</dict>
 		</array>
 	</dict>
 	<key>1</key>
@@ -25,8 +58,22 @@
 		<string>Two loveseats face each other with a cofee table in between. A jagged hole is in the middle of the table.</string>
 		<key>actions</key>
 		<array>
-			<string>Have a seat</string>
-			<string>Check the hole</string>
+			<dict>
+				<key>name</key>
+				<string>Have a seat</string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Check the hole</string>
+				<key>itemToPresent</key>
+				<string>Hole</string>
+				<key>result</key>
+				<string>A hole. It looks like something crashed through it.</string>
+				<key>rules</key>
+				<array>
+					<string>\nopeHasHole</string>
+				</array>
+			</dict>
 		</array>
 	</dict>
 	<key>0</key>
@@ -34,12 +81,29 @@
 		<key>name</key>
 		<string>Dining Room</string>
 		<key>explanation</key>
-		<string>A long dining table covere with a cloth that use to be white takes up most of the room. There are places set for ten people. A cradenza sits against one wall.</string>
+		<string>A long dining table takes up most of the room covered with a cloth that use to be white. There are places set for ten people. A cradenza sits against one wall.</string>
 		<key>actions</key>
 		<array>
-			<string>Check the credenza</string>
-			<string>What is a credenza?</string>
-			<string>Sit at the table</string>
+			<dict>
+				<key>name</key>
+				<string>Check the credenza \once</string>
+				<key>result</key>
+				<string>There is a pair of glasses in the credenza.</string>
+				<key>roomChange</key>
+				<string>A long dining table covered with a cloth that use to be white takes up most of the room. There are places set for ten people. A cradenza sits against one wall.</string>
+				<key>itemToPresent</key>
+				<string>Glasses</string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>What is a credenza? \once</string>
+				<key>result</key>
+				<string>It&apos;s a wide cupboard you put at the side of a room.</string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Sit at the table</string>
+			</dict>
 		</array>
 	</dict>
 </dict>

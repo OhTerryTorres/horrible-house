@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		CE0478771C6C10FD008E23E1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0478761C6C10FD008E23E1 /* AppDelegate.swift */; };
-		CE0478791C6C10FD008E23E1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0478781C6C10FD008E23E1 /* ViewController.swift */; };
 		CE04787C1C6C10FD008E23E1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE04787A1C6C10FD008E23E1 /* Main.storyboard */; };
 		CE04787F1C6C10FD008E23E1 /* horrible_house.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CE04787D1C6C10FD008E23E1 /* horrible_house.xcdatamodeld */; };
 		CE0478811C6C10FD008E23E1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE0478801C6C10FD008E23E1 /* Assets.xcassets */; };
@@ -19,6 +18,12 @@
 		CE0478AB1C6C3452008E23E1 /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0478AA1C6C3452008E23E1 /* Room.swift */; };
 		CE0478AD1C6C3B4F008E23E1 /* House.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0478AC1C6C3B4F008E23E1 /* House.swift */; };
 		CE3205731C703AD000EAA581 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3205721C703AD000EAA581 /* ArrayExtension.swift */; };
+		CE6F27B51C90B42500B21818 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6F27B41C90B42500B21818 /* TableViewController.swift */; };
+		CE6F27B71C9326DD00B21818 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6F27B61C9326DD00B21818 /* Action.swift */; };
+		CE6F27B91C93279300B21818 /* Rule.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6F27B81C93279300B21818 /* Rule.swift */; };
+		CE6F27BB1C932A2600B21818 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6F27BA1C932A2600B21818 /* Item.swift */; };
+		CE6F27BD1C9335C900B21818 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6F27BC1C9335C900B21818 /* Character.swift */; };
+		CE6F27BF1C933DE400B21818 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6F27BE1C933DE400B21818 /* Event.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,7 +46,6 @@
 /* Begin PBXFileReference section */
 		CE0478731C6C10FC008E23E1 /* horrible house.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "horrible house.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE0478761C6C10FD008E23E1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		CE0478781C6C10FD008E23E1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		CE04787B1C6C10FD008E23E1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CE04787E1C6C10FD008E23E1 /* horrible_house.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = horrible_house.xcdatamodel; sourceTree = "<group>"; };
 		CE0478801C6C10FD008E23E1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -57,6 +61,12 @@
 		CE0478AA1C6C3452008E23E1 /* Room.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
 		CE0478AC1C6C3B4F008E23E1 /* House.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = House.swift; sourceTree = "<group>"; };
 		CE3205721C703AD000EAA581 /* ArrayExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
+		CE6F27B41C90B42500B21818 /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
+		CE6F27B61C9326DD00B21818 /* Action.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
+		CE6F27B81C93279300B21818 /* Rule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rule.swift; sourceTree = "<group>"; };
+		CE6F27BA1C932A2600B21818 /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		CE6F27BC1C9335C900B21818 /* Character.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
+		CE6F27BE1C933DE400B21818 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,9 +118,14 @@
 			isa = PBXGroup;
 			children = (
 				CE0478761C6C10FD008E23E1 /* AppDelegate.swift */,
-				CE0478AA1C6C3452008E23E1 /* Room.swift */,
 				CE0478AC1C6C3B4F008E23E1 /* House.swift */,
-				CE0478781C6C10FD008E23E1 /* ViewController.swift */,
+				CE0478AA1C6C3452008E23E1 /* Room.swift */,
+				CE6F27BC1C9335C900B21818 /* Character.swift */,
+				CE6F27B61C9326DD00B21818 /* Action.swift */,
+				CE6F27B81C93279300B21818 /* Rule.swift */,
+				CE6F27BA1C932A2600B21818 /* Item.swift */,
+				CE6F27BE1C933DE400B21818 /* Event.swift */,
+				CE6F27B41C90B42500B21818 /* TableViewController.swift */,
 				CE04787A1C6C10FD008E23E1 /* Main.storyboard */,
 				CE3205721C703AD000EAA581 /* ArrayExtension.swift */,
 				CE0478801C6C10FD008E23E1 /* Assets.xcassets */,
@@ -273,9 +288,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE04787F1C6C10FD008E23E1 /* horrible_house.xcdatamodeld in Sources */,
-				CE0478791C6C10FD008E23E1 /* ViewController.swift in Sources */,
+				CE6F27BF1C933DE400B21818 /* Event.swift in Sources */,
+				CE6F27BB1C932A2600B21818 /* Item.swift in Sources */,
+				CE6F27B51C90B42500B21818 /* TableViewController.swift in Sources */,
 				CE0478AB1C6C3452008E23E1 /* Room.swift in Sources */,
 				CE3205731C703AD000EAA581 /* ArrayExtension.swift in Sources */,
+				CE6F27B71C9326DD00B21818 /* Action.swift in Sources */,
+				CE6F27B91C93279300B21818 /* Rule.swift in Sources */,
+				CE6F27BD1C9335C900B21818 /* Character.swift in Sources */,
 				CE0478AD1C6C3B4F008E23E1 /* House.swift in Sources */,
 				CE0478771C6C10FD008E23E1 /* AppDelegate.swift in Sources */,
 			);
