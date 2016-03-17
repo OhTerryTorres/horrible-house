@@ -267,41 +267,84 @@ class TableViewController: UITableViewController {
     func removeActionsThatAreNotFollowingTheRules(var actions: [Action]) -> [Action] {
         var i = 0
         for action in actions {
-            if areRulesBeingFollowed(action) == false {
+            if areRulesBeingFollowedForObject(action) == false {
                 actions.removeAtIndex(i)
             } else { i++ }
         }
         return actions
     }
     
-    func areRulesBeingFollowed(action: Action) -> Bool {
+    func areRulesBeingFollowedForDetail(detail: Detail) -> Bool {
         var followed = true
-        if action.rules != nil {
-            for rule in action.rules! {
+        if detail.rules != nil {
+            for rule in detail.rules! {
                 print("rule.name is \(rule.name)")
                 print("rule.type is \(rule.type)")
                 switch ( rule.type) {
+                    
                 case Rule.RuleType.hasItem:
                     print("hasItem??")
-                    var i = 0; for item in house.player.items! {
-                        if rule.name == item.name { i++; print("player does have \(rule.name)") }
-                    }; if i == 0 { followed = false; print("access denied \r") }
+                    followed = false
+                    if let _ = house.player.items!.indexOf({$0.name == rule.name}) {
+                        followed = true
+                        print("YAYAYAYAYAYAYA")
+                    }
                     
-                    
-                /// FIGURE THIS OUT!
                 case Rule.RuleType.nopeHasItem:
                     print("nopeHasItem??")
-                    if house.player.items?.count > 0 {
-                        var i = 0; for item in house.player.items! {
-                            if item.name != rule.name {
-                                i++
-                                print("player does not have \(rule.name)")
-                            }
-                        }
-                        if i == 0 {
-                            followed = false
-                            print("access denied \r")
-                        }
+                    followed = true
+                    if let _ = house.player.items!.indexOf({$0.name == rule.name}) {
+                        followed = false
+                        print("YOYOYOYOYOYOYO")
+                    }
+                    
+                case Rule.RuleType.metCharacter:
+                    break
+                case Rule.RuleType.nopeMetCharacter:
+                    break
+                case Rule.RuleType.enteredRoom:
+                    var i = 0; for room in house.rooms {
+                        if room.timesEntered > 0 { i++ }
+                    }; if i == 0 { followed = false }
+                case Rule.RuleType.nopeEnteredRoom:
+                    var i = 0; for room in house.rooms {
+                        if room.timesEntered == 0 { i++ }
+                    }; if i == 0 { followed = false }
+                case Rule.RuleType.triggeredEvent:
+                    break
+                case Rule.RuleType.nopeTriggeredEvent:
+                    break
+                default:
+                    break;
+                }
+            }
+        }
+        
+        return followed
+    }
+    
+    func areRulesBeingFollowedForObject(object: AnyObject) -> Bool {
+        var followed = true
+        if object.rules != nil {
+            for rule in object.rules!! {
+                print("rule.name is \(rule.name)")
+                print("rule.type is \(rule.type)")
+                switch ( rule.type) {
+                    
+                case Rule.RuleType.hasItem:
+                    print("hasItem??")
+                    followed = false
+                    if let _ = house.player.items!.indexOf({$0.name == rule.name}) {
+                        followed = true
+                        print("\(rule.name) is present! So the rule is being followed.")
+                    }
+                    
+                case Rule.RuleType.nopeHasItem:
+                    print("nopeHasItem??")
+                    followed = true
+                    if let _ = house.player.items!.indexOf({$0.name == rule.name}) {
+                        followed = false
+                        print("\(rule.name) is NOT present! So the rule is being followed.")
                     }
                     
                 case Rule.RuleType.metCharacter:
@@ -340,6 +383,13 @@ class TableViewController: UITableViewController {
         case Sections.explanation.rawValue:
             cell.textLabel!.numberOfLines = 0;
             cell.textLabel!.text = self.currentRoom.explanation
+            if let details = self.currentRoom.details {
+                for detail in details {
+                    if areRulesBeingFollowedForObject(detail) {
+                         cell.textLabel!.text = "\(cell.textLabel!.text) \(detail)"
+                    }
+                }
+            }
             cell.userInteractionEnabled = false
         case Sections.items.rawValue:
             let item = self.currentRoom.items![indexPath.row]
@@ -403,14 +453,15 @@ class TableViewController: UITableViewController {
         action.timesPerformed++
         if let result = action.result { self.update = result }
         if let roomChange = action.roomChange { self.currentRoom.explanation = roomChange }
+        if let itemToPresent = action.itemToPresent {
+            if self.currentRoom.items != nil { self.currentRoom.items?.append(itemToPresent) }
+            else { self.currentRoom.items = [itemToPresent] }
+            action.canPerformMoreThanOnce = false
+        }
         if action.canPerformMoreThanOnce == false {
             for var i = 0; i < self.currentRoom.actions?.count; i++ {
                 if self.currentRoom.actions![i].name == action.name { self.currentRoom.actions?.removeAtIndex(i) }
             }
-        }
-        if let itemToPresent = action.itemToPresent {
-            if self.currentRoom.items != nil { self.currentRoom.items?.append(itemToPresent) }
-            else { self.currentRoom.items = [itemToPresent] }
         }
         print("explanation is \(self.currentRoom.explanation)")
         

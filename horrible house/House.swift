@@ -118,7 +118,7 @@ class House: NSObject {
                 name = actionDictionary.objectForKey("name") as! String
             }
             if (actionDictionary.objectForKey("rules") != nil) {
-                rules = getRulesForActionDictionary(actionDictionary)
+                rules = getRulesForDictionary(actionDictionary)
             }
             if (actionDictionary.objectForKey("result") != nil) {
                 result = actionDictionary.objectForKey("result") as? String
@@ -142,13 +142,37 @@ class House: NSObject {
         return actions
     }
     
+    func getDetailsForRoomDictionary(roomDict: AnyObject?) -> [Detail] {
+        var details = [Detail]()
+        let rawDetails = roomDict!.objectForKey("details") as! [NSDictionary]
+        
+        for detailDictionary in rawDetails {
+            var explanation = String()
+            var rules = [Rule]()
+            
+            if (detailDictionary.objectForKey("explanation") != nil) {
+                explanation = detailDictionary.objectForKey("explanation") as! String
+            }
+            if (detailDictionary.objectForKey("rules") != nil) {
+                rules = getRulesForDictionary(detailDictionary)
+            }
+            
+            let detail = Detail(explanation: explanation)
+            detail.rules = rules
+            
+            details += [detail]
+        }
+        
+        return details
+    }
+    
     
     // This does the work of extracting rules from each action.
-    func getRulesForActionDictionary(actionDict: AnyObject?) -> [Rule] {
+    func getRulesForDictionary(dict: AnyObject?) -> [Rule] {
         var rules = [Rule]()
         
-        if (actionDict!.objectForKey("rules") != nil) {
-            for ruleName in actionDict!.objectForKey("rules") as! [String] {
+        if (dict!.objectForKey("rules") != nil) {
+            for ruleName in dict!.objectForKey("rules") as! [String] {
                 let rule = Rule(name: ruleName)
                 print("rule.type \(rule.type)")
                 rules += [rule]

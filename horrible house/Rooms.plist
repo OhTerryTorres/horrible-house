@@ -55,7 +55,18 @@ B U T T S</string>
 		<key>name</key>
 		<string>Parlor</string>
 		<key>explanation</key>
-		<string>Two loveseats face each other with a cofee table in between. A jagged hole is in the middle of the table.</string>
+		<string>Two loveseats face each other with a cofee table in between.</string>
+		<key>details</key>
+		<array>
+			<dict>
+				<key>explanation</key>
+				<string>A jagged hole is in the middle of the table.</string>
+				<key>rules</key>
+				<array>
+					<string>\nopeHasHole</string>
+				</array>
+			</dict>
+		</array>
 		<key>actions</key>
 		<array>
 			<dict>

@@ -46,5 +46,6 @@ class Action: NSObject {
             self.name = self.name.stringByReplacingOccurrencesOfString(" \\once", withString: "")
         }
     }
+    
 
 }

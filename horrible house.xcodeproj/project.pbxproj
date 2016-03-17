@@ -24,6 +24,7 @@
 		CE6F27BB1C932A2600B21818 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6F27BA1C932A2600B21818 /* Item.swift */; };
 		CE6F27BD1C9335C900B21818 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6F27BC1C9335C900B21818 /* Character.swift */; };
 		CE6F27BF1C933DE400B21818 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6F27BE1C933DE400B21818 /* Event.swift */; };
+		CE6F28071C99C99D00B21818 /* Detail.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6F28061C99C99C00B21818 /* Detail.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +68,7 @@
 		CE6F27BA1C932A2600B21818 /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		CE6F27BC1C9335C900B21818 /* Character.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
 		CE6F27BE1C933DE400B21818 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
+		CE6F28061C99C99C00B21818 /* Detail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Detail.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +127,7 @@
 				CE6F27B81C93279300B21818 /* Rule.swift */,
 				CE6F27BA1C932A2600B21818 /* Item.swift */,
 				CE6F27BE1C933DE400B21818 /* Event.swift */,
+				CE6F28061C99C99C00B21818 /* Detail.swift */,
 				CE6F27B41C90B42500B21818 /* TableViewController.swift */,
 				CE04787A1C6C10FD008E23E1 /* Main.storyboard */,
 				CE3205721C703AD000EAA581 /* ArrayExtension.swift */,
@@ -289,6 +292,7 @@
 			files = (
 				CE04787F1C6C10FD008E23E1 /* horrible_house.xcdatamodeld in Sources */,
 				CE6F27BF1C933DE400B21818 /* Event.swift in Sources */,
+				CE6F28071C99C99D00B21818 /* Detail.swift in Sources */,
 				CE6F27BB1C932A2600B21818 /* Item.swift in Sources */,
 				CE6F27B51C90B42500B21818 /* TableViewController.swift in Sources */,
 				CE0478AB1C6C3452008E23E1 /* Room.swift in Sources */,
