@@ -60,6 +60,14 @@ B U T T S</string>
 		<array>
 			<dict>
 				<key>explanation</key>
+				<string>There was a hole here. It&apos;s gone now.</string>
+				<key>rules</key>
+				<array>
+					<string>\hasHole</string>
+				</array>
+			</dict>
+			<dict>
+				<key>explanation</key>
 				<string>A jagged hole is in the middle of the table.</string>
 				<key>rules</key>
 				<array>

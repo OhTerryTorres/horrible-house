@@ -13,12 +13,14 @@ class Character: NSObject {
     // MARK: Properties
     
     var name: String
-    var position = (x: 0, y: 0)
+    var position : (x : Int, y : Int)
     var items: [Item]? = []
     
     
-    init(name:String) {
+    init(name:String, position:(x: Int, y: Int)) {
         self.name = name
+        self.position = position
     }
+    
     
 }

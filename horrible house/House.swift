@@ -19,7 +19,6 @@ class House: NSObject {
     
     
     // MARK: Properties
-    
     var width = 0
     var height = 0
     
@@ -27,24 +26,18 @@ class House: NSObject {
     var rooms = [Room]()
     
     // MARK: Characters
-    var player = Character(name:"Player")
+    var player = Character(name:"Player", position: (0,0))
     var npcs:[Character]? = []
     
-    // The x/y grid of room names use to navigate the house.
-    //
-    // 2[0, 1, 1, 3]
-    // 1[0, 1, 2, 3]
-    // 0[0, 1, 2, 3]
+    // MARK: Navigation
     var layout = [[Int]]()
-    
     var map = [[Room]]()
 
     
     // MARK: Room Templates
     
-    let noRoom = Room(name: "No Room", explanation: "This is the absence of a room", actions: [Action(name: "Nothing doing")])
-    var foyer = Room(name: "Foyer", explanation: "Less than a handful of lit wall sconces show only the dark wood of the entryway and three ways deeper into the house, along with the front door.", actions: [Action(name: "Lick the wall"), Action(name: "Fart"), Action(name: "Leave \\once")])
-    
+    var noRoom = Room()
+    var foyer = Room()
     
     // MARK: Initialization
     
@@ -59,8 +52,14 @@ class House: NSObject {
     }
     
     func setNecessaryRooms() {
-        // Add rules to actions
-        print("self.foyer.actions![1].name is \(self.foyer.actions![1].name)")
+        self.noRoom.name = "No Room"
+        self.noRoom.explanation = "This is the absence of a room"
+        self.noRoom.actions = [Action(name: "Nothing doing")]
+        
+        self.foyer.name = "Foyer"
+        self.foyer.explanation = "Less than a handful of lit wall sconces show only the dark wood of the entryway and three ways deeper into the house, along with the front door."
+        self.foyer.actions = [Action(name: "Lick the wall"), Action(name: "Fart"), Action(name: "Leave \\once")]
+        
         self.foyer.actions![2].rules = [Rule(name: "\\hasHole")]
         self.foyer.actions![2].result = "Okay, so long."
         self.foyer.actions![2].roomChange = ""
@@ -80,118 +79,15 @@ class House: NSObject {
             let keyString = key as! String
             let roomDict = dict?.objectForKey(keyString)
             
-            // Strip dictionary components into seperate values
-            let name = roomDict?.objectForKey("name") as! String
-            
-            let explanation = roomDict?.objectForKey("explanation") as! String
-            
-            let actions = getActionsForRoomDictionary(roomDict)
-            
-            let items = getItemsForRoomDictionary(roomDict)
-            
-            // Put those values into a Meal object
-            let room = Room(name: name, explanation: explanation, actions: actions)
-            room.items = items
-            room.actionsToDisplay = actions
+            // This will extract room information from the Rooms.plist (aside from Foyer and No Room
+            let room = Room()
+            room.setRoomValuesForRoomDictionary(roomDict!)
             
             self.rooms += [room]
         }
         print("Finished adding rooms.\r")
     }
     
-    
-    // This does the work of extracting action info from the Rooms.plist
-    func getActionsForRoomDictionary(roomDict: AnyObject?) -> [Action] {
-        var actions = [Action]()
-        
-        let rawActions = roomDict!.objectForKey("actions") as! [NSDictionary]
-        
-        for actionDictionary in rawActions {
-            var name = String()
-            var rules = [Rule]()
-            var result = String?()
-            var roomChange = String?()
-            var itemToPresent = Item?()
-            
-            
-            if (actionDictionary.objectForKey("name") != nil) {
-                name = actionDictionary.objectForKey("name") as! String
-            }
-            if (actionDictionary.objectForKey("rules") != nil) {
-                rules = getRulesForDictionary(actionDictionary)
-            }
-            if (actionDictionary.objectForKey("result") != nil) {
-                result = actionDictionary.objectForKey("result") as? String
-            }
-            if (actionDictionary.objectForKey("roomChange") != nil) {
-                roomChange = actionDictionary.objectForKey("roomChange") as? String
-            }
-            if (actionDictionary.objectForKey("itemToPresent") != nil) {
-                itemToPresent = Item(name: (actionDictionary.objectForKey("itemToPresent") as? String)!)
-            }
-            
-            let action = Action(name: name)
-            if rules.count > 0 { action.rules = rules}
-            if let res = result { action.result = res }
-            if let rc = roomChange { action.roomChange = rc }
-            if let item = itemToPresent { action.itemToPresent = item }
-            
-            actions += [action]
-        }
-        
-        return actions
-    }
-    
-    func getDetailsForRoomDictionary(roomDict: AnyObject?) -> [Detail] {
-        var details = [Detail]()
-        let rawDetails = roomDict!.objectForKey("details") as! [NSDictionary]
-        
-        for detailDictionary in rawDetails {
-            var explanation = String()
-            var rules = [Rule]()
-            
-            if (detailDictionary.objectForKey("explanation") != nil) {
-                explanation = detailDictionary.objectForKey("explanation") as! String
-            }
-            if (detailDictionary.objectForKey("rules") != nil) {
-                rules = getRulesForDictionary(detailDictionary)
-            }
-            
-            let detail = Detail(explanation: explanation)
-            detail.rules = rules
-            
-            details += [detail]
-        }
-        
-        return details
-    }
-    
-    
-    // This does the work of extracting rules from each action.
-    func getRulesForDictionary(dict: AnyObject?) -> [Rule] {
-        var rules = [Rule]()
-        
-        if (dict!.objectForKey("rules") != nil) {
-            for ruleName in dict!.objectForKey("rules") as! [String] {
-                let rule = Rule(name: ruleName)
-                print("rule.type \(rule.type)")
-                rules += [rule]
-            }
-        }
-        
-        return rules
-    }
-    
-    func getItemsForRoomDictionary(roomDict: AnyObject?) -> [Item] {
-        var items = [Item]()
-        if (roomDict!.objectForKey("items") != nil) {
-            for itemName in roomDict?.objectForKey("items") as! [String] {
-                let item = Item(name: itemName)
-                items += [item]
-            }
-        }
-        return items
-    }
     
     // Pre-fill the house map with noRooms to make it easier to change the rooms later.
     func prepopulateMap(width: Int, height: Int) {

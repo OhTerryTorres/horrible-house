@@ -18,4 +18,6 @@ extension Array {
     mutating func shiftRightInPlace(amount: Int = 1) {
         self = shiftRight(amount)
     }
+    
+    
 }

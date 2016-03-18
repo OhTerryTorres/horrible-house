@@ -46,7 +46,7 @@ class TableViewController: UITableViewController {
     
     
     let house = House(layout: LayoutOptions.b)
-    var currentRoom = Room(name: "null", explanation: "null", actions: [Action(name: "null")])
+    var currentRoom = Room()
     var update = ""
     
     
@@ -58,22 +58,6 @@ class TableViewController: UITableViewController {
         setPlayerStartingRoom()
         
         self.title = self.currentRoom.name
-        self.currentRoom.timesEntered = 1
-        
-        
-        let topRow = house.layout[1]
-        let bottomRow = house.layout[0]
-        
-        print("top row is    \(topRow[0]) \(topRow[1])")
-        print("bottom row is \(bottomRow[0]) \(bottomRow[1])")
-        
-        
-        print("current player position is \(house.player.position)")
-        print("current room is \(roomForPosition(house.player.position)?.name)")
-        print("0, 0 \(roomForPosition((x:0, y:0))!.name)")
-        print("1, 0 \(roomForPosition((x:1, y:0))!.name)")
-        print("0, 1 \(roomForPosition((x:0, y:1))!.name)")
-        print("1, 1 \(roomForPosition((x:1, y:1))!.name)")
         
         
         
@@ -386,7 +370,7 @@ class TableViewController: UITableViewController {
             if let details = self.currentRoom.details {
                 for detail in details {
                     if areRulesBeingFollowedForObject(detail) {
-                         cell.textLabel!.text = "\(cell.textLabel!.text) \(detail)"
+                         cell.textLabel!.text = "\(self.currentRoom.explanation) \(detail.explanation)"
                     }
                 }
             }

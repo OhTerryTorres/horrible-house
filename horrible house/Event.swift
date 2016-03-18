@@ -15,6 +15,7 @@ class Event: NSObject {
     var name: String
     var explanation: String
     var actions = [Action]()
+    var triggered = false
     
     
     init(name:String, explanation:String, actions:[Action]) {

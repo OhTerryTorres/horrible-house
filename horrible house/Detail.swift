@@ -19,4 +19,18 @@ class Detail: NSObject {
         self.explanation = explanation
         
     }
+    
+    func setRulesForDictionary(dict: AnyObject?) {
+        var rules = [Rule]()
+        
+        if (dict!.objectForKey("rules") != nil) {
+            for ruleName in dict!.objectForKey("rules") as! [String] {
+                let rule = Rule(name: ruleName)
+                print("rule.type \(rule.type)")
+                rules += [rule]
+            }
+        }
+        
+        self.rules = rules
+    }
 }

@@ -12,8 +12,8 @@ class Room: NSObject {
     
     // MARK: Properties
     
-    var name: String
-    var explanation: String
+    var name = ""
+    var explanation = ""
     var details: [Detail]? = []
     var actions: [Action]? = []
     var actionsToDisplay: [Action]? = []
@@ -23,20 +23,27 @@ class Room: NSObject {
     var items: [Item]? = []
     
 
-    init(name:String, explanation:String, actions:[Action]) {
-        self.name = name
-        self.explanation = explanation
-        self.actions = actions
+    override init() {
+        super.init()
     }
     
-    func getActionsForRoomDictionary(roomDict: AnyObject?) -> [Action] {
+    func setRoomValuesForRoomDictionary(roomDict: AnyObject) {
+        // Strip dictionary components into seperate values
+        self.name = roomDict.objectForKey("name") as! String
+        self.explanation = roomDict.objectForKey("explanation") as! String
+        self.setActionsForRoomDictionary(roomDict)
+        self.setItemsForRoomDictionary(roomDict)
+        self.actionsToDisplay = self.actions
+        self.setDetailsForRoomDictionary(roomDict)
+    }
+    
+    func setActionsForRoomDictionary(roomDict: AnyObject?) {
         var actions = [Action]()
         
         let rawActions = roomDict!.objectForKey("actions") as! [NSDictionary]
         
         for actionDictionary in rawActions {
             var name = String()
-            var rules = [Rule]()
             var result = String?()
             var roomChange = String?()
             var itemToPresent = Item?()
@@ -45,8 +52,11 @@ class Room: NSObject {
             if (actionDictionary.objectForKey("name") != nil) {
                 name = actionDictionary.objectForKey("name") as! String
             }
+            
+            let action = Action(name: name)
+            
             if (actionDictionary.objectForKey("rules") != nil) {
-                rules = Rule.getRulesForDictionary(actionDictionary)
+                action.setRulesForDictionary(actionDictionary)
             }
             if (actionDictionary.objectForKey("result") != nil) {
                 result = actionDictionary.objectForKey("result") as? String
@@ -58,8 +68,6 @@ class Room: NSObject {
                 itemToPresent = Item(name: (actionDictionary.objectForKey("itemToPresent") as? String)!)
             }
             
-            let action = Action(name: name)
-            if rules.count > 0 { action.rules = rules}
             if let res = result { action.result = res }
             if let rc = roomChange { action.roomChange = rc }
             if let item = itemToPresent { action.itemToPresent = item }
@@ -67,6 +75,45 @@ class Room: NSObject {
             actions += [action]
         }
         
-        return actions
+        self.actions = actions
+    }
+    
+    func setDetailsForRoomDictionary(roomDict: AnyObject?) {
+        var details = [Detail]()
+        
+        if (roomDict!.objectForKey("details") != nil) {
+            
+            let rawDetails = roomDict!.objectForKey("details") as! [NSDictionary]
+            
+            for detailDictionary in rawDetails {
+                var explanation = String()
+                
+                if (detailDictionary.objectForKey("explanation") != nil) {
+                    explanation = detailDictionary.objectForKey("explanation") as! String
+                }
+                
+                let detail = Detail(explanation: explanation)
+                
+                if (detailDictionary.objectForKey("rules") != nil) {
+                    detail.setRulesForDictionary(detailDictionary)
+                }
+                
+                details += [detail]
+            }
+            
+        }
+                
+        self.details = details
+    }
+    
+    func setItemsForRoomDictionary(roomDict: AnyObject?) {
+        var items = [Item]()
+        if (roomDict!.objectForKey("items") != nil) {
+            for itemName in roomDict?.objectForKey("items") as! [String] {
+                let item = Item(name: itemName)
+                items += [item]
+            }
+        }
+        self.items = items
     }
 }
