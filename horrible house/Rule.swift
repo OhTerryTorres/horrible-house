@@ -23,13 +23,15 @@ class Rule: NSObject {
         static let hasItem = "hasItem"
         static let metCharacter = "metCharacter"
         static let enteredRoom = "enteredRoom"
-        static let triggeredEvent = "triggeredEvent"
+        static let completedEvent = "completedEvent"
+        static let timesPerformed = "timesPerformed"
         
         // Checks to see if the player has NOT done something
         static let nopeHasItem = "nopeHasItem"
         static let nopeMetCharacter = "nopeMetCharacter"
         static let nopeEnteredRoom = "nopeEnteredRoom"
-        static let nopeTriggeredEvent = "nopeTriggeredEvent"
+        static let nopeCompletedEvent = "nopeCompletedEvent"
+        static let nopeTimesPerformed = "nopeTimesPerformed"
     }
     
 
@@ -52,9 +54,13 @@ class Rule: NSObject {
             type = RuleType.nopeEnteredRoom
             self.name = self.name.stringByReplacingOccurrencesOfString("\\nopeEntered", withString: "")
         }
-        if self.name.rangeOfString("\\nopeTriggered") != nil {
-            type = RuleType.nopeTriggeredEvent
-            self.name = self.name.stringByReplacingOccurrencesOfString("\\nopeTriggered", withString: "")
+        if self.name.rangeOfString("\\nopeCompleted") != nil {
+            type = RuleType.nopeCompletedEvent
+            self.name = self.name.stringByReplacingOccurrencesOfString("\\nopeCompleted", withString: "")
+        }
+        if self.name.rangeOfString("\\nopeTimesPerformed") != nil {
+            type = RuleType.nopeCompletedEvent
+            self.name = self.name.stringByReplacingOccurrencesOfString("\\nopeTimesPerformed", withString: "")
         }
         
         if self.name.rangeOfString("\\has") != nil {
@@ -69,9 +75,13 @@ class Rule: NSObject {
             type = RuleType.enteredRoom
             self.name = self.name.stringByReplacingOccurrencesOfString("\\entered", withString: "")
         }
-        if self.name.rangeOfString("\\triggered") != nil {
-            type = RuleType.triggeredEvent
-            self.name = self.name.stringByReplacingOccurrencesOfString("\\triggered", withString: "")
+        if self.name.rangeOfString("\\completed") != nil {
+            type = RuleType.completedEvent
+            self.name = self.name.stringByReplacingOccurrencesOfString("\\completed", withString: "")
+        }
+        if self.name.rangeOfString("\\timesPerformed") != nil {
+            type = RuleType.completedEvent
+            self.name = self.name.stringByReplacingOccurrencesOfString("\\timesPerformed", withString: "")
         }
         
     }

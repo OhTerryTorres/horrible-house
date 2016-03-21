@@ -84,8 +84,10 @@ B U T T S</string>
 			<dict>
 				<key>name</key>
 				<string>Check the hole</string>
-				<key>itemToPresent</key>
-				<string>Hole</string>
+				<key>items</key>
+				<array>
+					<string>Hole</string>
+				</array>
 				<key>result</key>
 				<string>A hole. It looks like something crashed through it.</string>
 				<key>rules</key>
@@ -110,8 +112,10 @@ B U T T S</string>
 				<string>There is a pair of glasses in the credenza.</string>
 				<key>roomChange</key>
 				<string>A long dining table covered with a cloth that use to be white takes up most of the room. There are places set for ten people. A cradenza sits against one wall.</string>
-				<key>itemToPresent</key>
-				<string>Glasses</string>
+				<key>items</key>
+				<array>
+					<string>Glasses</string>
+				</array>
 			</dict>
 			<dict>
 				<key>name</key>

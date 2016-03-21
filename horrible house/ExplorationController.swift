@@ -1,5 +1,5 @@
 //
-//  TableViewController.swift
+//  ExplorationController.swift
 //  horrible house
 //
 //  Created by TerryTorres on 3/9/16.
@@ -10,7 +10,7 @@ import UIKit
 
 
 
-class TableViewController: UITableViewController {
+class ExplorationController: UITableViewController {
     
     enum Sections : Int {
         case update = 0
@@ -258,6 +258,10 @@ class TableViewController: UITableViewController {
         return actions
     }
     
+    
+    // I want to get rid of this function, but it screws with areRulesBeingFollowedForObject.
+    // AnyObjects... Go figure.
+    
     func areRulesBeingFollowedForDetail(detail: Detail) -> Bool {
         var followed = true
         if detail.rules != nil {
@@ -294,9 +298,9 @@ class TableViewController: UITableViewController {
                     var i = 0; for room in house.rooms {
                         if room.timesEntered == 0 { i++ }
                     }; if i == 0 { followed = false }
-                case Rule.RuleType.triggeredEvent:
+                case Rule.RuleType.completedEvent:
                     break
-                case Rule.RuleType.nopeTriggeredEvent:
+                case Rule.RuleType.nopeCompletedEvent:
                     break
                 default:
                     break;
@@ -309,8 +313,8 @@ class TableViewController: UITableViewController {
     
     func areRulesBeingFollowedForObject(object: AnyObject) -> Bool {
         var followed = true
-        if object.rules != nil {
-            for rule in object.rules!! {
+        if let rules = object.rules as [Rule]? {
+            for rule in rules {
                 print("rule.name is \(rule.name)")
                 print("rule.type is \(rule.type)")
                 switch ( rule.type) {
@@ -343,9 +347,9 @@ class TableViewController: UITableViewController {
                     var i = 0; for room in house.rooms {
                         if room.timesEntered == 0 { i++ }
                     }; if i == 0 { followed = false }
-                case Rule.RuleType.triggeredEvent:
+                case Rule.RuleType.completedEvent:
                     break
-                case Rule.RuleType.nopeTriggeredEvent:
+                case Rule.RuleType.nopeCompletedEvent:
                     break
                 default:
                     break;
@@ -437,16 +441,23 @@ class TableViewController: UITableViewController {
         action.timesPerformed++
         if let result = action.result { self.update = result }
         if let roomChange = action.roomChange { self.currentRoom.explanation = roomChange }
-        if let itemToPresent = action.itemToPresent {
-            if self.currentRoom.items != nil { self.currentRoom.items?.append(itemToPresent) }
-            else { self.currentRoom.items = [itemToPresent] }
-            action.canPerformMoreThanOnce = false
-        }
-        if action.canPerformMoreThanOnce == false {
-            for var i = 0; i < self.currentRoom.actions?.count; i++ {
-                if self.currentRoom.actions![i].name == action.name { self.currentRoom.actions?.removeAtIndex(i) }
+        if let items = action.items {
+            for item in items {
+                if self.currentRoom.items != nil { self.currentRoom.items?.append(item) }
+                else { self.currentRoom.items = [item] }
+                action.canPerformMoreThanOnce = false
             }
         }
+        
+        for var i = 0; i < self.currentRoom.actions?.count; i++ {
+            if self.currentRoom.actions![i].name == action.name {
+                self.currentRoom.actions![i].timesPerformed += 1
+                if action.canPerformMoreThanOnce == false {
+                 self.currentRoom.actions?.removeAtIndex(i)
+                }
+            }
+        }
+        
         print("explanation is \(self.currentRoom.explanation)")
         
         self.tableView.reloadData()

@@ -32,7 +32,7 @@ class Room: NSObject {
         self.name = roomDict.objectForKey("name") as! String
         self.explanation = roomDict.objectForKey("explanation") as! String
         self.setActionsForRoomDictionary(roomDict)
-        self.setItemsForRoomDictionary(roomDict)
+        self.setItemsForDictionary(roomDict)
         self.actionsToDisplay = self.actions
         self.setDetailsForRoomDictionary(roomDict)
     }
@@ -46,7 +46,7 @@ class Room: NSObject {
             var name = String()
             var result = String?()
             var roomChange = String?()
-            var itemToPresent = Item?()
+            var triggerEvent = String?()
             
             
             if (actionDictionary.objectForKey("name") != nil) {
@@ -58,19 +58,24 @@ class Room: NSObject {
             if (actionDictionary.objectForKey("rules") != nil) {
                 action.setRulesForDictionary(actionDictionary)
             }
+            if (actionDictionary.objectForKey("items") != nil) {
+                action.setItemsForDictionary(actionDictionary)
+            }
             if (actionDictionary.objectForKey("result") != nil) {
                 result = actionDictionary.objectForKey("result") as? String
             }
             if (actionDictionary.objectForKey("roomChange") != nil) {
                 roomChange = actionDictionary.objectForKey("roomChange") as? String
             }
-            if (actionDictionary.objectForKey("itemToPresent") != nil) {
-                itemToPresent = Item(name: (actionDictionary.objectForKey("itemToPresent") as? String)!)
+            
+            if (actionDictionary.objectForKey("triggerEvent") != nil) {
+                triggerEvent = actionDictionary.objectForKey("triggerEvent") as? String
             }
+
             
             if let res = result { action.result = res }
             if let rc = roomChange { action.roomChange = rc }
-            if let item = itemToPresent { action.itemToPresent = item }
+            if let te = triggerEvent { action.triggerEvent = Event(name: te) }
             
             actions += [action]
         }
@@ -106,10 +111,10 @@ class Room: NSObject {
         self.details = details
     }
     
-    func setItemsForRoomDictionary(roomDict: AnyObject?) {
+    func setItemsForDictionary(dict: AnyObject?) {
         var items = [Item]()
-        if (roomDict!.objectForKey("items") != nil) {
-            for itemName in roomDict?.objectForKey("items") as! [String] {
+        if (dict!.objectForKey("items") != nil) {
+            for itemName in dict?.objectForKey("items") as! [String] {
                 let item = Item(name: itemName)
                 items += [item]
             }

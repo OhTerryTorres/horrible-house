@@ -2,27 +2,20 @@
 //  Event.swift
 //  horrible house
 //
-//  Created by TerryTorres on 3/11/16.
+//  Created by TerryTorres on 3/19/16.
 //  Copyright © 2016 Terry Torres. All rights reserved.
 //
 
 import UIKit
 
 class Event: NSObject {
+    
+    var name = ""
+    var stages : [Stage]? = []
+    var currentStage : Stage?
+    var completed = false
 
-    // MARK: Properties
-    
-    var name: String
-    var explanation: String
-    var actions = [Action]()
-    var triggered = false
-    
-    
-    init(name:String, explanation:String, actions:[Action]) {
+    init(name: String) {
         self.name = name
-        self.explanation = explanation
-        self.actions = actions
-        
     }
-    
 }

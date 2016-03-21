@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>0</key>
+	<dict>
+		<key>name</key>
+		<string>Banquet, Empty Dining Room</string>
+		<key>stages</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>After Taking a Seat</string>
+				<key>explanation</key>
+				<string>You take a seat at the mostly elegant dining table. You can sort of imagine what it must have been like to use the table for actual dining.</string>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Stay seated</string>
+						<key>result</key>
+						<string>Nothing happens.</string>
+						<key>rules</key>
+						<array>
+							<string>\timesPerformed4</string>
+						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>Stay seated \once</string>
+						<key>result</key>
+						<string>Finally, you notice something on the table move.
+
+No, wait. That was just a shadow from a breeze that moved the curtain against the window. Nothing happened.</string>
+						<key>rules</key>
+						<array>
+							<string>\timesPerformed3</string>
+						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>Stay seated \once</string>
+						<key>result</key>
+						<string>Although there is no one to talk to, you stay seated.</string>
+						<key>rules</key>
+						<array>
+							<string>\timesPerformed2</string>
+						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>Stay seated \once</string>
+						<key>result</key>
+						<string>Although there is nothing to drink, you stay seated.</string>
+						<key>rules</key>
+						<array>
+							<string>\timesPerformed1</string>
+						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>Stay seated \once</string>
+						<key>result</key>
+						<string>Although there is nothing to eat, you stay seated.</string>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>Get up from table</string>
+						<key>triggerEvent</key>
+						<string></string>
+					</dict>
+				</array>
+			</dict>
+		</array>
+	</dict>
+</dict>
+</plist>

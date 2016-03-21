@@ -36,7 +36,11 @@ class Action: NSObject {
     // When preseneted, the item will be added to the currentRoom.items array, and a new
     // action presenting this item to the player will be added to the currentRoom.actions array.
     // This action will also, likely, be deleted from the currentRoom.actions array.
-    var itemToPresent: Item?
+    var items: [Item]? = []
+    
+    // If a triggerEvent name is listed, choosing this action will trigger that event.
+    // If a triggerEvent name is listed, but it is BLANK, the event will end and go back to the house.
+    var triggerEvent : Event?
     
 
     init(name:String) {
@@ -60,5 +64,18 @@ class Action: NSObject {
         
         self.rules = rules
     }
+    
+    func setItemsForDictionary(dict: AnyObject?) {
+        var items = [Item]()
+        if (dict!.objectForKey("items") != nil) {
+            for itemName in dict?.objectForKey("items") as! [String] {
+                let item = Item(name: itemName)
+                items += [item]
+            }
+        }
+        self.items = items
+    }
+    
+    
 
 }
