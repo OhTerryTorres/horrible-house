@@ -42,6 +42,8 @@ class Action: NSObject {
     // If a triggerEvent name is listed, but it is BLANK, the event will end and go back to the house.
     var triggerEvent : Event?
     
+    var replaceAction : Action?
+    
 
     init(name:String) {
         self.name = name
@@ -75,6 +77,21 @@ class Action: NSObject {
         }
         self.items = items
     }
+    
+    func setReplaceActionForDictionary(dict: AnyObject?) {
+        var replaceAction = Action?()
+        
+        if let name = dict?.objectForKey("name") { replaceAction = Action(name: name as! String) }
+        if let result = dict?.objectForKey("result") { replaceAction!.result = result as? String }
+        if let roomChange = dict?.objectForKey("roomChange") { replaceAction!.roomChange = roomChange as? String }
+        if let _ = dict?.objectForKey("rules") { replaceAction?.setRulesForDictionary(dict) }
+        if let _ = dict?.objectForKey("items") { replaceAction?.setItemsForDictionary(dict) }
+        if let triggerEvent = dict?.objectForKey("triggerEvent") { replaceAction?.triggerEvent = Event(name: triggerEvent as! String) }
+        if let ra = dict?.objectForKey("replaceAction") { replaceAction?.setReplaceActionForDictionary(ra as! NSDictionary) }
+        
+        self.replaceAction = replaceAction
+    }
+    
     
     
 

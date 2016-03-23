@@ -71,6 +71,10 @@ class Room: NSObject {
             if (actionDictionary.objectForKey("triggerEvent") != nil) {
                 triggerEvent = actionDictionary.objectForKey("triggerEvent") as? String
             }
+            
+            if (actionDictionary.objectForKey("replaceAction") != nil) {
+                action.setReplaceActionForDictionary(actionDictionary.objectForKey("replaceAction"))
+            }
 
             
             if let res = result { action.result = res }

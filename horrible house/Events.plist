@@ -5,7 +5,7 @@
 	<key>0</key>
 	<dict>
 		<key>name</key>
-		<string>Banquet, Empty Dining Room</string>
+		<string>The Dining Table</string>
 		<key>stages</key>
 		<array>
 			<dict>
@@ -19,49 +19,37 @@
 						<key>name</key>
 						<string>Stay seated</string>
 						<key>result</key>
-						<string>Nothing happens.</string>
-						<key>rules</key>
-						<array>
-							<string>\timesPerformed4</string>
-						</array>
-					</dict>
-					<dict>
-						<key>name</key>
-						<string>Stay seated \once</string>
-						<key>result</key>
-						<string>Finally, you notice something on the table move.
+						<string>Although there is nothing to eat, you stay seated.</string>
+						<key>replaceAction</key>
+						<dict>
+							<key>name</key>
+							<string>Stay seated</string>
+							<key>result</key>
+							<string>Although there is nothing to drink, you stay seated.</string>
+							<key>replaceAction</key>
+							<dict>
+								<key>name</key>
+								<string>Stay seated</string>
+								<key>result</key>
+								<string>Although there is no one to talk to, you stay seated.</string>
+								<key>replaceAction</key>
+								<dict>
+									<key>name</key>
+									<string>Stay seated</string>
+									<key>result</key>
+									<string>Finally, you notice something on the table move.
 
 No, wait. That was just a shadow from a breeze that moved the curtain against the window. Nothing happened.</string>
-						<key>rules</key>
-						<array>
-							<string>\timesPerformed3</string>
-						</array>
-					</dict>
-					<dict>
-						<key>name</key>
-						<string>Stay seated \once</string>
-						<key>result</key>
-						<string>Although there is no one to talk to, you stay seated.</string>
-						<key>rules</key>
-						<array>
-							<string>\timesPerformed2</string>
-						</array>
-					</dict>
-					<dict>
-						<key>name</key>
-						<string>Stay seated \once</string>
-						<key>result</key>
-						<string>Although there is nothing to drink, you stay seated.</string>
-						<key>rules</key>
-						<array>
-							<string>\timesPerformed1</string>
-						</array>
-					</dict>
-					<dict>
-						<key>name</key>
-						<string>Stay seated \once</string>
-						<key>result</key>
-						<string>Although there is nothing to eat, you stay seated.</string>
+									<key>replaceAction</key>
+									<dict>
+										<key>name</key>
+										<string>Stay seated</string>
+										<key>result</key>
+										<string>Nothing happens.</string>
+									</dict>
+								</dict>
+							</dict>
+						</dict>
 					</dict>
 					<dict>
 						<key>name</key>

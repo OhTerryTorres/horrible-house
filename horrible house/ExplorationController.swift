@@ -452,10 +452,17 @@ class ExplorationController: UITableViewController {
         for var i = 0; i < self.currentRoom.actions?.count; i++ {
             if self.currentRoom.actions![i].name == action.name {
                 self.currentRoom.actions![i].timesPerformed += 1
+                if let replaceAction = action.replaceAction {
+                    self.currentRoom.actions![i] = replaceAction
+                }
                 if action.canPerformMoreThanOnce == false {
-                 self.currentRoom.actions?.removeAtIndex(i)
+                    self.currentRoom.actions?.removeAtIndex(i)
                 }
             }
+        }
+        
+        if let triggerEvent = action.triggerEvent {
+            if areRulesBeingFollowedForObject(triggerEvent) { performSegueWithIdentifier("event", sender: triggerEvent) }
         }
         
         print("explanation is \(self.currentRoom.explanation)")
@@ -516,15 +523,26 @@ class ExplorationController: UITableViewController {
     }
     */
 
-    /*
+
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        
+        if segue.identifier == "event" {
+            let ec = segue.destinationViewController as! EventController
+            ec.house = self.house
+            ec.event = sender as? Event
+        }
+        
+        
     }
-    */
+
+    @IBAction func unwind(segue: UIStoryboardSegue) {
+        
+    }
 
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return UITableViewAutomaticDimension

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>1</key>
+	<dict>
+		<key>name</key>
+		<string>Foyer</string>
+		<key>explanation</key>
+		<string>Less than a handful of lit wall sconces show only the dark wood of the entryway and three ways deeper into the house, along with the front door.</string>
+		<key>actions</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Lick the wall</string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Fart</string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Leave</string>
+				<key>result</key>
+				<string>Okay, so long.</string>
+				<key>roomChange</key>
+				<string></string>
+				<key>rules</key>
+				<array>
+					<dict>
+						<key>type</key>
+						<string>hasItem</string>
+						<key>name</key>
+						<string>Hole</string>
+					</dict>
+				</array>
+			</dict>
+		</array>
+	</dict>
+	<key>0</key>
+	<dict>
+		<key>name</key>
+		<string>No Room</string>
+		<key>explanation</key>
+		<string>This is the absence of a room</string>
+		<key>actions</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Nothing doing</string>
+				<key>result</key>
+				<string>I&apos;d just restart.</string>
+			</dict>
+		</array>
+	</dict>
+</dict>
+</plist>

@@ -126,6 +126,8 @@ B U T T S</string>
 			<dict>
 				<key>name</key>
 				<string>Sit at the table</string>
+				<key>triggerEvent</key>
+				<string>The Dining Table</string>
 			</dict>
 		</array>
 	</dict>

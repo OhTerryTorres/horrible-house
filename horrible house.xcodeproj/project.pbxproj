@@ -21,6 +21,7 @@
 		CE50D0C81C9D91AC007AF0E2 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE50D0C71C9D91AC007AF0E2 /* Event.swift */; };
 		CE50D0CA1C9DA8B2007AF0E2 /* Events.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE50D0C91C9DA8B2007AF0E2 /* Events.plist */; };
 		CE50D0CC1CA03A75007AF0E2 /* EventController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE50D0CB1CA03A75007AF0E2 /* EventController.swift */; };
+		CE50D0F71CA1C0D6007AF0E2 /* NecessaryRooms.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE50D0F61CA1C0D6007AF0E2 /* NecessaryRooms.plist */; };
 		CE6F27B51C90B42500B21818 /* ExplorationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6F27B41C90B42500B21818 /* ExplorationController.swift */; };
 		CE6F27B71C9326DD00B21818 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6F27B61C9326DD00B21818 /* Action.swift */; };
 		CE6F27B91C93279300B21818 /* Rule.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6F27B81C93279300B21818 /* Rule.swift */; };
@@ -68,6 +69,7 @@
 		CE50D0C71C9D91AC007AF0E2 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		CE50D0C91C9DA8B2007AF0E2 /* Events.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Events.plist; sourceTree = "<group>"; };
 		CE50D0CB1CA03A75007AF0E2 /* EventController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventController.swift; sourceTree = "<group>"; };
+		CE50D0F61CA1C0D6007AF0E2 /* NecessaryRooms.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = NecessaryRooms.plist; sourceTree = "<group>"; };
 		CE6F27B41C90B42500B21818 /* ExplorationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExplorationController.swift; sourceTree = "<group>"; };
 		CE6F27B61C9326DD00B21818 /* Action.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
 		CE6F27B81C93279300B21818 /* Rule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rule.swift; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 				CE0478801C6C10FD008E23E1 /* Assets.xcassets */,
 				CE0478821C6C10FD008E23E1 /* LaunchScreen.storyboard */,
 				CE0478A81C6C145A008E23E1 /* Rooms.plist */,
+				CE50D0F61CA1C0D6007AF0E2 /* NecessaryRooms.plist */,
 				CE50D0C91C9DA8B2007AF0E2 /* Events.plist */,
 				CE0478851C6C10FD008E23E1 /* Info.plist */,
 				CE04787D1C6C10FD008E23E1 /* horrible_house.xcdatamodeld */,
@@ -272,6 +275,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE50D0CA1C9DA8B2007AF0E2 /* Events.plist in Resources */,
+				CE50D0F71CA1C0D6007AF0E2 /* NecessaryRooms.plist in Resources */,
 				CE0478841C6C10FD008E23E1 /* LaunchScreen.storyboard in Resources */,
 				CE0478A91C6C145A008E23E1 /* Rooms.plist in Resources */,
 				CE0478811C6C10FD008E23E1 /* Assets.xcassets in Resources */,
