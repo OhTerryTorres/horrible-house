@@ -8,13 +8,13 @@
 
 import UIKit
 
-class Character: NSObject {
+class Character: ItemBased {
 
     // MARK: Properties
     
     var name: String
     var position : (x : Int, y : Int)
-    var items: [Item]? = []
+    var items: [Item] = []
     
     
     init(name:String, position:(x: Int, y: Int)) {

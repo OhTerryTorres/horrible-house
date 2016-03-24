@@ -17,6 +17,10 @@
 		CE0478A91C6C145A008E23E1 /* Rooms.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE0478A81C6C145A008E23E1 /* Rooms.plist */; };
 		CE0478AB1C6C3452008E23E1 /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0478AA1C6C3452008E23E1 /* Room.swift */; };
 		CE0478AD1C6C3B4F008E23E1 /* House.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0478AC1C6C3B4F008E23E1 /* House.swift */; };
+		CE2F7A971CA224C100A3025D /* DictionaryBased.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2F7A961CA224C100A3025D /* DictionaryBased.swift */; };
+		CE2F7A991CA234AA00A3025D /* RuleBased.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2F7A981CA234AA00A3025D /* RuleBased.swift */; };
+		CE2F7A9B1CA2351500A3025D /* ItemBased.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2F7A9A1CA2351500A3025D /* ItemBased.swift */; };
+		CE2F7AA01CA2FA3200A3025D /* ActionPacked.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2F7A9F1CA2FA3200A3025D /* ActionPacked.swift */; };
 		CE3205731C703AD000EAA581 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3205721C703AD000EAA581 /* ArrayExtension.swift */; };
 		CE50D0C81C9D91AC007AF0E2 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE50D0C71C9D91AC007AF0E2 /* Event.swift */; };
 		CE50D0CA1C9DA8B2007AF0E2 /* Events.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE50D0C91C9DA8B2007AF0E2 /* Events.plist */; };
@@ -65,6 +69,10 @@
 		CE0478A81C6C145A008E23E1 /* Rooms.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Rooms.plist; sourceTree = "<group>"; };
 		CE0478AA1C6C3452008E23E1 /* Room.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
 		CE0478AC1C6C3B4F008E23E1 /* House.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = House.swift; sourceTree = "<group>"; };
+		CE2F7A961CA224C100A3025D /* DictionaryBased.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryBased.swift; sourceTree = "<group>"; };
+		CE2F7A981CA234AA00A3025D /* RuleBased.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RuleBased.swift; sourceTree = "<group>"; };
+		CE2F7A9A1CA2351500A3025D /* ItemBased.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemBased.swift; sourceTree = "<group>"; };
+		CE2F7A9F1CA2FA3200A3025D /* ActionPacked.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionPacked.swift; sourceTree = "<group>"; };
 		CE3205721C703AD000EAA581 /* ArrayExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		CE50D0C71C9D91AC007AF0E2 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		CE50D0C91C9DA8B2007AF0E2 /* Events.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Events.plist; sourceTree = "<group>"; };
@@ -128,17 +136,9 @@
 			isa = PBXGroup;
 			children = (
 				CE0478761C6C10FD008E23E1 /* AppDelegate.swift */,
-				CE0478AC1C6C3B4F008E23E1 /* House.swift */,
-				CE0478AA1C6C3452008E23E1 /* Room.swift */,
-				CE6F27BC1C9335C900B21818 /* Character.swift */,
-				CE6F27B61C9326DD00B21818 /* Action.swift */,
-				CE6F27B81C93279300B21818 /* Rule.swift */,
-				CE6F27BA1C932A2600B21818 /* Item.swift */,
-				CE50D0C71C9D91AC007AF0E2 /* Event.swift */,
-				CE6F27BE1C933DE400B21818 /* Stage.swift */,
-				CE6F28061C99C99C00B21818 /* Detail.swift */,
-				CE6F27B41C90B42500B21818 /* ExplorationController.swift */,
-				CE50D0CB1CA03A75007AF0E2 /* EventController.swift */,
+				CE2F7A9C1CA2DF3800A3025D /* Protocols */,
+				CE2F7A9D1CA2DF5600A3025D /* GameObjects */,
+				CE2F7A9E1CA2DF6F00A3025D /* ViewControllers */,
 				CE04787A1C6C10FD008E23E1 /* Main.storyboard */,
 				CE3205721C703AD000EAA581 /* ArrayExtension.swift */,
 				CE0478801C6C10FD008E23E1 /* Assets.xcassets */,
@@ -168,6 +168,42 @@
 				CE04789B1C6C10FD008E23E1 /* Info.plist */,
 			);
 			path = "horrible houseUITests";
+			sourceTree = "<group>";
+		};
+		CE2F7A9C1CA2DF3800A3025D /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				CE2F7A961CA224C100A3025D /* DictionaryBased.swift */,
+				CE2F7A9F1CA2FA3200A3025D /* ActionPacked.swift */,
+				CE2F7A981CA234AA00A3025D /* RuleBased.swift */,
+				CE2F7A9A1CA2351500A3025D /* ItemBased.swift */,
+			);
+			name = Protocols;
+			sourceTree = "<group>";
+		};
+		CE2F7A9D1CA2DF5600A3025D /* GameObjects */ = {
+			isa = PBXGroup;
+			children = (
+				CE0478AC1C6C3B4F008E23E1 /* House.swift */,
+				CE0478AA1C6C3452008E23E1 /* Room.swift */,
+				CE6F27BC1C9335C900B21818 /* Character.swift */,
+				CE6F27B61C9326DD00B21818 /* Action.swift */,
+				CE6F27B81C93279300B21818 /* Rule.swift */,
+				CE6F27BA1C932A2600B21818 /* Item.swift */,
+				CE50D0C71C9D91AC007AF0E2 /* Event.swift */,
+				CE6F27BE1C933DE400B21818 /* Stage.swift */,
+				CE6F28061C99C99C00B21818 /* Detail.swift */,
+			);
+			name = GameObjects;
+			sourceTree = "<group>";
+		};
+		CE2F7A9E1CA2DF6F00A3025D /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				CE6F27B41C90B42500B21818 /* ExplorationController.swift */,
+				CE50D0CB1CA03A75007AF0E2 /* EventController.swift */,
+			);
+			name = ViewControllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -305,6 +341,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE04787F1C6C10FD008E23E1 /* horrible_house.xcdatamodeld in Sources */,
+				CE2F7A991CA234AA00A3025D /* RuleBased.swift in Sources */,
 				CE6F27BF1C933DE400B21818 /* Stage.swift in Sources */,
 				CE6F28071C99C99D00B21818 /* Detail.swift in Sources */,
 				CE6F27BB1C932A2600B21818 /* Item.swift in Sources */,
@@ -312,10 +349,13 @@
 				CE0478AB1C6C3452008E23E1 /* Room.swift in Sources */,
 				CE3205731C703AD000EAA581 /* ArrayExtension.swift in Sources */,
 				CE6F27B71C9326DD00B21818 /* Action.swift in Sources */,
+				CE2F7AA01CA2FA3200A3025D /* ActionPacked.swift in Sources */,
 				CE6F27B91C93279300B21818 /* Rule.swift in Sources */,
 				CE6F27BD1C9335C900B21818 /* Character.swift in Sources */,
 				CE0478AD1C6C3B4F008E23E1 /* House.swift in Sources */,
 				CE0478771C6C10FD008E23E1 /* AppDelegate.swift in Sources */,
+				CE2F7A971CA224C100A3025D /* DictionaryBased.swift in Sources */,
+				CE2F7A9B1CA2351500A3025D /* ItemBased.swift in Sources */,
 				CE50D0CC1CA03A75007AF0E2 /* EventController.swift in Sources */,
 				CE50D0C81C9D91AC007AF0E2 /* Event.swift in Sources */,
 			);

@@ -27,12 +27,7 @@
 				<string></string>
 				<key>rules</key>
 				<array>
-					<dict>
-						<key>type</key>
-						<string>hasItem</string>
-						<key>name</key>
-						<string>Hole</string>
-					</dict>
+					<string>\hasHole</string>
 				</array>
 			</dict>
 		</array>

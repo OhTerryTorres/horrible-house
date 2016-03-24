@@ -54,7 +54,7 @@ No, wait. That was just a shadow from a breeze that moved the curtain against th
 					<dict>
 						<key>name</key>
 						<string>Get up from table</string>
-						<key>triggerEvent</key>
+						<key>triggerEventName</key>
 						<string></string>
 					</dict>
 				</array>

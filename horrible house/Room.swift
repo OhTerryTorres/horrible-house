@@ -8,121 +8,35 @@
 
 import UIKit
 
-class Room: NSObject {
-    
-    // MARK: Properties
+class Room: DictionaryBased, ItemBased, ActionPacked {
     
     var name = ""
     var explanation = ""
-    var details: [Detail]? = []
-    var actions: [Action]? = []
-    var actionsToDisplay: [Action]? = []
+    var details: [Detail] = []
+    var actions: [Action] = []
     var position = (x: 0, y: 0)
     var timesEntered = 0
-    var charactersPresent = [Character]()
-    var items: [Item]? = []
+    var charactersPresent : [Character] = []
+    var items: [Item] = []
     
-
-    override init() {
-        super.init()
-    }
-    
-    func setRoomValuesForRoomDictionary(roomDict: AnyObject) {
-        // Strip dictionary components into seperate values
-        self.name = roomDict.objectForKey("name") as! String
-        self.explanation = roomDict.objectForKey("explanation") as! String
-        self.setActionsForRoomDictionary(roomDict)
-        self.setItemsForDictionary(roomDict)
-        self.actionsToDisplay = self.actions
-        self.setDetailsForRoomDictionary(roomDict)
-    }
-    
-    func setActionsForRoomDictionary(roomDict: AnyObject?) {
-        var actions = [Action]()
-        
-        let rawActions = roomDict!.objectForKey("actions") as! [NSDictionary]
-        
-        for actionDictionary in rawActions {
-            var name = String()
-            var result = String?()
-            var roomChange = String?()
-            var triggerEvent = String?()
-            
-            
-            if (actionDictionary.objectForKey("name") != nil) {
-                name = actionDictionary.objectForKey("name") as! String
-            }
-            
-            let action = Action(name: name)
-            
-            if (actionDictionary.objectForKey("rules") != nil) {
-                action.setRulesForDictionary(actionDictionary)
-            }
-            if (actionDictionary.objectForKey("items") != nil) {
-                action.setItemsForDictionary(actionDictionary)
-            }
-            if (actionDictionary.objectForKey("result") != nil) {
-                result = actionDictionary.objectForKey("result") as? String
-            }
-            if (actionDictionary.objectForKey("roomChange") != nil) {
-                roomChange = actionDictionary.objectForKey("roomChange") as? String
-            }
-            
-            if (actionDictionary.objectForKey("triggerEvent") != nil) {
-                triggerEvent = actionDictionary.objectForKey("triggerEvent") as? String
-            }
-            
-            if (actionDictionary.objectForKey("replaceAction") != nil) {
-                action.setReplaceActionForDictionary(actionDictionary.objectForKey("replaceAction"))
-            }
-
-            
-            if let res = result { action.result = res }
-            if let rc = roomChange { action.roomChange = rc }
-            if let te = triggerEvent { action.triggerEvent = Event(name: te) }
-            
-            actions += [action]
-        }
-        
-        self.actions = actions
-    }
-    
-    func setDetailsForRoomDictionary(roomDict: AnyObject?) {
-        var details = [Detail]()
-        
-        if (roomDict!.objectForKey("details") != nil) {
-            
-            let rawDetails = roomDict!.objectForKey("details") as! [NSDictionary]
-            
-            for detailDictionary in rawDetails {
-                var explanation = String()
-                
-                if (detailDictionary.objectForKey("explanation") != nil) {
-                    explanation = detailDictionary.objectForKey("explanation") as! String
+    required init(withDictionary: Dictionary<String, AnyObject>) {
+        for (key, value) in withDictionary {
+            if key == "name" { self.name = value as! String }
+            if key == "explanation" { self.explanation = value as! String }
+            if key == "details" {
+                let dictArray = value as! [Dictionary<String, AnyObject>]
+                for dict in dictArray {
+                    let detail = Detail(withDictionary: dict)
+                    self.details += [detail]
                 }
-                
-                let detail = Detail(explanation: explanation)
-                
-                if (detailDictionary.objectForKey("rules") != nil) {
-                    detail.setRulesForDictionary(detailDictionary)
-                }
-                
-                details += [detail]
             }
-            
+            if key == "actions" { self.setActionsForArrayOfDictionaries(value as! [Dictionary<String, AnyObject>]) }
+            if key == "items" { self.setItemsForArray(value as! [String]) }
         }
-                
-        self.details = details
     }
     
-    func setItemsForDictionary(dict: AnyObject?) {
-        var items = [Item]()
-        if (dict!.objectForKey("items") != nil) {
-            for itemName in dict?.objectForKey("items") as! [String] {
-                let item = Item(name: itemName)
-                items += [item]
-            }
-        }
-        self.items = items
+    init() {
+        
     }
+
 }

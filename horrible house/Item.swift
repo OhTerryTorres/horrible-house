@@ -8,17 +8,15 @@
 
 import UIKit
 
-class Item: NSObject {
+class Item {
 
     // MARK: Properties
     
     var name: String
-    var consumable = false
     
 
     init(name:String) {
         self.name = name
-        if self.name.lowercaseString.rangeOfString("\\con") != nil { self.consumable = true }
 
     }
     

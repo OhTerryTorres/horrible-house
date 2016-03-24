@@ -8,29 +8,20 @@
 
 import UIKit
 
-class Detail: NSObject {
+class Detail : DictionaryBased, RuleBased {
 
-    var explanation : String
+    var explanation : String = ""
     
-    var rules : [Rule]? = []
+    var rules : [Rule] = []
     
-    init(explanation:String) {
-        
-        self.explanation = explanation
-        
+    required init(withDictionary: Dictionary<String, AnyObject>) {
+        for (key, value) in withDictionary {
+            if key == "explanation" { self.explanation = value as! String }
+            if key == "rules" { self.setRulesForArray(value as! [String]) }
+        }
     }
     
-    func setRulesForDictionary(dict: AnyObject?) {
-        var rules = [Rule]()
+    init() {
         
-        if (dict!.objectForKey("rules") != nil) {
-            for ruleName in dict!.objectForKey("rules") as! [String] {
-                let rule = Rule(name: ruleName)
-                print("rule.type \(rule.type)")
-                rules += [rule]
-            }
-        }
-        
-        self.rules = rules
     }
 }

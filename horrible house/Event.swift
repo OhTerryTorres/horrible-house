@@ -8,63 +8,43 @@
 
 import UIKit
 
-class Event: NSObject {
+class Event: DictionaryBased, RuleBased {
     
     var name = ""
-    var stages : [Stage]? = []
+    var stages : [Stage] = []
     var currentStage : Stage?
-    var completed = false
-    var rules: [Rule]? = []
+    var rules: [Rule] = []
 
+    required init(withDictionary: Dictionary<String, AnyObject>) {
+        for (key, value) in withDictionary {
+            if key == "name" { self.name = value as! String }
+            if key == "stages" {
+                let dictArray = value as! [Dictionary<String, AnyObject>]
+                for dict in dictArray {
+                    let stage = Stage(withDictionary: dict)
+                    self.stages += [stage]
+                }
+            }
+            
+            
+            
+            if key == "rules" { self.setRulesForArray(value as! [String]) }
+        }
+    }
+    
     init(name: String) {
-        super.init()
-        
-        print("Finding event based on name...\r")
-        let path = NSBundle.mainBundle().pathForResource("Events", ofType: "plist")
-        let dict = NSDictionary(contentsOfFile: path!)
-        
-        // load each room into the array
-        for (key,_) in dict! {
-            print("Adding room...\r")
-            
-            // get individual dictionary
-            let keyString = key as! String
-            let eventDict = dict?.objectForKey(keyString)
-            
-            if name == eventDict?.objectForKey("name") as! String {
-                self.setEventValuesForDictionary(eventDict)
-            }
-            
-        }
-        
         
     }
     
-    func setEventValuesForDictionary(dict: AnyObject?) {
-        if let name = dict!.objectForKey("name") { self.name = name as! String }
-        if let stagesDictionary = dict!.objectForKey("stages") {
-            for stageDictionary in stagesDictionary as! [NSDictionary] {
-                let stage = Stage()
-                stage.setStageValuesForDictionary(stageDictionary)
-                
-                self.stages?.append(stage)
-            }
+    // This will make the first stage in self.stages that follows the rules
+    // into the default stage. This can be changed if a better method appears.
+    func setCurrentStage() {
+        for stage in self.stages {
+            if stage.isFollowingTheRules() { self.currentStage = stage ; break }
         }
-        
-        if let rulesDictionary = dict!.objectForKey("rules") { self.setRulesForDictionary(rulesDictionary) }
     }
     
-    func setRulesForDictionary(dict: AnyObject?) {
-        var rules = [Rule]()
+    init() {
         
-        if (dict!.objectForKey("rules") != nil) {
-            for ruleName in dict!.objectForKey("rules") as! [String] {
-                let rule = Rule(name: ruleName)
-                print("rule.type \(rule.type)")
-                rules += [rule]
-            }
-        }
-        
-        self.rules = rules
     }
 }

@@ -13,10 +13,30 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    
+    struct LayoutOptions {
+        // 0 is a No Room (wall).
+        // 1 is a Room.
+        // 2 is the Foyer.
+        
+        // This gives us two rows with four rooms.
+        static let a = [
+            [1, 2],
+            [1, 1]
+        ]
+        // This gives us two rows with four rooms, with noRooms (walls) on either side of the foyer.
+        static let b = [
+            [1, 1, 1],
+            [0, 2, 0]
+        ]
+    }
+    
+    var house = House(layout: LayoutOptions.b)
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
+        // Override point for customization after application launch.        
+        
         print("didfinishlaunching")
         return true
     }

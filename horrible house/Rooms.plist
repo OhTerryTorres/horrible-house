@@ -107,11 +107,13 @@ B U T T S</string>
 		<array>
 			<dict>
 				<key>name</key>
-				<string>Check the credenza \once</string>
+				<string>Check the credenza</string>
 				<key>result</key>
 				<string>There is a pair of glasses in the credenza.</string>
 				<key>roomChange</key>
 				<string>A long dining table covered with a cloth that use to be white takes up most of the room. There are places set for ten people. A cradenza sits against one wall.</string>
+				<key>onceOnly</key>
+				<string></string>
 				<key>items</key>
 				<array>
 					<string>Glasses</string>
@@ -119,14 +121,16 @@ B U T T S</string>
 			</dict>
 			<dict>
 				<key>name</key>
-				<string>What is a credenza? \once</string>
+				<string>What is a credenza?</string>
 				<key>result</key>
 				<string>It&apos;s a wide cupboard you put at the side of a room.</string>
+				<key>onceOnly</key>
+				<string></string>
 			</dict>
 			<dict>
 				<key>name</key>
 				<string>Sit at the table</string>
-				<key>triggerEvent</key>
+				<key>triggerEventName</key>
 				<string>The Dining Table</string>
 			</dict>
 		</array>

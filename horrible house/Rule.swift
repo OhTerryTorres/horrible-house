@@ -8,7 +8,7 @@
 
 import UIKit
 
-class Rule: NSObject {
+class Rule {
     
     // MARK: Properties
     
@@ -16,22 +16,18 @@ class Rule: NSObject {
     
     var type = ""
     
-    var followed = false
-    
     struct RuleType {
         // Checks to see if the player has done something
         static let hasItem = "hasItem"
         static let metCharacter = "metCharacter"
         static let enteredRoom = "enteredRoom"
         static let completedEvent = "completedEvent"
-        static let timesPerformed = "timesPerformed"
         
         // Checks to see if the player has NOT done something
         static let nopeHasItem = "nopeHasItem"
         static let nopeMetCharacter = "nopeMetCharacter"
         static let nopeEnteredRoom = "nopeEnteredRoom"
         static let nopeCompletedEvent = "nopeCompletedEvent"
-        static let nopeTimesPerformed = "nopeTimesPerformed"
     }
     
 
@@ -58,10 +54,7 @@ class Rule: NSObject {
             type = RuleType.nopeCompletedEvent
             self.name = self.name.stringByReplacingOccurrencesOfString("\\nopeCompleted", withString: "")
         }
-        if self.name.rangeOfString("\\nopeTimesPerformed") != nil {
-            type = RuleType.nopeCompletedEvent
-            self.name = self.name.stringByReplacingOccurrencesOfString("\\nopeTimesPerformed", withString: "")
-        }
+
         
         if self.name.rangeOfString("\\has") != nil {
             type = RuleType.hasItem
@@ -78,10 +71,6 @@ class Rule: NSObject {
         if self.name.rangeOfString("\\completed") != nil {
             type = RuleType.completedEvent
             self.name = self.name.stringByReplacingOccurrencesOfString("\\completed", withString: "")
-        }
-        if self.name.rangeOfString("\\timesPerformed") != nil {
-            type = RuleType.completedEvent
-            self.name = self.name.stringByReplacingOccurrencesOfString("\\timesPerformed", withString: "")
         }
         
     }

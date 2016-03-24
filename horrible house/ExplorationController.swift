@@ -39,14 +39,9 @@ class ExplorationController: UITableViewController {
     }
     // .reverse makes it so that what you see is what you get: the bottom most array ends up being the first, and so on.
     
-    enum Direction: String {
-        case North, South, East, West
-    }
     
     
-    
-    let house = House(layout: LayoutOptions.b)
-    var currentRoom = Room()
+    var house : House = (UIApplication.sharedApplication().delegate as! AppDelegate).house
     var update = ""
     
     
@@ -57,142 +52,24 @@ class ExplorationController: UITableViewController {
         // Make it so the player AUTOMATICALLY starts at the same position as the Foyer.
         setPlayerStartingRoom()
         
-        self.title = self.currentRoom.name
-        
+        self.title = self.house.currentRoom.name
         
         
     }
-    
-    //
+
     //
     // This can be changed so the starting room could potentially be a saved room from a previous session.
     //
     func setPlayerStartingRoom() {
         var room = Room?()
         room = self.house.foyer
-        self.currentRoom = room!
-        self.house.player.position = self.currentRoom.position
+        room?.timesEntered++
+        self.house.currentRoom = room!
+        self.house.player.position = self.house.currentRoom.position
         
     }
     
     
-    // Get a room in the house for a set of x and y coordinates.
-    func roomForPosition(position:(x: Int, y: Int)) -> Room? {
-        var room = house.noRoom
-        if ( position.y >= 0 && position.y < house.layout.count ) {
-            let row = house.layout[position.y]
-            if ( position.x >= 0 && position.x < row.count ) {
-                room = self.house.map[position.y][position.x]
-            }
-        }
-        return room
-    }
-    
-    // Get the x, y position for a room in the house based on its name.
-    func positionForRoom(room: Room) -> (x: Int, y: Int)? {
-        var position = (x: 0, y: 0)
-        for r: Room in self.house.rooms {
-            if r.name == room.name {
-                position = r.position
-            }
-        }
-        return position
-    }
-    
-    // Get a room for the name of any room in the house.rooms array
-    func roomForName(name: String) -> Room? {
-        var room = house.noRoom
-        for r in house.rooms {
-            if r.name == name {
-                room = r
-            }
-        }
-        return room
-    }
-    
-    
-    // Checks if room exists at position
-    // Used to maintain the bounds of the house, so the player does not end up in a wall or outside.
-    func doesRoomExistAtPosition(position:(x: Int, y: Int)) -> Bool {
-        let room = roomForPosition(position)
-        if ( room!.name == "No Room" || position.y < 0 || position.x < 0 || position.x >= house.width || position.y >= house.height ) {
-            return false
-        } else {
-            return true
-        }
-    }
-    
-    
-    // Get get a room in a direction adjacent to the player
-    // Used to find out what the room is before entering it.
-    func roomInDirection(direction:Direction) -> Room? {
-        var potentialPosition = (x: house.player.position.x, y: house.player.position.y)
-        switch direction {
-        case .North:
-            potentialPosition.y += 1
-        case .South:
-            potentialPosition.y -= 1
-        case .East:
-            potentialPosition.x += 1
-        case .West:
-            potentialPosition.x -= 1
-        }
-        
-        // This makes sure that the new position is within the layout of the house
-        // If it's not, the player's position stays as it is,
-        // and the player's current room is returned.
-        if ( doesRoomExistAtPosition(potentialPosition) == false ) {
-            potentialPosition = house.player.position
-        }
-        let potentialRoom = roomForPosition(potentialPosition)
-        
-        return potentialRoom
-    }
-    
-    // Find out what direction a room is in, based on the player's position.
-    // Currently used to output directions the player can move in,
-    // which in turns is vital for actually moving the player in that direction.
-    func directionForRoom(room:Room) -> Direction {
-        var d = Direction.North
-        if room.position.x < house.player.position.x {
-            d = Direction.West
-        } else if room.position.x > house.player.position.x {
-            d = Direction.East
-        } else if room.position.y < house.player.position.y {
-            d = Direction.South
-        } else if room.position.y > house.player.position.y {
-            d = Direction.North
-        }
-        return d
-    }
-    
-    // Checks for rooms around house.playerPosition
-    // Needed to output the number of directions the player can actually move in,
-    // which is necessary for navigation and the tableview display itself.
-    func getRoomsAroundPlayer() -> [Room] {
-        var roomsAroundPlayer = [Room]()
-        let roomPositionToNorth = (house.player.position.x, house.player.position.y+1)
-        let roomPositionToWest = (house.player.position.x-1, house.player.position.y)
-        let roomPositionToSouth = (house.player.position.x, house.player.position.y-1)
-        let roomPositionToEast = (house.player.position.x+1, house.player.position.y)
-        if ( doesRoomExistAtPosition(roomPositionToNorth) ) {
-            roomsAroundPlayer.append(roomForPosition(roomPositionToNorth)!)
-            print("\(roomForPosition(roomPositionToNorth)!.name) is to the north")
-        } else { print("there is no room to the north") }
-        if ( doesRoomExistAtPosition(roomPositionToWest) ) {
-            roomsAroundPlayer.append(roomForPosition(roomPositionToWest)!)
-            print("\(roomForPosition(roomPositionToWest)!.name) is to the west")
-        } else { print("there is no room to the west") }
-        if ( doesRoomExistAtPosition(roomPositionToSouth) ) {
-            roomsAroundPlayer.append(roomForPosition(roomPositionToSouth)!)
-            print("\(roomForPosition(roomPositionToSouth)!.name) is to the south")
-        } else { print("there is no room to the south") }
-        if ( doesRoomExistAtPosition(roomPositionToEast) ) {
-            roomsAroundPlayer.append(roomForPosition(roomPositionToEast)!)
-            print("\(roomForPosition(roomPositionToEast)!.name) is to the east")
-        } else { print("there is no room to the east") }
-        return roomsAroundPlayer
-    }
     
     
     
@@ -210,9 +87,8 @@ class ExplorationController: UITableViewController {
         room.timesEntered++
         house.player.position = room.position
         self.title = room.name
-        self.currentRoom = room
+        self.house.currentRoom = room
         self.update = ""
-        self.tableView.reloadData()
     }
     
     
@@ -236,129 +112,21 @@ class ExplorationController: UITableViewController {
             rows = 1
         case Sections.items.rawValue:
             // Displays options to interact with carryable items, if any are present.
-            rows = (self.currentRoom.items?.count)!
+            rows = self.house.currentRoom.items.count
+            print("rows for ITEMS is \(rows)")
         case Sections.actions.rawValue:
-            self.currentRoom.actionsToDisplay = removeActionsThatAreNotFollowingTheRules(self.currentRoom.actions!)
-            rows = self.currentRoom.actionsToDisplay!.count
+            rows = self.house.currentRoom.numberOfActionsThatFollowTheRules()
+            print("rows for ACTIONS is \(rows)")
         case Sections.directions.rawValue:
-            rows = getRoomsAroundPlayer().count
+            rows = self.house.getRoomsAroundPlayer().count
+            print("rows for DIRECTIONS is \(rows)")
         default:
             break;
         }
         return rows
     }
+    
 
-    func removeActionsThatAreNotFollowingTheRules(var actions: [Action]) -> [Action] {
-        var i = 0
-        for action in actions {
-            if areRulesBeingFollowedForObject(action) == false {
-                actions.removeAtIndex(i)
-            } else { i++ }
-        }
-        return actions
-    }
-    
-    
-    // I want to get rid of this function, but it screws with areRulesBeingFollowedForObject.
-    // AnyObjects... Go figure.
-    
-    func areRulesBeingFollowedForDetail(detail: Detail) -> Bool {
-        var followed = true
-        if detail.rules != nil {
-            for rule in detail.rules! {
-                print("rule.name is \(rule.name)")
-                print("rule.type is \(rule.type)")
-                switch ( rule.type) {
-                    
-                case Rule.RuleType.hasItem:
-                    print("hasItem??")
-                    followed = false
-                    if let _ = house.player.items!.indexOf({$0.name == rule.name}) {
-                        followed = true
-                        print("YAYAYAYAYAYAYA")
-                    }
-                    
-                case Rule.RuleType.nopeHasItem:
-                    print("nopeHasItem??")
-                    followed = true
-                    if let _ = house.player.items!.indexOf({$0.name == rule.name}) {
-                        followed = false
-                        print("YOYOYOYOYOYOYO")
-                    }
-                    
-                case Rule.RuleType.metCharacter:
-                    break
-                case Rule.RuleType.nopeMetCharacter:
-                    break
-                case Rule.RuleType.enteredRoom:
-                    var i = 0; for room in house.rooms {
-                        if room.timesEntered > 0 { i++ }
-                    }; if i == 0 { followed = false }
-                case Rule.RuleType.nopeEnteredRoom:
-                    var i = 0; for room in house.rooms {
-                        if room.timesEntered == 0 { i++ }
-                    }; if i == 0 { followed = false }
-                case Rule.RuleType.completedEvent:
-                    break
-                case Rule.RuleType.nopeCompletedEvent:
-                    break
-                default:
-                    break;
-                }
-            }
-        }
-        
-        return followed
-    }
-    
-    func areRulesBeingFollowedForObject(object: AnyObject) -> Bool {
-        var followed = true
-        if let rules = object.rules as [Rule]? {
-            for rule in rules {
-                print("rule.name is \(rule.name)")
-                print("rule.type is \(rule.type)")
-                switch ( rule.type) {
-                    
-                case Rule.RuleType.hasItem:
-                    print("hasItem??")
-                    followed = false
-                    if let _ = house.player.items!.indexOf({$0.name == rule.name}) {
-                        followed = true
-                        print("\(rule.name) is present! So the rule is being followed.")
-                    }
-                    
-                case Rule.RuleType.nopeHasItem:
-                    print("nopeHasItem??")
-                    followed = true
-                    if let _ = house.player.items!.indexOf({$0.name == rule.name}) {
-                        followed = false
-                        print("\(rule.name) is NOT present! So the rule is being followed.")
-                    }
-                    
-                case Rule.RuleType.metCharacter:
-                    break
-                case Rule.RuleType.nopeMetCharacter:
-                    break
-                case Rule.RuleType.enteredRoom:
-                    var i = 0; for room in house.rooms {
-                        if room.timesEntered > 0 { i++ }
-                    }; if i == 0 { followed = false }
-                case Rule.RuleType.nopeEnteredRoom:
-                    var i = 0; for room in house.rooms {
-                        if room.timesEntered == 0 { i++ }
-                    }; if i == 0 { followed = false }
-                case Rule.RuleType.completedEvent:
-                    break
-                case Rule.RuleType.nopeCompletedEvent:
-                    break
-                default:
-                    break;
-                }
-            }
-        }
-        
-        return followed
-    }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath)
@@ -370,26 +138,24 @@ class ExplorationController: UITableViewController {
             cell.textLabel!.text = self.update
         case Sections.explanation.rawValue:
             cell.textLabel!.numberOfLines = 0;
-            cell.textLabel!.text = self.currentRoom.explanation
-            if let details = self.currentRoom.details {
-                for detail in details {
-                    if areRulesBeingFollowedForObject(detail) {
-                         cell.textLabel!.text = "\(self.currentRoom.explanation) \(detail.explanation)"
-                    }
+            cell.textLabel!.text = self.house.currentRoom.explanation
+            for detail in self.house.currentRoom.details {
+                if detail.isFollowingTheRules() {
+                    cell.textLabel!.text = "\(self.house.currentRoom.explanation) \(detail.explanation)"
                 }
             }
             cell.userInteractionEnabled = false
         case Sections.items.rawValue:
-            let item = self.currentRoom.items![indexPath.row]
+            let item = self.house.currentRoom.items[indexPath.row]
             cell.textLabel!.text = "Take \(item.name)"
             cell.userInteractionEnabled = true
         case Sections.actions.rawValue:
-            let action = self.currentRoom.actionsToDisplay![indexPath.row]
+            let action = self.house.currentRoom.actions[indexPath.row]
             cell.textLabel!.text = action.name
             cell.userInteractionEnabled = true
         case Sections.directions.rawValue:
-            let room = getRoomsAroundPlayer()[indexPath.row]
-            switch directionForRoom(room) {
+            let room = self.house.getRoomsAroundPlayer()[indexPath.row]
+            switch self.house.directionForRoom(room) {
                 case .North:
                     if room.timesEntered > 0 {
                         cell.textLabel!.text = "Go north to \(room.name)"
@@ -417,76 +183,72 @@ class ExplorationController: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         switch ( indexPath.section ) {
         case Sections.items.rawValue:
-            addItemToInventory(self.currentRoom.items![indexPath.row])
+            let item = self.house.currentRoom.items[indexPath.row]
+            self.house.player.addItemToItems(item)
+            self.house.currentRoom.removeItemFromItems(withName:item.name)
+            self.update = "Got \(item)"
         case Sections.actions.rawValue:
-            resolveAction(self.currentRoom.actionsToDisplay![indexPath.row])
+            resolveAction(self.house.currentRoom.actions[indexPath.row])
         case Sections.directions.rawValue:
-            let currentCell = tableView.cellForRowAtIndexPath(indexPath)! as UITableViewCell
-            if currentCell.textLabel?.text?.lowercaseString.rangeOfString("north") != nil {
-                moveToRoom(roomInDirection(Direction.North)!)
-            } else if currentCell.textLabel?.text?.lowercaseString.rangeOfString("west") != nil {
-                moveToRoom(roomInDirection(Direction.West)!)
-            } else if currentCell.textLabel?.text?.lowercaseString.rangeOfString("south") != nil {
-                moveToRoom(roomInDirection(Direction.South)!)
-            } else if currentCell.textLabel?.text?.lowercaseString.rangeOfString("east") != nil {
-                moveToRoom(roomInDirection(Direction.East)!)
-            }
+            resolveDirection(forIndexPath: indexPath)
+            self.update = ""
+            self.title = self.house.currentRoom.name
         default:
             break
         }
+        self.tableView.reloadData()
     }
     
     
     func resolveAction(action: Action) {
         action.timesPerformed++
         if let result = action.result { self.update = result }
-        if let roomChange = action.roomChange { self.currentRoom.explanation = roomChange }
-        if let items = action.items {
-            for item in items {
-                if self.currentRoom.items != nil { self.currentRoom.items?.append(item) }
-                else { self.currentRoom.items = [item] }
-                action.canPerformMoreThanOnce = false
-            }
+        if let roomChange = action.roomChange { self.house.currentRoom.explanation = roomChange }
+        for item in action.items {
+            self.house.currentRoom.items.append(item)
+            action.onceOnly = true
         }
         
-        for var i = 0; i < self.currentRoom.actions?.count; i++ {
-            if self.currentRoom.actions![i].name == action.name {
-                self.currentRoom.actions![i].timesPerformed += 1
+        for var i = 0; i < self.house.currentRoom.actions.count; i++ {
+            if self.house.currentRoom.actions[i].name == action.name {
+                self.house.currentRoom.actions[i].timesPerformed += 1
                 if let replaceAction = action.replaceAction {
-                    self.currentRoom.actions![i] = replaceAction
+                    self.house.currentRoom.actions[i] = replaceAction
                 }
-                if action.canPerformMoreThanOnce == false {
-                    self.currentRoom.actions?.removeAtIndex(i)
+                if action.onceOnly == true {
+                    self.house.currentRoom.actions.removeAtIndex(i)
                 }
             }
         }
         
-        if let triggerEvent = action.triggerEvent {
-            if areRulesBeingFollowedForObject(triggerEvent) { performSegueWithIdentifier("event", sender: triggerEvent) }
-        }
-        
-        print("explanation is \(self.currentRoom.explanation)")
-        
-        self.tableView.reloadData()
+        if let triggerEventName = action.triggerEventName { triggerEvent(forEventName: triggerEventName)}
     }
     
-    
-    func addItemToInventory(item: Item) {
-        if self.house.player.items != nil { self.house.player.items?.append(item) }
-        else { self.house.player.items = [item] }
-        for var i = 0; i < self.currentRoom.items?.count; i++ {
-            if self.currentRoom.items![i].name == item.name { self.currentRoom.items?.removeAtIndex(i) }
+    func resolveDirection(forIndexPath indexPath: NSIndexPath) {
+        let currentCell = tableView.cellForRowAtIndexPath(indexPath)! as UITableViewCell
+        let text = currentCell.textLabel?.text?.lowercaseString
+        if text!.rangeOfString("north") != nil {
+            self.house.moveCharacter(withName: "player", toRoom: self.house.roomInDirection(House.Direction.North)!)
+        } else if text!.rangeOfString("west") != nil {
+            self.house.moveCharacter(withName: "player", toRoom: self.house.roomInDirection(House.Direction.West)!)
+        } else if text!.rangeOfString("south") != nil {
+            self.house.moveCharacter(withName: "player", toRoom: self.house.roomInDirection(House.Direction.South)!)
+        } else if text!.rangeOfString("east") != nil {
+            self.house.moveCharacter(withName: "player", toRoom: self.house.roomInDirection(House.Direction.East)!)
         }
-        self.update = "Got \(item.name)."
-        
-        print("\rItems in player's inventory:")
-        for i in self.house.player.items! {
-            print("\(i.name)")
-        }
-        print("\r")
-        
-        self.tableView.reloadData()
     }
+    
+    func triggerEvent(forEventName eventName: String) {
+        for event in self.house.events {
+            if event.name == eventName {
+                if event.isFollowingTheRules() {
+                    performSegueWithIdentifier("event", sender: event)
+                }
+            }
+        }
+    }
+    
+
 
     /*
     // Override to support conditional editing of the table view.
@@ -534,7 +296,7 @@ class ExplorationController: UITableViewController {
         if segue.identifier == "event" {
             let ec = segue.destinationViewController as! EventController
             ec.house = self.house
-            ec.event = sender as? Event
+            ec.house?.currentEvent = sender as! Event
         }
         
         
@@ -545,7 +307,11 @@ class ExplorationController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+        var height = UITableViewAutomaticDimension
+        if self.house.currentRoom.actions[indexPath.row].isFollowingTheRules() == false {
+            height = 0
+        }
+        return height
     }
     
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
