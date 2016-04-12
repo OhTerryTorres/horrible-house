@@ -29,14 +29,6 @@ class MapController: UIViewController {
         self.title = "Map"
         self.currentFloor = self.house.player.position.z
         
-        
-        
-        
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        self.currentFloor = self.house.player.position.z
-        
         self.mapDisplayView.frame.size.width = self.view.frame.width + (self.view.frame.width * 0.02)
         self.mapDisplayView.frame.size.height = self.view.frame.height
         
@@ -44,22 +36,51 @@ class MapController: UIViewController {
         self.mapDisplayView.frame.size.height -= tabBarHeight + (tabBarHeight * 0.3)
         self.mapDisplayView.frame.size.height -= tabBarHeight
         
-        self.setFloorChangeButton()
+        self.setFloorButton()
+        
+        
+    }
+    
+    func setFloorButton() {
+        var string = ""
+        switch (self.currentFloor) {
+        case 0:
+            string = "B"
+        case 1:
+            string = "1"
+        case 2:
+            string = "2"
+        default:
+            break
+        }
+        
+        let changeFloorButton = UIBarButtonItem(title: string, style: UIBarButtonItemStyle.Plain, target: self, action: "changeFloor")
+        navigationItem.rightBarButtonItem = changeFloorButton
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        self.currentFloor = self.house.player.position.z
         self.displayMap()
         
     }
     
     func displayMap() {
-        self.mapDisplayView = UIView()
+        for view in self.mapDisplayView.subviews {
+            view.removeFromSuperview()
+        }
+        
         let width = self.mapDisplayView.frame.size.width
         let height = self.mapDisplayView.frame.size.height
         
         let roomWidth = width / CGFloat(widthByRooms)
         let roomHeight = height / CGFloat(heightByRooms)
         
-        for var y = heightByRooms-1; y > -1; y-- {
+        print("heightByRooms is \(heightByRooms)")
+        print("widthByRooms is \(widthByRooms)")
+        
+        for var y = heightByRooms; y > -1; y-- {
             print("y is \(y)")
-            for var x = widthByRooms-1; x > -1; x-- {
+            for var x = widthByRooms; x > -1; x-- {
                 print("x is \(x)")
                 let roomView = UIView()
                 roomView.frame = CGRectMake(
@@ -72,7 +93,7 @@ class MapController: UIViewController {
                 let room = house.roomForPosition((x:Int(x), y:Int(y), z:self.currentFloor))
                 
                 if room!.name != "No Room" {
-                    print("room is is \(room!.name)")
+                    print("\(room!.name)")
                     roomView.backgroundColor = UIColor.blackColor()
                     
                     if room?.timesEntered > 0 {
@@ -90,24 +111,18 @@ class MapController: UIViewController {
                             buttonHeight
                         )
                         
-                        
                         roomButton.titleLabel?.text = room!.name
                         
-                        
-                        roomButton.setBackgroundImage(UIImage(named: "black.png"), forState: UIControlState.Normal)
+                        roomButton.setBackgroundImage(UIImage(named: "white"), forState: UIControlState.Normal)
                         roomButton.addTarget(self, action: Selector("displayRoomName:"), forControlEvents:.TouchDown)
                         roomButton.setTitle(roomButton.room!.name, forState: UIControlState.Normal)
-                        
                         
                         roomView.addSubview(roomButton)
                         
                         roomView.transform = CGAffineTransformMakeScale(1, -1)
                     }
                     
-                    
-                    
                 }
-                
                 
                 self.mapDisplayView.addSubview(roomView)
                 
@@ -119,17 +134,20 @@ class MapController: UIViewController {
 
     
     func displayRoomName(sender: MapButton) {
+        print("\(sender.room!.name)")
         
-        let label = UILabel(frame: CGRectMake(
-            sender.frame.origin.x,
-            sender.frame.origin.y,
-            self.mapDisplayView.frame.width,
-            sender.frame.height
-        ))
+        let label = self.roomNameLabel
         
         label.text = sender.room!.name
         
         label.font = label.font.fontWithSize(70)
+        
+        print("label.center was \(label.center)")
+        //label.center = sender.center
+        print("label.center is \(label.center)")
+        
+        self.mapDisplayView.addSubview(label)
+        
         
         /*
         UIView.animateWithDuration(0.5, delay: 0.0, options: [], animations: {
@@ -152,25 +170,9 @@ class MapController: UIViewController {
             self.currentFloor = 0
         }
         
-        self.setFloorChangeButton()
-        self.displayMap()
-    }
-    
-    func setFloorChangeButton() {
-        var string = ""
-        switch (self.currentFloor) {
-        case 0:
-            string = "B"
-        case 1:
-            string = "1"
-        case 2:
-            string = "2"
-        default:
-            break
-        }
+        self.setFloorButton()
         
-        let changeFloorButton = UIBarButtonItem(title: string, style: UIBarButtonItemStyle.Plain, target: self, action: "changeFloor")
-        navigationItem.rightBarButtonItem = changeFloorButton
+        self.displayMap()
     }
     
 }

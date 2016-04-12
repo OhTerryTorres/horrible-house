@@ -40,7 +40,6 @@ class ExplorationController: UITableViewController {
         }
         
         showTabBarItem(TabIndex.map)
-
         
     }
 
