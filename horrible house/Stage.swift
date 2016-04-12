@@ -27,7 +27,7 @@ class Stage: DictionaryBased, ItemBased, RuleBased, ActionPacked {
             if key == "actions" { self.setActionsForArrayOfDictionaries(value as! [Dictionary<String, AnyObject>]) }
             
             if key == "rules" { self.setRulesForArray(value as! [String]) }
-            if key == "items" { self.setItemsForArray(value as! [String]) }
+            if key == "items" { self.setItemsForDictionary(value as! [Dictionary<String, AnyObject>]) }
         }
     }
     

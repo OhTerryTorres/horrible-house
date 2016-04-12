@@ -12,38 +12,15 @@ import UIKit
 
 class ExplorationController: UITableViewController {
     
-    enum Sections : Int {
-        case update = 0
-        case explanation = 1
-        case items = 2
-        case actions = 3
-        case directions = 4
-        case numberOfSections = 5
+    struct TabIndex {
+        static let house = 0
+        static let inventory = 1
+        static let map = 2
     }
-
-    struct LayoutOptions {
-        // 0 is a No Room (wall).
-        // 1 is a Room.
-        // 2 is the Foyer.
-        
-        // This gives us two rows with four rooms.
-        static let a = [
-            [1, 2],
-            [1, 1]
-        ]
-        // This gives us two rows with four rooms, withy noRooms (walls) on either side of the foyer.
-        static let b = [
-            [1, 1, 1],
-            [0, 2, 0]
-        ]
-    }
-    // .reverse makes it so that what you see is what you get: the bottom most array ends up being the first, and so on.
-    
     
     
     var house : House = (UIApplication.sharedApplication().delegate as! AppDelegate).house
     var update = ""
-    
     
     
     override func viewDidLoad() {
@@ -51,9 +28,19 @@ class ExplorationController: UITableViewController {
         
         // Make it so the player AUTOMATICALLY starts at the same position as the Foyer.
         setPlayerStartingRoom()
+        // setTableSections()
         
         self.title = self.house.currentRoom.name
+        self.tabBarController?.tabBar.hidden = true
+        if let arrayOfTabBarItems = self.tabBarController!.tabBar.items {
+            for barItem in arrayOfTabBarItems {
+                barItem.enabled = false
+            }
+            arrayOfTabBarItems[0].enabled = true
+        }
         
+        showTabBarItem(TabIndex.map)
+
         
     }
 
@@ -69,26 +56,12 @@ class ExplorationController: UITableViewController {
         
     }
     
-    
-    
-    
-    
-    // MARK: Moving around
-    
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    // Make this so any character position passed in is moved to the new room?
-    func moveToRoom(room:Room) {
-        room.timesEntered++
-        house.player.position = room.position
-        self.title = room.name
-        self.house.currentRoom = room
-        self.update = ""
+    func getNumberOfTableSections() -> Int {
+        var numberOfSections = 4
+        for _ in self.house.currentRoom.items {
+            numberOfSections++
+        }
+        return numberOfSections
     }
     
     
@@ -96,32 +69,50 @@ class ExplorationController: UITableViewController {
     // MARK: Tableview Functions
     
     override func numberOfSectionsInTableView(tableView: UITableView?) -> Int {
-        return Sections.numberOfSections.rawValue
+        return getNumberOfTableSections()
     }
     
+    
+    // Table Section Key
+    // 0: Update
+    // 1: Explanation
+    // 2: Room Actions
+    // 3 through (sections.count - 2): Item Actions
+    // sections.count: Directions
+    
+    
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
+
         var rows = 0
         switch ( section ) {
-        case Sections.update.rawValue:
+            
+            // UPDATE
+        case 0:
             // Hide update section if self.update is empty
             if ( self.update != "" ) {
                 rows = 1
             }
-        case Sections.explanation.rawValue:
+            
+            // ROOM EXPLANATION
+        case 1:
             rows = 1
-        case Sections.items.rawValue:
-            // Displays options to interact with carryable items, if any are present.
-            rows = self.house.currentRoom.items.count
-            print("rows for ITEMS is \(rows)")
-        case Sections.actions.rawValue:
-            rows = self.house.currentRoom.numberOfActionsThatFollowTheRules()
-            print("rows for ACTIONS is \(rows)")
-        case Sections.directions.rawValue:
+            
+            // ROOM ACTIONS
+        case 2:
+            rows = self.house.currentRoom.actions.count
+            
+            // DIRECTIONS
+        case getNumberOfTableSections()-1:
             rows = self.house.getRoomsAroundPlayer().count
-            print("rows for DIRECTIONS is \(rows)")
+            
+            // ITEM ACTIONS
         default:
-            break;
+            // -3 to deal with the other table sections.
+            if self.house.currentRoom.items.count > 0 {
+                let item = self.house.currentRoom.items[section-3]
+                rows = item.actions.count
+            }
+            
         }
         return rows
     }
@@ -133,95 +124,188 @@ class ExplorationController: UITableViewController {
 
         // Configure the cell...
         switch ( indexPath.section ) {
-        case Sections.update.rawValue:
+            
+            // UPDATE
+        case 0:
             cell.textLabel!.numberOfLines = 0;
-            cell.textLabel!.text = self.update
-        case Sections.explanation.rawValue:
+            cell.textLabel!.setAttributedTextWithTags(self.update)
+            cell.userInteractionEnabled = false
+            
+            // ROOM EXPLANATION
+        case 1:
             cell.textLabel!.numberOfLines = 0;
-            cell.textLabel!.text = self.house.currentRoom.explanation
+            cell.textLabel!.setAttributedTextWithTags(self.house.currentRoom.explanation)
             for detail in self.house.currentRoom.details {
                 if detail.isFollowingTheRules() {
-                    cell.textLabel!.text = "\(self.house.currentRoom.explanation) \(detail.explanation)"
+                    var string = cell.textLabel?.attributedText?.string
+                    string = string! + " " + detail.explanation
+                    cell.textLabel!.setAttributedTextWithTags(string!)
+                }
+            }
+            for item in self.house.currentRoom.items {
+                if item.hidden == false {
+                    var string = cell.textLabel?.attributedText?.string
+                    string = string! + " " + item.explanation
+                    for detail in item.details {
+                        if detail.isFollowingTheRules() {
+                            string = string! + " " + detail.explanation
+                        }
+                    }
+                    cell.textLabel!.setAttributedTextWithTags(string!)
                 }
             }
             cell.userInteractionEnabled = false
-        case Sections.items.rawValue:
-            let item = self.house.currentRoom.items[indexPath.row]
-            cell.textLabel!.text = "Take \(item.name)"
-            cell.userInteractionEnabled = true
-        case Sections.actions.rawValue:
+            // ROOM ACTIONS
+        case 2:
             let action = self.house.currentRoom.actions[indexPath.row]
-            cell.textLabel!.text = action.name
+            cell.textLabel!.setAttributedTextWithTags(action.name)
             cell.userInteractionEnabled = true
-        case Sections.directions.rawValue:
+            
+            // DIRECTIONS
+        case getNumberOfTableSections()-1:
             let room = self.house.getRoomsAroundPlayer()[indexPath.row]
+            var directionString = ""
             switch self.house.directionForRoom(room) {
-                case .North:
-                    if room.timesEntered > 0 {
-                        cell.textLabel!.text = "Go north to \(room.name)"
-                    } else { cell.textLabel!.text = "Go north" }
-                case .South:
-                    if room.timesEntered > 0 {
-                        cell.textLabel!.text = "Go south to \(room.name)"
-                    } else { cell.textLabel!.text = "Go south" }
-                case .East:
-                    if room.timesEntered > 0 {
-                        cell.textLabel!.text = "Go east to \(room.name)"
-                    } else { cell.textLabel!.text = "Go east" }
-                case .West:
-                    if room.timesEntered > 0 {
-                        cell.textLabel!.text = "Go west to \(room.name)"
-                    } else { cell.textLabel!.text = "Go west" }
-                }
+            case .North:
+                if room.timesEntered > 0 {
+                    directionString = "Go north to {[room]\(room.name)}"
+                } else { directionString = "Go north" }
+            case .South:
+                if room.timesEntered > 0 {
+                    directionString = "Go south to {[room]\(room.name)}"
+                } else { directionString = "Go south" }
+            case .East:
+                if room.timesEntered > 0 {
+                    directionString = "Go east to {[room]\(room.name)}"
+                } else { directionString = "Go east" }
+            case .West:
+                if room.timesEntered > 0 {
+                    directionString = "Go west to {[room]\(room.name)}"
+                } else { directionString = "Go west" }
+            }
+            cell.textLabel!.setAttributedTextWithTags(directionString)
+            
+            // ITEM ACTIONS
         default:
-            break;
+            // -3 to deal with the other table sections.
+            let item = self.house.currentRoom.items[indexPath.section-3]
+            let action = item.actions[indexPath.row]
+            cell.textLabel!.setAttributedTextWithTags(action.name)
+            cell.userInteractionEnabled = true
         }
 
         return cell
     }
     
+    
+    
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         switch ( indexPath.section ) {
-        case Sections.items.rawValue:
-            let item = self.house.currentRoom.items[indexPath.row]
-            self.house.player.addItemToItems(item)
-            self.house.currentRoom.removeItemFromItems(withName:item.name)
-            self.update = "Got \(item)"
-        case Sections.actions.rawValue:
-            resolveAction(self.house.currentRoom.actions[indexPath.row])
-        case Sections.directions.rawValue:
+            
+            // ROOM ACTIONS
+        case 2:
+            resolveAction(self.house.currentRoom.actions[indexPath.row], isItemAction: false)
+            
+            // DIRECTIONS
+        case getNumberOfTableSections()-1:
             resolveDirection(forIndexPath: indexPath)
             self.update = ""
             self.title = self.house.currentRoom.name
+            
+            // ITEM ACTIONS
         default:
+            resolveAction(self.house.currentRoom.items[indexPath.section-3].actions[indexPath.row], isItemAction: true)
+            
             break
         }
         self.tableView.reloadData()
     }
     
     
-    func resolveAction(action: Action) {
-        action.timesPerformed++
+    func resolveAction(var action: Action, isItemAction: Bool) {
         if let result = action.result { self.update = result }
         if let roomChange = action.roomChange { self.house.currentRoom.explanation = roomChange }
-        for item in action.items {
-            self.house.currentRoom.items.append(item)
-            action.onceOnly = true
-        }
         
-        for var i = 0; i < self.house.currentRoom.actions.count; i++ {
-            if self.house.currentRoom.actions[i].name == action.name {
-                self.house.currentRoom.actions[i].timesPerformed += 1
-                if let replaceAction = action.replaceAction {
-                    self.house.currentRoom.actions[i] = replaceAction
+        for itemName in action.revealItems {
+            for item in self.house.currentRoom.items {
+                if item.name == itemName {
+                    item.hidden = false
                 }
-                if action.onceOnly == true {
-                    self.house.currentRoom.actions.removeAtIndex(i)
+            }
+        }
+        for itemName in action.liberateItems {
+            for item in self.house.currentRoom.items {
+                if item.name == itemName {
+                    item.canCarry = true
                 }
             }
         }
         
+        if isItemAction {
+            for var i = 0; i < self.house.currentRoom.items.count; i++ {
+                for var o = 0; o < self.house.currentRoom.items[i].actions.count; o++ {
+                    if self.house.currentRoom.items[i].actions[o].name == action.name {
+                        self.house.currentRoom.items[i].actions[o].timesPerformed += 1
+                        
+                        // If the action has a REPLACE action
+                        if let replaceAction = action.replaceAction {
+                            self.house.currentRoom.items[i].actions[o] = replaceAction
+                        }
+                        
+                        // If the action can only be performed ONCE
+                        if action.onceOnly == true {
+                            self.house.currentRoom.items[i].actions.removeAtIndex(o)
+                        }
+                        
+                        // If the action is a TAKE action
+                        if action.name.rangeOfString("Take") != nil {
+                            if house.player.items.count == 0 {
+                                showTabBarItem(TabIndex.inventory)
+                            }
+                            self.house.player.items += [self.house.currentRoom.items[i]]
+                            self.house.currentRoom.items.removeAtIndex(i)
+                            
+                        }
+                        break // THIS keeps the loop from crashing as it examines an item that does not exist.
+                        // It also makes sure multiple similar actions aren't renamed.
+                        // this seems like a clumsy solution, but it currently works.
+                    }
+                }
+            }
+        } else { // Room Actions
+            for var i = 0; i < self.house.currentRoom.actions.count; i++ {
+                if self.house.currentRoom.actions[i].name == action.name {
+                    action.timesPerformed += 1
+                    if let replaceAction = action.replaceAction {
+                        action = replaceAction
+                    }
+                    if action.onceOnly == true {
+                        self.house.currentRoom.actions.removeAtIndex(i)
+                    }
+                    break
+                }
+            }
+        }
+        
+        
         if let triggerEventName = action.triggerEventName { triggerEvent(forEventName: triggerEventName)}
+        
+        if let segue = action.segue { performSegueWithIdentifier(segue, sender: nil)}
+        
+        if let changeFloor = action.changeFloor {
+            switch changeFloor {
+            case 0:
+                self.house.moveCharacter(withName: "player", toRoom: self.house.roomForPosition((x:self.house.player.position.x, y:self.house.player.position.x, z:0))!)
+            case 1:
+                self.house.moveCharacter(withName: "player", toRoom: self.house.roomForPosition((x:self.house.player.position.x, y:self.house.player.position.x, z:1))!)
+            case 2:
+                self.house.moveCharacter(withName: "player", toRoom: self.house.roomForPosition((x:self.house.player.position.x, y:self.house.player.position.x, z:2))!)
+            default:
+                break
+            }
+            self.update = ""
+            self.title = self.house.currentRoom.name
+        }
     }
     
     func resolveDirection(forIndexPath indexPath: NSIndexPath) {
@@ -242,48 +326,20 @@ class ExplorationController: UITableViewController {
         for event in self.house.events {
             if event.name == eventName {
                 if event.isFollowingTheRules() {
+                    print("moving to event \(event.name)")
                     performSegueWithIdentifier("event", sender: event)
                 }
             }
         }
     }
     
-
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    
+    func showTabBarItem(index: Int) {
+        self.tabBarController?.tabBar.hidden = false
+        if  let arrayOfTabBarItems = self.tabBarController!.tabBar.items {
+            arrayOfTabBarItems[index].enabled = true
+        }
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
 
 
     // MARK: - Navigation
@@ -293,13 +349,25 @@ class ExplorationController: UITableViewController {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         
+        print("leaving EXPLORATION CONTROLLER")
+        
+        (UIApplication.sharedApplication().delegate as! AppDelegate).house = self.house
+        
         if segue.identifier == "event" {
             let ec = segue.destinationViewController as! EventController
             ec.house = self.house
-            ec.house?.currentEvent = sender as! Event
+            ec.house.currentEvent = sender as! Event
+        }
+        if segue.identifier == "piano" {
+            let pc = segue.destinationViewController as! PianoController
+            pc.house = self.house
         }
         
         
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        (UIApplication.sharedApplication().delegate as! AppDelegate).house = self.house
     }
 
     @IBAction func unwind(segue: UIStoryboardSegue) {
@@ -308,9 +376,45 @@ class ExplorationController: UITableViewController {
 
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height = UITableViewAutomaticDimension
-        if self.house.currentRoom.actions[indexPath.row].isFollowingTheRules() == false {
-            height = 0
+        
+        switch indexPath.section {
+            
+            // UPDATE
+        case 0:
+            break
+            
+            // ROOM EXPLANATION
+        case 1:
+            break
+            
+            // ROOM ACTIONS
+        case 2:
+            if self.house.currentRoom.actions[indexPath.row].isFollowingTheRules() == false {
+                height = 0
+            }
+            
+            // DIRECTIONS
+        case getNumberOfTableSections()-1:
+            break
+            
+            // ITEM ACTIONS
+        default:
+            // -3 to deal with the other table sections.
+            let item = self.house.currentRoom.items[indexPath.section-3]
+            if item.hidden == true {
+                height = 0
+            }
+            if item.actions[indexPath.row].name.rangeOfString("Take") != nil && item.canCarry == false {
+                height = 0
+            }
+            if item.actions[indexPath.row].isFollowingTheRules() == false {
+                print("\(item.actions[indexPath.row].name) is not following the rules")
+                height = 0
+            }
         }
+
+        
+        
         return height
     }
     

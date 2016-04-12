@@ -21,7 +21,7 @@ class EventController: UITableViewController {
     
     // self.house will allows access to self.house!.currentEvent and self.house.currntEvent.currentStage!
     // Then the house can be passed back to other viewcontrollers
-    var house = House?()
+    var house : House = (UIApplication.sharedApplication().delegate as! AppDelegate).house
     var update = ""
     
     
@@ -29,38 +29,62 @@ class EventController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.house!.currentEvent.setCurrentStage()
+        self.house.currentEvent.setCurrentStage()
         self.navigationItem.setHidesBackButton(true, animated:false);
-        self.title = self.house!.currentEvent.currentStage!.name
-        
-        
-        
+        self.title = self.house.currentEvent.currentStage!.name
+
+    }
+    
+    func getNumberOfTableSections() -> Int {
+        var numberOfSections = 4
+        for _ in self.house.currentEvent.currentStage!.items {
+            numberOfSections++
+        }
+        return numberOfSections
     }
     
     // MARK: Tableview Functions
     
     override func numberOfSectionsInTableView(tableView: UITableView?) -> Int {
-        return Sections.numberOfSections.rawValue
+        return getNumberOfTableSections()
     }
     
+    
+    // Table Section Key
+    // 0: Update
+    // 1: Explanation
+    // 2: Room Actions
+    // 3 through (sections.count - 2): Item Actions
+    // sections.count: Directions
+    
+    
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
+
         var rows = 0
         switch ( section ) {
-        case Sections.update.rawValue:
+            
+            // UPDATE
+        case 0:
             // Hide update section if self.update is empty
             if ( self.update != "" ) {
                 rows = 1
             }
-        case Sections.explanation.rawValue:
+            
+            // ROOM EXPLANATION
+        case 1:
             rows = 1
-        case Sections.items.rawValue:
-            // Displays options to interact with carryable items, if any are present.
-            rows = self.house!.currentEvent.currentStage!.items.count
-        case Sections.actions.rawValue:
-            rows = self.house!.currentEvent.currentStage!.numberOfActionsThatFollowTheRules()
+            
+            // ROOM ACTIONS
+        case 2:
+            rows = self.house.currentEvent.currentStage!.actions.count
+            
+            // ITEM ACTIONS
         default:
-            break;
+            // -3 to deal with the other table sections.
+            if self.house.currentEvent.currentStage!.items.count > 0 {
+                let item = self.house.currentEvent.currentStage!.items[section-3]
+                rows = item.actions.count
+            }
         }
         return rows
     }
@@ -71,74 +95,154 @@ class EventController: UITableViewController {
         
         // Configure the cell...
         switch ( indexPath.section ) {
-        case Sections.update.rawValue:
+            
+            // UPDATE
+        case 0:
             cell.textLabel!.numberOfLines = 0;
-            cell.textLabel!.text = self.update
-        case Sections.explanation.rawValue:
-            cell.textLabel!.numberOfLines = 0;
-            cell.textLabel!.text = self.house!.currentEvent.currentStage!.explanation
+            cell.textLabel!.setAttributedTextWithTags(self.update)
             cell.userInteractionEnabled = false
-        case Sections.items.rawValue:
-            let item = self.house!.currentEvent.currentStage!.items[indexPath.row]
-            cell.textLabel!.text = "Take \(item.name)"
+            
+            // EVENT EXPLANATION
+        case 1:
+            cell.textLabel!.numberOfLines = 0;
+            cell.textLabel!.setAttributedTextWithTags(self.house.currentEvent.currentStage!.explanation)
+            cell.userInteractionEnabled = false
+            // ROOM ACTIONS
+        case 2:
+            let action = self.house.currentEvent.currentStage!.actions[indexPath.row]
+            cell.textLabel!.setAttributedTextWithTags(action.name)
             cell.userInteractionEnabled = true
-        case Sections.actions.rawValue:
-            let action = self.house!.currentEvent.currentStage!.actions[indexPath.row]
-            cell.textLabel!.text = action.name
-            cell.userInteractionEnabled = true
+            
+            // ITEM ACTIONS
         default:
-            break;
+            // -3 to deal with the other table sections.
+            let item = self.house.currentEvent.currentStage!.items[indexPath.section-3]
+            let action = item.actions[indexPath.row]
+            cell.textLabel!.setAttributedTextWithTags(action.name)
+            cell.userInteractionEnabled = true
         }
         
         return cell
     }
     
+    
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         switch ( indexPath.section ) {
-        case Sections.items.rawValue:
-            let item = self.house!.currentEvent.currentStage!.items[indexPath.row]
-            self.house!.player.addItemToItems(item)
-            self.house!.currentEvent.currentStage!.removeItemFromItems(withName:item.name)
-            self.update = "Got \(item)"
-        case Sections.actions.rawValue:
-            resolveAction(self.house!.currentEvent.currentStage!.actions[indexPath.row])
+            
+            // ROOM ACTIONS
+        case 2:
+            resolveAction(self.house.currentEvent.currentStage!.actions[indexPath.row], isItemAction: false)
+            
+            // ITEM ACTIONS
         default:
+            resolveAction(self.house.currentEvent.currentStage!.items[indexPath.section-3].actions[indexPath.row], isItemAction: true)
+            
             break
         }
+
         self.tableView.reloadData()
     }
     
     
-    func resolveAction(action: Action) {
+    func resolveAction(var action: Action, isItemAction: Bool) {
         
         action.timesPerformed++
         if let result = action.result { self.update = result }
-        if let roomChange = action.roomChange { self.house!.currentEvent.currentStage!.explanation = roomChange }
-        for item in action.items {
-            self.house!.currentEvent.currentStage!.items.append(item)
-            action.onceOnly = true
+        if let roomChange = action.roomChange { self.house.currentEvent.currentStage!.explanation = roomChange }
+        
+        for itemName in action.revealItems {
+            print("revealItems")
+            var i = 0
+            for item in self.house.currentEvent.currentStage!.items {
+                if item.name == itemName {
+                    item.hidden = false
+                }
+                i++
+            }
         }
         
-        for var i = 0; i < self.house!.currentEvent.currentStage!.actions.count; i++ {
-            if self.house!.currentEvent.currentStage!.actions[i].name == action.name {
-                self.house!.currentEvent.currentStage!.actions[i].timesPerformed += 1
-                if let replaceAction = action.replaceAction {
-                    self.house!.currentEvent.currentStage!.actions[i] = replaceAction
+        for itemName in action.liberateItems {
+            print("liberateItems")
+            var i = 0
+            for item in self.house.currentEvent.currentStage!.items {
+                if item.name == itemName {
+                    item.canCarry = true
                 }
-                if action.onceOnly == true {
-                    self.house!.currentEvent.currentStage!.actions.removeAtIndex(i)
+                i++
+            }
+        }
+        
+        if isItemAction {
+            print("isItemAction")
+            for var i = 0; i < self.house.currentEvent.currentStage!.items.count; i++ {
+                for var o = 0; o < self.house.currentEvent.currentStage!.items[i].actions.count; o++ {
+                    if self.house.currentEvent.currentStage!.items[i].actions[o].name == action.name {
+                        self.house.currentEvent.currentStage!.items[i].actions[o].timesPerformed += 1
+                        
+                        // If the action has a REPLACE action
+                        if let replaceAction = action.replaceAction {
+                            self.house.currentEvent.currentStage!.items[i].actions[o] = replaceAction
+                        }
+                        
+                        // If the action can only be performed ONCE
+                        if action.onceOnly == true {
+                            self.house.currentEvent.currentStage!.items[i].actions.removeAtIndex(o)
+                        }
+                        
+                        // If the action is a TAKE action
+                        if action.name.rangeOfString("Take") != nil {
+                            self.house.player.items += [self.house.currentEvent.currentStage!.items[i]]
+                            self.house.currentEvent.currentStage!.items.removeAtIndex(i)
+                            
+                        }
+                        break // THIS keeps the loop from crashing as it examines an item that does not exist.
+                        // It also makes sure multiple similar actions aren't renamed.
+                        // this seems like a clumsy solution, but it currently works.
+                    }
+                }
+            }
+        } else { // Room Actions
+            print("isRoomAction")
+            for var i = 0; i < self.house.currentEvent.currentStage!.actions.count; i++ {
+                if self.house.currentEvent.currentStage!.actions[i].name == action.name {
+                    action.timesPerformed += 1
+                    if let replaceAction = action.replaceAction {
+                        action = replaceAction
+                    }
+                    if action.onceOnly == true {
+                        self.house.currentEvent.currentStage!.actions.removeAtIndex(i)
+                    }
+                    break
                 }
             }
         }
         
         if let triggerEventName = action.triggerEventName { triggerEvent(forEventName: triggerEventName)}
+        
+        if let segue = action.segue { performSegueWithIdentifier(segue, sender: nil)}
+        
+        if let changeFloor = action.changeFloor {
+            switch changeFloor {
+            case 0:
+                self.house.moveCharacter(withName: "player", toRoom: self.house.roomForPosition((x:self.house.player.position.x, y:self.house.player.position.x, z:0))!)
+            case 1:
+                self.house.moveCharacter(withName: "player", toRoom: self.house.roomForPosition((x:self.house.player.position.x, y:self.house.player.position.x, z:1))!)
+            case 2:
+                self.house.moveCharacter(withName: "player", toRoom: self.house.roomForPosition((x:self.house.player.position.x, y:self.house.player.position.x, z:2))!)
+            default:
+                break
+            }
+            self.update = ""
+            self.title = self.house.currentRoom.name
+        }
     }
     
+    
     func triggerEvent(forEventName eventName: String) {
-        for event in self.house!.events {
+        for event in self.house.events {
             if event.name == eventName {
                 if event.isFollowingTheRules() {
-                    self.house!.currentEvent = event
+                    self.house.currentEvent = event
                 }
             }
         }
@@ -147,52 +251,17 @@ class EventController: UITableViewController {
         }
     }
     
-
-    
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-    // Return false if you do not want the specified item to be editable.
-    return true
-    }
-    */
-    
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-    if editingStyle == .Delete {
-    // Delete the row from the data source
-    tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-    } else if editingStyle == .Insert {
-    // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }
-    }
-    */
-    
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-    
-    }
-    */
-    
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-    // Return false if you do not want the item to be re-orderable.
-    return true
-    }
-    */
-    
     
     // MARK: - Navigation
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
+        (UIApplication.sharedApplication().delegate as! AppDelegate).house = self.house
+        
         if segue.identifier == "exit" {
             let ec = segue.destinationViewController as! ExplorationController
-            ec.house = self.house!
+            ec.house = self.house
         }
     
     }
@@ -200,9 +269,46 @@ class EventController: UITableViewController {
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height = UITableViewAutomaticDimension
-        if self.house!.currentEvent.currentStage!.actions[indexPath.row].isFollowingTheRules() == false {
-            height = 0
+        
+        switch indexPath.section {
+            
+            // UPDATE
+        case 0:
+            break
+            
+            // ROOM EXPLANATION
+        case 1:
+            break
+            
+            // ROOM ACTIONS
+        case 2:
+            if self.house.currentEvent.currentStage!.actions[indexPath.row].isFollowingTheRules() == false {
+                height = 0
+            }
+            
+            // DIRECTIONS
+        case getNumberOfTableSections()-1:
+            break
+            
+            // ITEM ACTIONS
+        default:
+            print("default")
+            // -3 to deal with the other table sections.
+            let item = self.house.currentEvent.currentStage!.items[indexPath.section-3]
+            if item.hidden == true {
+                height = 0
+            }
+            if item.actions[indexPath.row].name.rangeOfString("Take") != nil && item.canCarry == false {
+                height = 0
+            }
+            if item.actions[indexPath.row].isFollowingTheRules() == false {
+                print("\(item.actions[indexPath.row].name) is not following the rules")
+                height = 0
+            }
         }
+        
+        
+        
         return height
     }
     
@@ -214,4 +320,5 @@ class EventController: UITableViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
 }

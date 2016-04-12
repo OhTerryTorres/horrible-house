@@ -19,6 +19,7 @@ extension ActionPacked {
         for dict in dictArray {
             let action = Action(withDictionary: dict)
             self.actions += [action]
+            print("\(action.name)")
         }
     }
     

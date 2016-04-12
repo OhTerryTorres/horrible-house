@@ -13,6 +13,8 @@ class House {
         static let noRoom = 0
         static let normal = 1
         static let foyer = 2
+        static let stairsDownToBasement = 3
+        static let stairsUpToFirst = 4
     }
     
     
@@ -24,6 +26,7 @@ class House {
     // MARK: Properties
     var width = 0
     var height = 0
+    var depth = 0
     
     // Array for all rooms in the Rooms.plist
     var rooms: [Room] = []
@@ -31,18 +34,22 @@ class House {
     var events: [Event] = []
     
     // MARK: Characters
-    var player = Character(name: "Player", position: (0,0))
+    var player = Character(name: "Player", position: (0,0,0))
     var npcs:[Character] = []
     
     // MARK: Navigation
-    var layout = [[Int]]()
-    var map = [[Room]]()
+    var layout = [[[Int]]]()
+    var map = [[[Room]]]()
+    
+    var currentFloor = [[Room]]()
     
     
     // MARK: Room Templates
     
     var noRoom = Room()
     var foyer = Room()
+    var stairsDownToBasement = Room()
+    var stairsUpToFirst = Room()
     
     // The room that is being presented for exploration.
     // This will be set by the game controllers.
@@ -52,8 +59,15 @@ class House {
     var currentEvent = Event()
     
     
-    init(layout:[[Int]]) {
+    init(layout:[[[Int]]]) {
         self.layout = layout.reverse()
+        
+        // Reverse each floor's layout so that north and south make sense
+        var i = 0
+        for _ in self.layout {
+            self.layout[i] = self.layout[i].reverse()
+            i++
+        }
         self.setNecessaryRooms()
         self.loadEvents()
         self.loadRooms()
@@ -91,63 +105,89 @@ class House {
             let room = Room(withDictionary: value as! Dictionary<String,AnyObject>)
             if room.name == "Foyer" { self.foyer = room }
             if room.name == "No Room" { self.noRoom = room }
+            if room.name == "Basement Stairs" { self.stairsDownToBasement = room }
+            if room.name == "Basement Landing" { self.stairsUpToFirst = room }
         }
 
     }
     
-    // Pre-fill the house map with noRooms to make it easier to change the rooms later.
-    func prepopulateMap(width: Int, height: Int) {
+    // Pre-fill the floor with noRooms to make it easier to change the rooms later.
+    func prepopulatedFloor(withDimensions width: Int, height: Int, depth: Int) -> [[Room]] {
         print("Prepopulating map...\r")
-        for( var y = 0; y < height; y++ ) {
-            var row = [Room]()
-            for( var x = 0; x < width; x++ ) {
-                row.append(self.noRoom)
-            } // end of x for loop
-            self.map.append(row)
-        } // end of y for loop
+        var floor = [[Room]]()
         
+            for( var y = 0; y < height; y++ ) {
+                var row = [Room]()
+                for( var x = 0; x < width; x++ ) {
+                    row.append(self.noRoom)
+                } // end of x for loop
+                floor.append(row)
+            } // end of y for loop
+        
+        return floor
     }
     
     
     func drawMap() {
         print("Drawing map of house...\r")
         
-        self.width = self.layout[0].count
-        // Ideally, all of the arrays should be the same count. We'll see.
-        self.height = self.layout.count
+        // Ideally, all of the rows should be the same count. We'll see.
+        let width = self.layout[0][0].count
+        let height = self.layout[0].count
+        let depth = self.layout.count
         
-        print("maxWidth is \(self.width)")
-        print("maxHeight is \(self.height)")
+        self.width = width
+        self.height = height
+        self.depth = depth
         
-        prepopulateMap(self.width, height: self.height)
+        print("width is \(width)")
+        print("height is \(height)")
+        print("depth is \(depth)")
+        
+        var floor = prepopulatedFloor(withDimensions: width, height: height, depth: depth)
         
         var roomIndex = 0
         
-        for( var y = 0; y < self.height; y++ ) {
-            for( var x = 0; x < self.width; x++ ) {
-                // Draw the room
-                switch ( self.layout[y][x] ) {
-                case RoomType.foyer:
-                    self.foyer.position = (x:x, y:y)
-                    self.map[y][x] = self.foyer
-                    print("\(self.foyer.name) is at position \(self.foyer.position)")
-                case RoomType.noRoom:
-                    self.map[y][x] = self.noRoom
-                default:
-                    self.rooms[roomIndex].position = (x:x, y:y)
-                    let room = self.rooms[roomIndex]
-                    self.map[y][x] = room
-                    print("\(room.name) is at position \(room.position)")
-                    roomIndex++
+        for var z = 0; z < depth; z++ {
+            for( var y = 0; y < height; y++ ) {
+                for( var x = 0; x < width; x++ ) {
+                    print("\(x) \(y) \(z)")
+                    // Draw the room
+                    switch ( self.layout[z][y][x] ) {
+                    case RoomType.foyer:
+                        self.foyer.position = (x:x, y:y, z:z)
+                        floor[y][x] = self.foyer
+                        print("\(self.foyer.name) is at position \(self.foyer.position)")
+                    case RoomType.stairsDownToBasement:
+                        self.stairsDownToBasement.position = (x:x, y:y, z:z)
+                        floor[y][x] = self.stairsDownToBasement
+                        print("\(self.stairsDownToBasement.name) is at position \(self.stairsDownToBasement.position)")
+                    case RoomType.stairsUpToFirst:
+                        self.stairsUpToFirst.position = (x:x, y:y, z:z)
+                        floor[y][x] = self.stairsUpToFirst
+                        print("\(self.stairsUpToFirst.name) is at position \(self.stairsUpToFirst.position)")
+                    case RoomType.noRoom:
+                        floor[y][x] = self.noRoom
+                    default:
+                        self.rooms[roomIndex].position = (x:x, y:y, z:z)
+                        let room = self.rooms[roomIndex]
+                        floor[y][x] = room
+                        print("\(room.name) is at position \(room.position)")
+                        roomIndex++
+                    }
+                    floor[y][x].position = (x:x, y:y, z:z)
+                    print("End of x for loop.\r")
+                } // end of x for loop
+                if roomIndex > self.rooms.count {
+                    print("roomIndex is \(roomIndex)")
+                    // break
                 }
-                self.map[y][x].position = (x: x, y: y)
-                print("End of x for loop.\r")
-            } // end of x for loop
-            if roomIndex == self.rooms.count {
-                break
-            }
-            print("End of y for loop.\r")
-        } // end of y for loop
+                print("End of y for loop.\r")
+            } // end of y for loop
+            self.map += [floor]
+            floor = prepopulatedFloor(withDimensions: width, height: height, depth: depth)
+        } // end of z for loop
+        
         
     }
     
@@ -176,20 +216,24 @@ class House {
     
     
     // Get a room in the house for a set of x and y coordinates.
-    func roomForPosition(position:(x: Int, y: Int)) -> Room? {
+    func roomForPosition(position:(x: Int, y: Int, z: Int)) -> Room? {
         var room = self.noRoom
-        if ( position.y >= 0 && position.y < self.layout.count ) {
-            let row = self.layout[position.y]
-            if ( position.x >= 0 && position.x < row.count ) {
-                room = self.map[position.y][position.x]
+        if ( position.z >= 0 && position.z < self.layout.count) {
+            let floor = self.layout[position.z]
+            if ( position.y >= 0 && position.y < floor.count ) {
+                let row = floor[position.y]
+                if ( position.x >= 0 && position.x < row.count ) {
+                    room = self.map[position.z][position.y][position.x]
+                }
             }
         }
+        
         return room
     }
     
     // Get the x, y position for a room in the house based on its name.
-    func positionForRoom(room: Room) -> (x: Int, y: Int)? {
-        var position = (x: 0, y: 0)
+    func positionForRoom(room: Room) -> (x: Int, y: Int, z:Int)? {
+        var position = (x: 0, y: 0, z:0)
         for r: Room in self.rooms {
             if r.name == room.name {
                 position = r.position
@@ -200,7 +244,7 @@ class House {
     
     // Checks if room exists at position
     // Used to maintain the bounds of the house, so the player does not end up in a wall or outside.
-    func doesRoomExistAtPosition(position:(x: Int, y: Int)) -> Bool {
+    func doesRoomExistAtPosition(position:(x: Int, y: Int, z:Int)) -> Bool {
         let room = roomForPosition(position)
         if ( room!.name == "No Room" || position.y < 0 || position.x < 0 || position.x >= self.width || position.y >= self.height ) {
             return false
@@ -212,7 +256,7 @@ class House {
     // Get get a room in a direction adjacent to the player
     // Used to find out what the room is before entering it.
     func roomInDirection(direction:Direction) -> Room? {
-        var potentialPosition = (x: self.player.position.x, y: self.player.position.y)
+        var potentialPosition = (x: self.player.position.x, y: self.player.position.y, z: self.player.position.z)
         switch direction {
         case .North:
             potentialPosition.y += 1
@@ -257,28 +301,22 @@ class House {
     // which is necessary for navigation and the tableview display itself.
     func getRoomsAroundPlayer() -> [Room] {
         var roomsAroundPlayer = [Room]()
-        let roomPositionToNorth = (self.player.position.x, self.player.position.y+1)
-        let roomPositionToWest = (self.player.position.x-1, self.player.position.y)
-        let roomPositionToSouth = (self.player.position.x, self.player.position.y-1)
-        let roomPositionToEast = (self.player.position.x+1, self.player.position.y)
+        let roomPositionToNorth = (self.player.position.x, self.player.position.y+1, self.player.position.z)
+        let roomPositionToWest = (self.player.position.x-1, self.player.position.y, self.player.position.z)
+        let roomPositionToSouth = (self.player.position.x, self.player.position.y-1, self.player.position.z)
+        let roomPositionToEast = (self.player.position.x+1, self.player.position.y, self.player.position.z)
         if ( doesRoomExistAtPosition(roomPositionToNorth) ) {
             roomsAroundPlayer.append(roomForPosition(roomPositionToNorth)!)
-            print("\(roomForPosition(roomPositionToNorth)!.name) is to the north")
-        } else { print("there is no room to the north") }
+        }
         if ( doesRoomExistAtPosition(roomPositionToWest) ) {
             roomsAroundPlayer.append(roomForPosition(roomPositionToWest)!)
-            print("\(roomForPosition(roomPositionToWest)!.name) is to the west")
-        } else { print("there is no room to the west") }
+        }
         if ( doesRoomExistAtPosition(roomPositionToSouth) ) {
             roomsAroundPlayer.append(roomForPosition(roomPositionToSouth)!)
-            print("\(roomForPosition(roomPositionToSouth)!.name) is to the south")
-        } else { print("there is no room to the south") }
+        }
         if ( doesRoomExistAtPosition(roomPositionToEast) ) {
             roomsAroundPlayer.append(roomForPosition(roomPositionToEast)!)
-            print("\(roomForPosition(roomPositionToEast)!.name) is to the east")
-        } else { print("there is no room to the east") }
-        
-        print("there are \(roomsAroundPlayer.count) accessible rooms around the player")
+        }
         
         return roomsAroundPlayer
     }

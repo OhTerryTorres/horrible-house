@@ -8,7 +8,7 @@
 
 import UIKit
 
-class Action: DictionaryBased, RuleBased, ItemBased {
+class Action: DictionaryBased, RuleBased {
     
     // MARK: Properties
     
@@ -36,7 +36,10 @@ class Action: DictionaryBased, RuleBased, ItemBased {
     // When preseneted, the item will be added to the currentRoom.items array, and a new
     // action presenting this item to the player will be added to the currentRoom.actions array.
     // This action will also, likely, be deleted from the currentRoom.actions array.
-    var items: [Item] = []
+    var revealItems : [String] = []
+    
+    // Used to select an item by name and allow the player to carry it.
+    var liberateItems : [String] = []
     
     // If a triggerEvent name is listed, choosing this action will trigger that event.
     // If a triggerEvent name is listed, but it is BLANK, the event will end and go back to the house.
@@ -44,6 +47,11 @@ class Action: DictionaryBased, RuleBased, ItemBased {
     
     var replaceAction : Action?
     
+    // 0 goes to basement, 1 goes to first floor, 2 goes to second floor.
+    var changeFloor : Int?
+    
+    // This is for special actions that trigger a segue to a viewcontroller
+    var segue : String?
 
     required init(withDictionary: Dictionary<String, AnyObject>) {
         for (key, value) in withDictionary {
@@ -51,7 +59,8 @@ class Action: DictionaryBased, RuleBased, ItemBased {
             if key == "result" { self.result = value as? String }
             if key == "roomChange" { self.roomChange = value as? String }
             if key == "rules" { self.setRulesForArray(value as! [String]) }
-            if key == "items" { self.setItemsForArray(value as! [String]) }
+            if key == "revealItems" { self.revealItems = value as! [String] }
+            if key == "liberateItems" { self.liberateItems = value as! [String] }
             if key == "onceOnly" { self.onceOnly = true }
             
             // Rather than storing the triggerEvent itself, we'll store a string we can use to
@@ -60,6 +69,11 @@ class Action: DictionaryBased, RuleBased, ItemBased {
             if key == "triggerEventName" { self.triggerEventName = value as? String }
                 
             if key == "replaceAction" { self.replaceAction = Action(withDictionary: value as! Dictionary<String, AnyObject>) }
+            
+            if key == "changeFloor" { self.changeFloor = value as? Int }
+            
+            if key == "segue" { self.segue = value as? String }
+            
         }
     }
     

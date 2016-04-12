@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>1</key>
+	<dict>
+		<key>name</key>
+		<string>Bat</string>
+		<key>startingRoom</key>
+		<string>name of room</string>
+		<key>hidden</key>
+		<true/>
+		<key>firstMeetingEvent</key>
+		<string>name of event</string>
+		<key>movement</key>
+		<string>random</string>
+	</dict>
+	<key>0</key>
+	<dict>
+		<key>name</key>
+		<string>name of character</string>
+		<key>startingRoom</key>
+		<string>name of room</string>
+		<key>hidden</key>
+		<false/>
+		<key>firstMeetingEvent</key>
+		<string>name of event</string>
+		<key>itemEvents</key>
+		<dict>
+			<key>name of item</key>
+			<string>name of event</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

@@ -2,22 +2,46 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>3</key>
+	<dict>
+		<key>name</key>
+		<string>Basement Landing</string>
+		<key>explanation</key>
+		<string>The only thing illuminating the area is light from upstairs. You can barely see in front of you.</string>
+		<key>actions</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Go upstairs</string>
+				<key>changeFloor</key>
+				<integer>1</integer>
+			</dict>
+		</array>
+	</dict>
+	<key>2</key>
+	<dict>
+		<key>name</key>
+		<string>Basement Stairs</string>
+		<key>explanation</key>
+		<string>A hallway with a set of stairs leading down into darkness.</string>
+		<key>actions</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Go downstairs</string>
+				<key>changeFloor</key>
+				<integer>0</integer>
+			</dict>
+		</array>
+	</dict>
 	<key>1</key>
 	<dict>
 		<key>name</key>
 		<string>Foyer</string>
 		<key>explanation</key>
-		<string>Less than a handful of lit wall sconces show only the dark wood of the entryway and three ways deeper into the house, along with the front door.</string>
+		<string>The only light in the house is that which filters through any windows, including the one semi-circular window above the front door. From here, you can only go deeper into the house.</string>
 		<key>actions</key>
 		<array>
-			<dict>
-				<key>name</key>
-				<string>Lick the wall</string>
-			</dict>
-			<dict>
-				<key>name</key>
-				<string>Fart</string>
-			</dict>
 			<dict>
 				<key>name</key>
 				<string>Leave</string>

@@ -13,14 +13,17 @@ class Character: ItemBased {
     // MARK: Properties
     
     var name: String
-    var position : (x : Int, y : Int)
+    var position : (x : Int, y : Int, z : Int)
     var items: [Item] = []
     
     
-    init(name:String, position:(x: Int, y: Int)) {
+    init(name:String, position:(x: Int, y: Int, z: Int)) {
         self.name = name
         self.position = position
     }
     
+    
+    // Eventually put in a property that gives a character a general AI direction.
+    // Like, Stands In Place, or Seek Item
     
 }

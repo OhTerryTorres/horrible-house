@@ -18,6 +18,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // 0 is a No Room (wall).
         // 1 is a Room.
         // 2 is the Foyer.
+        // 3 is First -> Basement Stairs.
+        // 4 is Basement -> First Stairs.
+        // 5 is First -> Second Stairs.
+        // 6 is Second -> First Stairs.
         
         // This gives us two rows with four rooms.
         static let a = [
@@ -26,8 +30,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ]
         // This gives us two rows with four rooms, with noRooms (walls) on either side of the foyer.
         static let b = [
+            [[1, 1, 3],
             [1, 1, 1],
-            [0, 2, 0]
+            [0, 2, 0]], // first floor = 1
+            
+            [[0, 0, 4],
+            [0, 0, 0],
+            [0, 0, 0]]  // basement = 0
         ]
     }
     

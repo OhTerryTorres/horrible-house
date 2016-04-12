@@ -13,9 +13,9 @@ protocol ItemBased : class {
 }
 
 extension ItemBased {
-    func setItemsForArray(array:[String]) {
-        for itemName in array {
-            let item = Item(name: itemName)
+    func setItemsForDictionary(dictArray:[Dictionary<String, AnyObject>]) {
+        for dict in dictArray {
+            let item = Item(withDictionary: dict)
             self.items += [item]
         }
     }

@@ -29,24 +29,18 @@ extension RuleBased {
         let house = appDelegate.house
         
         for rule in rules {
-            print("rule.name is \(rule.name)")
-            print("rule.type is \(rule.type)")
             switch ( rule.type) {
                 
             case Rule.RuleType.hasItem:
-                print("hasItem??")
                 rulesFollowed = false
                 if let _ = house.player.items.indexOf({$0.name == rule.name}) {
                     rulesFollowed = true
-                    print("\(rule.name) is present! So the rule is being followed.")
                 }
                 
             case Rule.RuleType.nopeHasItem:
-                print("nopeHasItem??")
                 rulesFollowed = true
                 if let _ = house.player.items.indexOf({$0.name == rule.name}) {
                     rulesFollowed = false
-                    print("\(rule.name) is NOT present! So the rule is being followed.")
                 }
                 
             case Rule.RuleType.metCharacter:

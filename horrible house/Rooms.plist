@@ -2,97 +2,379 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>4</key>
+	<dict>
+		<key>name</key>
+		<string>Kitchen</string>
+		<key>explanation</key>
+		<string>The center of the room is taken up by a worktable for the preparation of food and the kneading of dough.</string>
+	</dict>
+	<key>3</key>
+	<dict>
+		<key>name</key>
+		<string>Day Room</string>
+		<key>explanation</key>
+		<string>There are tall bay windows along one wall, with bench seats underneath each.</string>
+		<key>items</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Piano</string>
+				<key>explanation</key>
+				<string>There is a piano against the other wall.</string>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Check the piano</string>
+						<key>segue</key>
+						<string>piano</string>
+					</dict>
+				</array>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Card Table</string>
+				<key>explanation</key>
+				<string>Nearby, there is a long table with seats for six.</string>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Check the table</string>
+						<key>result</key>
+						<string>There are playing cards assembled on the table. It looks as though there was a game of gin in progress.</string>
+						<key>replaceAction</key>
+						<dict>
+							<key>name</key>
+							<string>How do you play gin?</string>
+							<key>result</key>
+							<string>Gin rummy is a two-player game in which you accumulate points by getting melds: cards that either share the same rank as each other or run in sequence with eachother in the same suit.  For example, 7 of spades, 7 of clubs, and 7 of diamonds would make up a set, while 10 of hearts, Jack of hearts, and Queen of hearts would be a run.
+
+You must also try to get rid of cards that are not in a set or run. On your turn, you must draw a card and discard one. You can draw from either the stock pile or the discard pile.
+
+Cards that aren&apos;t part of a set or run are deadwood. Deadwood cards have a scores equal to their number - aces are 1, and face cards are 10.
+
+A round ends when a player, &quot;knocks&quot; with 10 or fewer point of deadwood. They place their discard face down, then lays out their hand, separating melds from deadwood. The other player can then attempt to add their own deadwood to the knocking player&apos;s melds. The knocking player receives a score equal to the difference between the two hands.
+
+If a player &quot;knocks&quot; with no deadwood, they receive an amount of points previously agreed upon - typically 25, assuming that the game is being played to 100.</string>
+							<key>rules</key>
+							<array>
+								<string>\nopeHasPlaying Cards</string>
+							</array>
+						</dict>
+						<key>revealItems</key>
+						<array>
+							<string>Playing Cards</string>
+						</array>
+					</dict>
+				</array>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Playing Cards</string>
+				<key>explanation</key>
+				<string>There is a piano against the other wall.</string>
+				<key>hidden</key>
+				<string></string>
+				<key>canCarry</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>details</key>
+		<array>
+			<dict>
+				<key>explanation</key>
+				<string>There are playing cards on the table.</string>
+				<key>rules</key>
+				<array>
+					<string>\nopeHasPlaying Cards</string>
+				</array>
+			</dict>
+		</array>
+		<key>actions</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Sit by the window</string>
+				<key>result</key>
+				<string>The view outside is largely brush and overgrowth. Above that, the moon is visible amongst wispy clouds. Its light illuminates the room rather well.</string>
+			</dict>
+		</array>
+	</dict>
 	<key>2</key>
 	<dict>
 		<key>name</key>
 		<string>Gallery</string>
 		<key>explanation</key>
-		<string>Tastefull stained hardwood and elegant crown moulding stand out under the dust. The room is vacant except for pieces of art along two of the walls. There are five paintings and a bust on a pedestal.</string>
-		<key>actions</key>
+		<string>The room is vacant except for pieces of art along the walls.
+
+</string>
+		<key>items</key>
 		<array>
 			<dict>
 				<key>name</key>
-				<string>Look at the large portrait</string>
-			</dict>
-			<dict>
-				<key>name</key>
-				<string>Look at the smaller portrait</string>
-			</dict>
-			<dict>
-				<key>name</key>
-				<string>Look at the bust</string>
-			</dict>
-			<dict>
-				<key>name</key>
-				<string>Look at the landscape</string>
-				<key>result</key>
-				<string>A tranquil farmland scene. It&apos;s surprisingly hard to see the details in the landscape. It&apos;s as though looking at this painting in particular impairs your vision. It&apos;s weird.</string>
-				<key>rules</key>
+				<string>Large Portrait of Unhappy Woman</string>
+				<key>explanation</key>
+				<string>A large portrait of a woman.</string>
+				<key>actions</key>
 				<array>
-					<string>\nopeHasGlasses</string>
+					<dict>
+						<key>name</key>
+						<string>Look at large portrait</string>
+						<key>result</key>
+						<string>A woman with short dark hair in a strapless dress. She does not look happy.</string>
+					</dict>
 				</array>
 			</dict>
 			<dict>
 				<key>name</key>
-				<string>Look at the landscape</string>
-				<key>result</key>
-				<string>With the glasses, you can actually see shapes in the trees that look a bit like letters.
+				<string>Portrait of Dog</string>
+				<key>explanation</key>
+				<string>A small portait</string>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Look at the smaller portrait</string>
+						<key>result</key>
+						<string>It&apos;s a dog, sitting obediently. It appears to be a labrador of some kind. It is painted from a high angle, making it look smaller, more precious.</string>
+					</dict>
+				</array>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Bust of Stony Man</string>
+				<key>explanation</key>
+				<string>A bust on a pedestal.</string>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Look at the bust</string>
+						<key>result</key>
+						<string>A man with a chiseled jaw and a aquiline nose looking ahead confidently. The bust ends shortly before the widest part of his necktie. His head is quite large. The bust may not be scaled to life.</string>
+						<key>replaceAction</key>
+						<dict>
+							<key>name</key>
+							<string>Look at the bust</string>
+							<key>result</key>
+							<string>A man with a chiseled jaw and a aquiline nose looking ahead confidently. The bust ends shortly before the widest part of his necktie. His head is quite large. The bust may not be scaled to life.
 
-B U T T S</string>
-				<key>rules</key>
-				<array>
-					<string>\hasGlasses</string>
+Well, of course, the jaw was literally chiseled when it was sculpted.</string>
+						</dict>
+					</dict>
 				</array>
 			</dict>
 			<dict>
 				<key>name</key>
-				<string>Look at the other large portrait</string>
+				<string>Large Portrait of Serene Woman</string>
+				<key>explanation</key>
+				<string>Another large portrait of a woman.</string>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Look at other large portrait</string>
+						<key>result</key>
+						<string>A woman in a frilly dress. Her earrings and necklace have a seemingly valuable shining stone set in each. Her hair is long and voluminous. She is serene, almost sleepy.</string>
+					</dict>
+				</array>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Farm Landscape</string>
+				<key>explanation</key>
+				<string>A landscape.</string>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Look at the landscape</string>
+						<key>result</key>
+						<string>It appears to be a tranquil farmland scene. It&apos;s surprisingly hard to see the details in the landscape. It&apos;s as though looking at this painting in particular impairs your vision. It&apos;s weird.</string>
+						<key>rules</key>
+						<array>
+							<string>\nopeHasGlasses</string>
+						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>Look at the landscape</string>
+						<key>result</key>
+						<string>With the glasses, you can actually see shapes in the trees that look a bit like numbers.
+5 2 7 7 8 5 9</string>
+						<key>rules</key>
+						<array>
+							<string>\hasGlasses</string>
+						</array>
+					</dict>
+				</array>
 			</dict>
 		</array>
+		<key>actions</key>
+		<array/>
 	</dict>
 	<key>1</key>
 	<dict>
 		<key>name</key>
 		<string>Parlor</string>
 		<key>explanation</key>
-		<string>Two loveseats face each other with a cofee table in between.</string>
-		<key>details</key>
-		<array>
-			<dict>
-				<key>explanation</key>
-				<string>There was a hole here. It&apos;s gone now.</string>
-				<key>rules</key>
-				<array>
-					<string>\hasHole</string>
-				</array>
-			</dict>
-			<dict>
-				<key>explanation</key>
-				<string>A jagged hole is in the middle of the table.</string>
-				<key>rules</key>
-				<array>
-					<string>\nopeHasHole</string>
-				</array>
-			</dict>
-		</array>
-		<key>actions</key>
+		<string>A room where people wait before they go to do something in another room.</string>
+		<key>items</key>
 		<array>
 			<dict>
 				<key>name</key>
-				<string>Have a seat</string>
+				<string>Two Loveseats</string>
+				<key>explanation</key>
+				<string>Two loveseats sit across from each other.</string>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Sit on the left loveseat</string>
+						<key>result</key>
+						<string>The seat is unyielding and stiff. Honestly, it probably wasn&apos;t even very comfortable when it was new.</string>
+						<key>replaceAction</key>
+						<dict>
+							<key>name</key>
+							<string>Sit on the left loveseat</string>
+							<key>result</key>
+							<string>You sit again, hoping it will be more pleasant. It isn&apos;t.</string>
+							<key>replaceAction</key>
+							<dict>
+								<key>name</key>
+								<string>Sit on the left loveseat</string>
+								<key>result</key>
+								<string>It does not seem to be getting more comfortable with repetition.</string>
+								<key>replaceAction</key>
+								<dict>
+									<key>name</key>
+									<string>Sit on the left loveseat</string>
+									<key>result</key>
+									<string>Tenderizing apparently doesn&apos;t work on furniture. At least not this one.</string>
+									<key>replaceAction</key>
+									<dict>
+										<key>name</key>
+										<string>Sit on the left loveseat</string>
+										<key>result</key>
+										<string>This loveseat was clearly chosen based on appearance. No one had ever sat in it before its purchase.</string>
+									</dict>
+								</dict>
+							</dict>
+						</dict>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>Sit on the right loveseat</string>
+						<key>result</key>
+						<string>You feel a poke through the cushion.</string>
+						<key>rules</key>
+						<array>
+							<string>\nopeHasWrench</string>
+						</array>
+						<key>replaceAction</key>
+						<dict>
+							<key>name</key>
+							<string>Search the right loveseat</string>
+							<key>result</key>
+							<string>A hole in the side of the cushion reveals a heavy metal tool.</string>
+							<key>revealItems</key>
+							<array>
+								<string>Wrench</string>
+							</array>
+							<key>liberateItems</key>
+							<array>
+								<string>Wrench</string>
+							</array>
+							<key>rules</key>
+							<array>
+								<string>\nopeHasWrench</string>
+							</array>
+							<key>replaceAction</key>
+							<dict>
+								<key>name</key>
+								<string>Sit on the right loveseat.</string>
+								<key>result</key>
+								<string>There&apos;s still something hard in the cushion.</string>
+								<key>rules</key>
+								<array>
+									<string>\nopeHasWrench</string>
+								</array>
+							</dict>
+						</dict>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>Sit on the right loveseat</string>
+						<key>result</key>
+						<string>It&apos;s just barely more comfortable without the wrench in it.</string>
+						<key>rules</key>
+						<array>
+							<string>\hasWrench</string>
+						</array>
+					</dict>
+				</array>
 			</dict>
 			<dict>
 				<key>name</key>
-				<string>Check the hole</string>
-				<key>items</key>
+				<string>Wrench</string>
+				<key>explanation</key>
+				<string>There&apos;s something hard in one of the seat cushions.</string>
+				<key>hidden</key>
+				<string></string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Coffee Table</string>
+				<key>explanation</key>
+				<string>A coffee table is between the loveseats.</string>
+				<key>details</key>
 				<array>
-					<string>Hole</string>
+					<dict>
+						<key>explanation</key>
+						<string>There was a hole here. It&apos;s gone now.</string>
+						<key>rules</key>
+						<array>
+							<string>\hasHole</string>
+						</array>
+					</dict>
 				</array>
-				<key>result</key>
-				<string>A hole. It looks like something crashed through it.</string>
-				<key>rules</key>
+				<key>actions</key>
 				<array>
-					<string>\nopeHasHole</string>
+					<dict>
+						<key>name</key>
+						<string>Check the table</string>
+						<key>onceOnly</key>
+						<string></string>
+						<key>revealItems</key>
+						<array>
+							<string>Hole</string>
+						</array>
+					</dict>
+				</array>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Hole</string>
+				<key>explanation</key>
+				<string>There is a jagged hole in it.</string>
+				<key>hidden</key>
+				<string></string>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Check the hole</string>
+						<key>result</key>
+						<string>A hole. It looks like something crashed through it.</string>
+						<key>onceOnly</key>
+						<string></string>
+						<key>liberateItems</key>
+						<array>
+							<string>Hole</string>
+						</array>
+					</dict>
 				</array>
 			</dict>
 		</array>
@@ -102,36 +384,62 @@ B U T T S</string>
 		<key>name</key>
 		<string>Dining Room</string>
 		<key>explanation</key>
-		<string>A long dining table takes up most of the room covered with a cloth that use to be white. There are places set for ten people. A cradenza sits against one wall.</string>
-		<key>actions</key>
+		<string>The dining room is opulent. Or it was, at least.</string>
+		<key>items</key>
 		<array>
 			<dict>
 				<key>name</key>
-				<string>Check the credenza</string>
-				<key>result</key>
-				<string>There is a pair of glasses in the credenza.</string>
-				<key>roomChange</key>
-				<string>A long dining table covered with a cloth that use to be white takes up most of the room. There are places set for ten people. A cradenza sits against one wall.</string>
-				<key>onceOnly</key>
-				<string></string>
-				<key>items</key>
+				<string>Credenza</string>
+				<key>explanation</key>
+				<string>A cradenza sits against one wall.</string>
+				<key>actions</key>
 				<array>
-					<string>Glasses</string>
+					<dict>
+						<key>name</key>
+						<string>Check the credenza</string>
+						<key>result</key>
+						<string>There is a pair of glasses in the credenza.</string>
+						<key>onceOnly</key>
+						<string></string>
+						<key>revealItems</key>
+						<array>
+							<string>Glasses</string>
+						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>What is a credenza?</string>
+						<key>result</key>
+						<string>It&apos;s a wide cupboard you put at the side of a room.</string>
+						<key>onceOnly</key>
+						<string></string>
+					</dict>
 				</array>
 			</dict>
 			<dict>
 				<key>name</key>
-				<string>What is a credenza?</string>
-				<key>result</key>
-				<string>It&apos;s a wide cupboard you put at the side of a room.</string>
-				<key>onceOnly</key>
+				<string>Glasses</string>
+				<key>explanation</key>
+				<string>A pair of round, wiry spectacles sits exposed in the credenza.</string>
+				<key>hidden</key>
+				<string></string>
+				<key>canCarry</key>
 				<string></string>
 			</dict>
 			<dict>
 				<key>name</key>
-				<string>Sit at the table</string>
-				<key>triggerEventName</key>
-				<string>The Dining Table</string>
+				<string>Dining Table</string>
+				<key>explanation</key>
+				<string>A long dining table takes up most of the room. It is covered with a cloth that, at some point, was white. There are places set for ten people.</string>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Sit at the table</string>
+						<key>triggerEventName</key>
+						<string>The Dining Table</string>
+					</dict>
+				</array>
 			</dict>
 		</array>
 	</dict>
