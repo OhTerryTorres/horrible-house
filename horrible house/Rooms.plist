@@ -421,6 +421,8 @@ Well, of course, the jaw was literally chiseled when it was sculpted.</string>
 				<string>Glasses</string>
 				<key>explanation</key>
 				<string>A pair of round, wiry spectacles sits exposed in the credenza.</string>
+				<key>inventoryDescription</key>
+				<string>A pair of round, wiry spectacles</string>
 				<key>hidden</key>
 				<string></string>
 				<key>canCarry</key>

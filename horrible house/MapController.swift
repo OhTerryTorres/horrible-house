@@ -27,6 +27,8 @@ class MapController: UIViewController {
     
     override func viewDidLoad() {
         self.title = "Map"
+        self.tabBarItem = UITabBarItem(title: "Map", image: nil, tag: 2)
+        
         self.currentFloor = self.house.player.position.z
         
         self.mapDisplayView.frame.size.width = self.view.frame.width + (self.view.frame.width * 0.02)
@@ -97,8 +99,10 @@ class MapController: UIViewController {
                     roomView.backgroundColor = UIColor.blackColor()
                     
                     if room?.timesEntered > 0 {
-                        let roomButton = MapButton(type: UIButtonType.Custom) as MapButton
-                        roomButton.room = room!
+                        
+                        /*
+                        let roomButton = SuperButton(type: UIButtonType.Custom) as SuperButton
+                        roomButton.qualifier = room!.name
                         
                         let buttonX = CGFloat(roomWidth * 0.125)
                         let buttonY = CGFloat(roomHeight * 0.125)
@@ -118,11 +122,27 @@ class MapController: UIViewController {
                         roomButton.setTitle(roomButton.room!.name, forState: UIControlState.Normal)
                         
                         roomView.addSubview(roomButton)
+                        */
+                        
+                        let roomDetailView = UIView()
+                        let detailX = CGFloat(roomWidth * 0.125)
+                        let detailY = CGFloat(roomHeight * 0.125)
+                        let detailWidth = CGFloat(roomWidth * 0.75)
+                        let detailHeight = CGFloat(roomHeight * 0.75)
+                        roomDetailView.frame = CGRectMake(
+                            detailX,
+                            detailY,
+                            detailWidth,
+                            detailHeight
+                        )
+                        roomDetailView.backgroundColor = UIColor.lightGrayColor()
+                        
+                        roomView.addSubview(roomDetailView)
                         
                         roomView.transform = CGAffineTransformMakeScale(1, -1)
                     }
                     
-                }
+                } else { roomView.backgroundColor = UIColor.darkGrayColor() }
                 
                 self.mapDisplayView.addSubview(roomView)
                 
@@ -133,12 +153,12 @@ class MapController: UIViewController {
     }
 
     
-    func displayRoomName(sender: MapButton) {
-        print("\(sender.room!.name)")
+    func displayRoomName(sender: SuperButton) {
+        print("\(sender.qualifier)")
         
         let label = self.roomNameLabel
         
-        label.text = sender.room!.name
+        label.text = sender.qualifier
         
         label.font = label.font.fontWithSize(70)
         
@@ -174,5 +194,6 @@ class MapController: UIViewController {
         
         self.displayMap()
     }
+    
     
 }

@@ -6,6 +6,24 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
+        <!--Phone Controller-->
+        <scene sceneID="dNN-73-fBr">
+            <objects>
+                <viewController id="q9M-av-qCm" customClass="PhoneController" customModule="horrible_house" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="TOo-Wv-8Gm"/>
+                        <viewControllerLayoutGuide type="bottom" id="V7v-mO-n93"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ihp-xz-Nol">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tjN-n1-snA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2467" y="-1083"/>
+        </scene>
         <!--Exploration Controller-->
         <scene sceneID="QR8-HP-zYd">
             <objects>
@@ -33,6 +51,7 @@
                     <connections>
                         <segue destination="Z4t-PH-kwd" kind="show" identifier="event" id="0f1-80-p8F"/>
                         <segue destination="Tiv-2l-Hvk" kind="show" identifier="piano" id="pt3-aK-fHo"/>
+                        <segue destination="q9M-av-qCm" kind="show" identifier="phone" id="TS1-hB-ixs"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jKI-sM-cWU" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -61,7 +80,7 @@
         <!--Items-->
         <scene sceneID="yNF-SJ-lrg">
             <objects>
-                <tableViewController title="Items" id="TiA-cE-cz2" customClass="InventoryController" customModule="horrible_house" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="InventoryController" title="Items" id="TiA-cE-cz2" customClass="InventoryController" customModule="horrible_house" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="brB-NJ-zbL">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -176,7 +195,7 @@
         <!--Map Controller-->
         <scene sceneID="oNz-ec-Cqa">
             <objects>
-                <viewController id="6FV-fL-fIv" customClass="MapController" customModule="horrible_house" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MapController" id="6FV-fL-fIv" customClass="MapController" customModule="horrible_house" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="7i8-YH-sEO"/>
                         <viewControllerLayoutGuide type="bottom" id="XWg-If-2q4"/>
@@ -225,7 +244,7 @@
         <!--Items-->
         <scene sceneID="4bX-kX-FCE">
             <objects>
-                <navigationController title="Items" automaticallyAdjustsScrollViewInsets="NO" id="Xzw-eP-C8j" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="NavigationInventoryController" title="Items" automaticallyAdjustsScrollViewInsets="NO" id="Xzw-eP-C8j" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Items" id="BPw-bX-Nnj"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="tcA-Oe-Z0W">
@@ -244,7 +263,7 @@
         <!--Map-->
         <scene sceneID="p6C-tK-e83">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="tKt-pD-U06" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="NavigationMapController" automaticallyAdjustsScrollViewInsets="NO" id="tKt-pD-U06" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Map" id="UE7-nZ-NnL"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="jhU-UJ-VIr">

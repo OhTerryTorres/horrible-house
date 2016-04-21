@@ -30,6 +30,8 @@ class PianoController: UIViewController {
     
     var keyHeight : CGFloat = 0
     
+    var isTabBarNeeded = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -37,8 +39,15 @@ class PianoController: UIViewController {
         UIApplication.sharedApplication().statusBarHidden = true
         self.keyHeight = self.view.frame.size.height / 8
         
+        // Make it so piano doesn't stick behind Tab Bar
+        if self.tabBarController?.tabBar.hidden == false {
+            self.isTabBarNeeded = true
+            self.tabBarController?.tabBar.hidden = true
+        }
+        
+        
         self.drawPianoKeys()
-        self.loadPianoNotes()
+        //self.loadPianoNotes()
         
         
         
@@ -47,11 +56,11 @@ class PianoController: UIViewController {
     func drawPianoKeys() {
         // White keys
         for var i : CGFloat = 0 ; i < 7; i++ {
-            let key = UIButton(type: UIButtonType.Custom) as UIButton
+            let key = SuperButton(type: UIButtonType.Custom) as SuperButton
             key.frame = CGRectMake(0, (i * (self.keyHeight) + 1 + self.keyHeight), self.view.frame.size.width, (self.keyHeight) - 2)
             key.setBackgroundImage(UIImage(named: "white.png"), forState: UIControlState.Normal)
-            let selector = "white\(Int(i))"
-            key.addTarget(self, action: Selector(selector), forControlEvents:.TouchDown)
+            key.qualifier = "white\(Int(i+1))" // we don't have any 0 notes
+            key.addTarget(self, action: "playNote:", forControlEvents:.TouchDown)
             self.view.addSubview(key)
             
             
@@ -59,92 +68,50 @@ class PianoController: UIViewController {
         
         // Black keys
         for var i : CGFloat = 0 ; i < 5; i++ {
-            let key = UIButton(type: UIButtonType.Custom) as UIButton
+            let key = SuperButton(type: UIButtonType.Custom) as SuperButton
             var y = ((i * (self.keyHeight)) + 1 + (self.keyHeight * 0.6) + self.keyHeight)
             if i > 1 { y += self.keyHeight }
             key.frame = CGRectMake((self.view.frame.size.width - self.view.frame.size.width * 0.6), y, self.view.frame.size.width * 0.6, (self.keyHeight * 0.8))
             key.setBackgroundImage(UIImage(named: "black.png"), forState: UIControlState.Normal)
-            let selector = NSSelectorFromString("black\(Int(i))")
-            key.addTarget(self, action: selector, forControlEvents:.TouchDown)
+            key.qualifier = "black\(Int(i+1))" // we don't have any 0 notes
+            key.addTarget(self, action: "playNote:", forControlEvents:.TouchDown)
             self.view.addSubview(key)
-        }
-    }
-    
-    func loadPianoNotes() {
-        for var i = 0 ; i < 12 ; i++ {
-            if let soundURL = NSBundle.mainBundle().URLForResource("\(i)", withExtension: "mp3") {
-                print("YOINK")
-                var mySound: SystemSoundID = SystemSoundID(i)
-                AudioServicesCreateSystemSoundID(soundURL, &mySound)
-            }
         }
     }
     
     
     // MARK: Piano Key Functions
     
-    func white0() {
-        SystemSoundID.playFileNamed("1", withExtenstion: "mp3")
-        self.notesPlayed += "C"
-        self.checkNotes()
-        
-    }
-    func white1() {
-        SystemSoundID.playFileNamed("3", withExtenstion: "mp3")
-        self.notesPlayed += "D"
-        self.checkNotes()
-    }
-    func white2() {
-        SystemSoundID.playFileNamed("5", withExtenstion: "mp3")
-        self.notesPlayed += "E"
-        self.checkNotes()
-    }
-    func white3() {
-        SystemSoundID.playFileNamed("6", withExtenstion: "mp3")
-        self.notesPlayed += "F"
-        self.checkNotes()
-    }
-    func white4() {
-        SystemSoundID.playFileNamed("8", withExtenstion: "mp3")
-        self.notesPlayed += "G"
-        self.checkNotes()
-    }
-    func white5() {
-        SystemSoundID.playFileNamed("10", withExtenstion: "mp3")
-        self.notesPlayed += "A"
-        self.checkNotes()
-    }
-    func white6() {
-        SystemSoundID.playFileNamed("12", withExtenstion: "mp3")
-        self.notesPlayed += "B"
+    
+    
+    
+    func playNote(sender: SuperButton) {
+        let string = "\(sender.qualifier)"
+        SystemSoundID.playFileNamed(string, withExtenstion: "mp3")
+        self.notesPlayed += noteForSoundFileName(string)
         self.checkNotes()
     }
     
-    func black0() {
-        SystemSoundID.playFileNamed("2", withExtenstion: "mp3")
-        self.notesPlayed += "C#"
-        self.checkNotes()
+    func noteForSoundFileName(name: String) -> String {
+        var string = ""
+        
+        if name.rangeOfString("white1") != nil { string = "C" }
+        if name.rangeOfString("white2") != nil { string = "D" }
+        if name.rangeOfString("white3") != nil { string = "E" }
+        if name.rangeOfString("white4") != nil { string = "F" }
+        if name.rangeOfString("white5") != nil { string = "G" }
+        if name.rangeOfString("white6") != nil { string = "A" }
+        if name.rangeOfString("white7") != nil { string = "B" }
+        
+        if name.rangeOfString("black1") != nil { string = "C#" }
+        if name.rangeOfString("black2") != nil { string = "D#" }
+        if name.rangeOfString("black3") != nil { string = "F#" }
+        if name.rangeOfString("black4") != nil { string = "G#" }
+        if name.rangeOfString("black5") != nil { string = "A#" }
+        
+        return string
     }
-    func black1() {
-        SystemSoundID.playFileNamed("4", withExtenstion: "mp3")
-        self.notesPlayed += "D#"
-        self.checkNotes()
-    }
-    func black2() {
-        SystemSoundID.playFileNamed("7", withExtenstion: "mp3")
-        self.notesPlayed += "F#"
-        self.checkNotes()
-    }
-    func black3() {
-        SystemSoundID.playFileNamed("9", withExtenstion: "mp3")
-        self.notesPlayed += "G#"
-        self.checkNotes()
-    }
-    func black4() {
-        SystemSoundID.playFileNamed("11", withExtenstion: "mp3")
-        self.notesPlayed += "A#"
-        self.checkNotes()
-    }
+    
     
     func checkNotes() {
         if self.notesPlayed.characters.count > 12 {
@@ -161,6 +128,14 @@ class PianoController: UIViewController {
             print("Bird in a cage!")
             self.notesPlayed = ""
         }
+    }
+    
+    
+    override func viewWillDisappear(animated: Bool) {
+        if self.isTabBarNeeded == true {
+            self.tabBarController?.tabBar.hidden = false
+        }
+        
     }
     
 

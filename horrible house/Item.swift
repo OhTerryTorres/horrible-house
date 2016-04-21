@@ -14,6 +14,7 @@ class Item: DictionaryBased, ActionPacked, Detailed {
     
     var name = ""
     var explanation = ""
+    var inventoryDescription = ""
     var details: [Detail] = []
     var actions: [Action] = []
     var canCarry = false
@@ -25,6 +26,7 @@ class Item: DictionaryBased, ActionPacked, Detailed {
         for (key, value) in withDictionary {
             if key == "name" { self.name = value as! String }
             if key == "explanation" { self.explanation = value as! String }
+            if key == "inventoryDescription" { self.inventoryDescription = value as! String }
             if key == "details" { self.setDetailsForArrayOfDictionaries(value as! [Dictionary<String, AnyObject>]) }
             
             if key == "actions" { self.setActionsForArrayOfDictionaries(value as! [Dictionary<String, AnyObject>]) }

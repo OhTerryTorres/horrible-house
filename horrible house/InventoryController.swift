@@ -17,6 +17,7 @@ class InventoryController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Items"
+        self.tabBarItem = UITabBarItem(title: "Items", image: nil, tag: 1)
         
     }
     
@@ -41,9 +42,10 @@ class InventoryController: UITableViewController {
         let item = self.inventoryArray[indexPath.row]
         
         cell.textLabel!.text = item.name
-        cell.detailTextLabel!.text = item.explanation
+        cell.detailTextLabel!.text = item.inventoryDescription
         
         return cell
     }
+    
     
 }

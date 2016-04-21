@@ -55,6 +55,17 @@
 				</array>
 			</dict>
 		</array>
+		<key>items</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Map</string>
+				<key>inventoryDescription</key>
+				<string>A map of the house.</string>
+				<key>canCarry</key>
+				<string></string>
+			</dict>
+		</array>
 	</dict>
 	<key>0</key>
 	<dict>

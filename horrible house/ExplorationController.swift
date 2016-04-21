@@ -12,34 +12,25 @@ import UIKit
 
 class ExplorationController: UITableViewController {
     
-    struct TabIndex {
-        static let house = 0
-        static let inventory = 1
-        static let map = 2
+    enum TabIndex : Int {
+        case house = 0
+        case inventory = 1
+        case map = 2
     }
     
     
     var house : House = (UIApplication.sharedApplication().delegate as! AppDelegate).house
     var update = ""
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Make it so the player AUTOMATICALLY starts at the same position as the Foyer.
         setPlayerStartingRoom()
-        // setTableSections()
+        removeExcessViewControllersFromTabBarController()
         
         self.title = self.house.currentRoom.name
-        self.tabBarController?.tabBar.hidden = true
-        if let arrayOfTabBarItems = self.tabBarController!.tabBar.items {
-            for barItem in arrayOfTabBarItems {
-                barItem.enabled = false
-            }
-            arrayOfTabBarItems[0].enabled = true
-        }
-        
-        showTabBarItem(TabIndex.map)
+        self.tabBarItem = UITabBarItem(title: "House", image: nil, tag: 0)
         
     }
 
@@ -55,20 +46,58 @@ class ExplorationController: UITableViewController {
         
     }
     
-    func getNumberOfTableSections() -> Int {
-        var numberOfSections = 4
-        for _ in self.house.currentRoom.items {
-            numberOfSections++
+    
+    // Change this so that the appropriate tabs aren't taken away from a saved game
+    // ie, if the player already has the map, or other items
+    func removeExcessViewControllersFromTabBarController() {
+        if let tabBarController = self.tabBarController {
+            var viewControllers = tabBarController.viewControllers
+            for var i = viewControllers!.count - 1; i > 0; i-- {
+                viewControllers?.removeAtIndex(i)
+            }
+            tabBarController.viewControllers = viewControllers
+            
+            if tabBarController.viewControllers?.count < 2 {
+                tabBarController.tabBar.hidden = true
+            }
         }
-        return numberOfSections
     }
     
+    func addViewControllerToTabBarController(tabIndex : TabIndex) {
+        
+        self.tabBarController!.tabBar.hidden = false
+        
+        var viewControllers = self.tabBarController!.viewControllers
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        switch tabIndex {
+        case .inventory: // INVENTORY
+            let ic = storyboard.instantiateViewControllerWithIdentifier("NavigationInventoryController") as! UINavigationController
+            viewControllers?.append(ic)
+        case .map: // MAP
+            let mc = storyboard.instantiateViewControllerWithIdentifier("NavigationMapController") as! UINavigationController
+            viewControllers?.append(mc)
+        default:
+            break
+        }
+        
+        self.tabBarController!.viewControllers = viewControllers
+    }
     
     
     // MARK: Tableview Functions
     
     override func numberOfSectionsInTableView(tableView: UITableView?) -> Int {
         return getNumberOfTableSections()
+    }
+    
+    func getNumberOfTableSections() -> Int {
+        var numberOfSections = 4
+        for _ in self.house.currentRoom.items {
+            numberOfSections++
+        }
+        return numberOfSections
     }
     
     
@@ -259,7 +288,10 @@ class ExplorationController: UITableViewController {
                         // If the action is a TAKE action
                         if action.name.rangeOfString("Take") != nil {
                             if house.player.items.count == 0 {
-                                showTabBarItem(TabIndex.inventory)
+                                addViewControllerToTabBarController(TabIndex.inventory)
+                            }
+                            if action.name.lowercaseString.rangeOfString("map") != nil {
+                                addViewControllerToTabBarController(TabIndex.map)
                             }
                             self.house.player.items += [self.house.currentRoom.items[i]]
                             self.house.currentRoom.items.removeAtIndex(i)
@@ -329,14 +361,6 @@ class ExplorationController: UITableViewController {
                     performSegueWithIdentifier("event", sender: event)
                 }
             }
-        }
-    }
-    
-    
-    func showTabBarItem(index: Int) {
-        self.tabBarController?.tabBar.hidden = false
-        if  let arrayOfTabBarItems = self.tabBarController!.tabBar.items {
-            arrayOfTabBarItems[index].enabled = true
         }
     }
 
@@ -425,4 +449,6 @@ class ExplorationController: UITableViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+
 }

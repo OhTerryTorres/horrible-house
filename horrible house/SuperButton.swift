@@ -1,5 +1,5 @@
 //
-//  MapButton.swift
+//  SuperButton.swift
 //  horrible house
 //
 //  Created by TerryTorres on 4/12/16.
@@ -8,9 +8,10 @@
 
 import UIKit
 
-class MapButton: UIButton {
+class SuperButton: UIButton {
     
-    var room : Room?
+    var qualifier: String = ""
 
 
 }
+
