@@ -20,6 +20,8 @@ class PhoneController: UIViewController {
     
     var isTabBarNeeded = false
     
+    var timer: NSTimer!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,9 +72,12 @@ class PhoneController: UIViewController {
                 
                 print("adding \(string) button")
                 
-                keyButton.addTarget(self, action: "dialNumber:", forControlEvents:.TouchDown)
+                keyButton.addTarget(self, action: "touchDown:", forControlEvents:.TouchDown)
+                keyButton.addTarget(self, action: "touchUp:", forControlEvents:[.TouchUpInside, .TouchUpOutside])
                 
+                keyButton.titleLabel!.font = Font.phoneFont
                 keyButton.setTitle(string, forState: UIControlState.Normal)
+                if string.rangeOfString("Star") != nil { keyButton.setTitle("*", forState: UIControlState.Normal) }
                 
                 keyButton.backgroundColor = UIColor.redColor()
                 keyButton.setBackgroundImage(UIImage(named: "white.png"), forState: UIControlState.Highlighted)
@@ -94,7 +99,7 @@ class PhoneController: UIViewController {
         var string = "\(i)"
         switch i {
         case 10:
-            string = "*"
+            string = "Star"
         case 11:
             string = "0"
         case 12:
@@ -105,13 +110,24 @@ class PhoneController: UIViewController {
         return string
     }
     
-    func dialNumber(sender: SuperButton) {
-        // let string = "key\(sender.qualifier)"
-        print("in dialNumber for \(sender.qualifier)")
-        // SystemSoundID.playFileNamed(string, withExtenstion: "mp3")
+    
+    
+    func dialNumber(sender: NSTimer) {
+        let string = "key\(sender.userInfo!)"
+        SystemSoundID.playFileNamed(string, withExtenstion: "mp3")
+        print("WOW \(string)")
+        
+    }
+    
+    func touchDown(sender: SuperButton) {
+        timer = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: "dialNumber:", userInfo: sender.qualifier, repeats: true)
+        dialNumber(timer)
+    }
+    
+    func touchUp(sender: SuperButton) {
+        timer.invalidate()
         self.numbersDialed += sender.qualifier
         self.checkNumber()
-        
     }
     
     func checkNumber() {

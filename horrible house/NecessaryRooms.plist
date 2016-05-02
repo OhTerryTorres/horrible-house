@@ -59,6 +59,21 @@
 		<array>
 			<dict>
 				<key>name</key>
+				<string>Grandfather Clock</string>
+				<key>explanation</key>
+				<string>A grandfather stands tall against the wall, its pendulum still swinging silently.</string>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Check the clock</string>
+						<key>result</key>
+						<string>The time is [currentTime].</string>
+					</dict>
+				</array>
+			</dict>
+			<dict>
+				<key>name</key>
 				<string>Map</string>
 				<key>inventoryDescription</key>
 				<string>A map of the house.</string>

@@ -22,6 +22,7 @@ class House {
         case North, South, East, West
     }
     
+    let gameClock = GameClock()
     
     // MARK: Properties
     var width = 0

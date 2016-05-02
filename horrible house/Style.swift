@@ -14,3 +14,10 @@ struct Color {
     static let itemColor = UIColor.greenColor()
 }
 
+struct Font {
+    static let basicFont = UIFont.systemFontOfSize(UIFont.systemFontSize())
+    // static let basic = UIFont (name: "HelveticaNeue-UltraLight", size: 30)
+    
+    static let phoneFont = UIFont.systemFontOfSize(40)
+}
+

@@ -247,11 +247,21 @@ class ExplorationController: UITableViewController {
             break
         }
         self.tableView.reloadData()
+        self.house.gameClock.passTimeByTurn()
     }
     
     
+    // This deals with text that needs to be formatted to include game properties.
+    // ex. The current time.
+    func translateSpecialText(var string: String) -> String {
+        if (string.rangeOfString("[currentTime]") != nil) {
+            string = string.stringByReplacingOccurrencesOfString("[currentTime]", withString: "\(self.house.gameClock.currentTime.hours):\(self.house.gameClock.currentTime.minutes)")
+        }
+        return string
+    }
+    
     func resolveAction(var action: Action, isItemAction: Bool) {
-        if let result = action.result { self.update = result }
+        if let result = action.result { self.update = self.translateSpecialText(result) }
         if let roomChange = action.roomChange { self.house.currentRoom.explanation = roomChange }
         
         for itemName in action.revealItems {

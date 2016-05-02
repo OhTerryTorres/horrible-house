@@ -15,7 +15,9 @@ extension UILabel {
     // A string that reads "Go north to {[room]Dining Room}" would become "Go north to Dining Room"
     // with the "Dining Room" text being the color Color.roomColor.
     
+    
     func setAttributedTextWithTags(var string: String) {
+        
         var mutableStringArray = [NSMutableAttributedString]()
         var rangeAndTagArray = [(range : NSRange, tag : String)]()
         
@@ -61,11 +63,10 @@ extension UILabel {
         }
         
         
-        var newMutableString = NSMutableAttributedString(string: string)
+        let newMutableString = NSMutableAttributedString(string: string)
         
         for (range,tag) in rangeAndTagArray {
-            let textColor = textColorForTag(tag)
-            newMutableString.addAttribute(NSForegroundColorAttributeName, value: textColor, range: range)
+            newMutableString.addAttribute(NSForegroundColorAttributeName, value: textColorForTag(tag), range: range)
         }
         
         self.attributedText = newMutableString
