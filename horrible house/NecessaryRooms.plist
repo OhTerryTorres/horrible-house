@@ -80,6 +80,30 @@
 				<key>canCarry</key>
 				<string></string>
 			</dict>
+			<dict>
+				<key>name</key>
+				<string>Skull</string>
+				<key>inventoryDescription</key>
+				<string>Someone&apos;s skull. It can talk?</string>
+				<key>canCarry</key>
+				<string></string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Pocketwatch</string>
+				<key>inventoryDescription</key>
+				<string>It still tells time.</string>
+				<key>canCarry</key>
+				<string></string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Box</string>
+				<key>inventoryDescription</key>
+				<string>It&apos;s just a box.</string>
+				<key>maxCapacity</key>
+				<integer>99</integer>
+			</dict>
 		</array>
 	</dict>
 	<key>0</key>

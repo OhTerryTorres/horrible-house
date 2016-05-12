@@ -36,4 +36,10 @@ class GameTime {
         }
         self.hours = hours
     }
+    
+    func totalTimeInSeconds() -> Int {
+        let h = (hours * 60) * 60
+        let m = minutes * 60
+        return seconds + m + h
+    }
 }

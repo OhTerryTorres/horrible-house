@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>6</key>
+	<dict>
+		<key>name</key>
+		<string>Item: Wrench</string>
+		<key>detail</key>
+		<dict>
+			<key>explanation</key>
+			<string>A wrench is useful for all sorts of things. Like guts!</string>
+			<key>rules</key>
+			<array>
+				<string>\hasWrench</string>
+			</array>
+		</dict>
+	</dict>
+	<key>5</key>
+	<dict>
+		<key>name</key>
+		<string>Item: Map</string>
+		<key>detail</key>
+		<dict>
+			<key>explanation</key>
+			<string>You&apos;re using a map? C&apos;mon, this place isn&apos;t so complicated.</string>
+			<key>rules</key>
+			<array>
+				<string>\hasMap</string>
+			</array>
+		</dict>
+	</dict>
+	<key>4</key>
+	<dict>
+		<key>name</key>
+		<string>Item: Skull</string>
+		<key>detail</key>
+		<dict>
+			<key>explanation</key>
+			<string>Hey! Happy to be here, by the way.</string>
+			<key>rules</key>
+			<array>
+				<string>\hasSkull</string>
+			</array>
+		</dict>
+		<key>isHighPriority</key>
+		<true/>
+	</dict>
+	<key>3</key>
+	<dict>
+		<key>name</key>
+		<string>Item: Armless Doll</string>
+		<key>detail</key>
+		<dict>
+			<key>explanation</key>
+			<string>Oh, that&apos;s... pretty creepy. I don&apos;t recognize that.</string>
+			<key>rules</key>
+			<array>
+				<string>\hasArmless Doll</string>
+			</array>
+		</dict>
+	</dict>
+	<key>2</key>
+	<dict>
+		<key>name</key>
+		<string>Item: Pocketwatch</string>
+		<key>detail</key>
+		<dict>
+			<key>explanation</key>
+			<string>Oh. That was the master&apos;s.</string>
+			<key>rules</key>
+			<array>
+				<string>\hasPocketwatch</string>
+			</array>
+		</dict>
+	</dict>
+	<key>1</key>
+	<dict>
+		<key>name</key>
+		<string>Item: Bandage</string>
+		<key>detail</key>
+		<dict>
+			<key>explanation</key>
+			<string>Eugh! Don&apos;t touch me with that.</string>
+			<key>rules</key>
+			<array>
+				<string>\hasBandage</string>
+			</array>
+		</dict>
+	</dict>
+	<key>0</key>
+	<dict>
+		<key>name</key>
+		<string>Item: Knife</string>
+		<key>detail</key>
+		<dict>
+			<key>explanation</key>
+			<string>Watch where you point that thing.</string>
+			<key>rules</key>
+			<array>
+				<string>\hasKnife</string>
+			</array>
+		</dict>
+	</dict>
+</dict>
+</plist>

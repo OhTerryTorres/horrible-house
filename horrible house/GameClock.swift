@@ -14,6 +14,7 @@ class GameClock {
     var endTime : GameTime = GameTime(hours: 12, minutes: 0, seconds: 0)
     var currentTime : GameTime
     var secondsPerTurn = 30
+    var isBroken = false
     
     init() {
         self.currentTime = self.startTime
@@ -25,11 +26,14 @@ class GameClock {
     
     
     func passTime(bySeconds seconds:Int) {
-        let newTime = GameTime(
-            hours: self.currentTime.hours,
-            minutes: self.currentTime.minutes,
-            seconds: self.currentTime.seconds + seconds)
-        self.currentTime = newTime
+        if isBroken == false {
+            let newTime = GameTime(
+                hours: self.currentTime.hours,
+                minutes: self.currentTime.minutes,
+                seconds: self.currentTime.seconds + seconds)
+            self.currentTime = newTime
+        }
+        
     }
     
     func passTimeByTurn() {

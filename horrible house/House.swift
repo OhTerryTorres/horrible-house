@@ -59,6 +59,10 @@ class House {
     // This will be set by the game controllers.
     var currentEvent = Event()
     
+    // The skull will be watching to update its ideas
+    
+    var skull = Skull()
+
     
     init(layout:[[[Int]]]) {
         self.layout = layout.reverse()
@@ -336,5 +340,6 @@ class House {
         }
         
     }
+    
     
 }

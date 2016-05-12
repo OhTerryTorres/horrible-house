@@ -61,6 +61,7 @@ class MapController: UIViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
+        print("VIEWWILLAPPEAR")
         self.currentFloor = self.house.player.position.z
         self.displayMap()
         

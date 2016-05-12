@@ -68,10 +68,14 @@
 		CE6F27BD1C9335C900B21818 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6F27BC1C9335C900B21818 /* Character.swift */; };
 		CE6F27BF1C933DE400B21818 /* Stage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6F27BE1C933DE400B21818 /* Stage.swift */; };
 		CE6F28071C99C99D00B21818 /* Detail.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6F28061C99C99C00B21818 /* Detail.swift */; };
+		CEB6D24F1CDBB55D0070CCCB /* ClockController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB6D24E1CDBB55D0070CCCB /* ClockController.swift */; };
+		CEB6D2551CE11D380070CCCB /* ContainerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB6D2541CE11D380070CCCB /* ContainerController.swift */; };
 		CEB91C411CD7C39D00249297 /* SkullController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB91C401CD7C39D00249297 /* SkullController.swift */; };
+		CEB91C431CD97A5200249297 /* Skull.plist in Resources */ = {isa = PBXBuildFile; fileRef = CEB91C421CD97A5200249297 /* Skull.plist */; };
 		CEF40DD51CAE9F1100F1B08B /* UILabelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF40DD41CAE9F1100F1B08B /* UILabelExtension.swift */; };
 		CEF40DD71CAEA1E400F1B08B /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF40DD61CAEA1E400F1B08B /* Style.swift */; };
 		CEF40DD91CB41ED300F1B08B /* Detailed.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF40DD81CB41ED300F1B08B /* Detailed.swift */; };
+		CEF7D9741CDBAF7D00491F51 /* Skull.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF7D9731CDBAF7D00491F51 /* Skull.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -159,10 +163,14 @@
 		CE6F27BC1C9335C900B21818 /* Character.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
 		CE6F27BE1C933DE400B21818 /* Stage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stage.swift; sourceTree = "<group>"; };
 		CE6F28061C99C99C00B21818 /* Detail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Detail.swift; sourceTree = "<group>"; };
+		CEB6D24E1CDBB55D0070CCCB /* ClockController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClockController.swift; sourceTree = "<group>"; };
+		CEB6D2541CE11D380070CCCB /* ContainerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerController.swift; sourceTree = "<group>"; };
 		CEB91C401CD7C39D00249297 /* SkullController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SkullController.swift; sourceTree = "<group>"; };
+		CEB91C421CD97A5200249297 /* Skull.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Skull.plist; sourceTree = "<group>"; };
 		CEF40DD41CAE9F1100F1B08B /* UILabelExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UILabelExtension.swift; sourceTree = "<group>"; };
 		CEF40DD61CAEA1E400F1B08B /* Style.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 		CEF40DD81CB41ED300F1B08B /* Detailed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Detailed.swift; sourceTree = "<group>"; };
+		CEF7D9731CDBAF7D00491F51 /* Skull.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Skull.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -230,6 +238,7 @@
 				CE50D0F61CA1C0D6007AF0E2 /* NecessaryRooms.plist */,
 				CE3C3D041CA9C5FC00BA551F /* Characters.plist */,
 				CE50D0C91C9DA8B2007AF0E2 /* Events.plist */,
+				CEB91C421CD97A5200249297 /* Skull.plist */,
 				CE0478851C6C10FD008E23E1 /* Info.plist */,
 				CE04787D1C6C10FD008E23E1 /* horrible_house.xcdatamodeld */,
 			);
@@ -280,6 +289,7 @@
 				CE6F28061C99C99C00B21818 /* Detail.swift */,
 				CE2AD7B41CCF950B00B1353C /* GameTime.swift */,
 				CE2AD7B61CCF95B500B1353C /* GameClock.swift */,
+				CEF7D9731CDBAF7D00491F51 /* Skull.swift */,
 			);
 			name = GameObjects;
 			sourceTree = "<group>";
@@ -291,10 +301,11 @@
 				CE50D0CB1CA03A75007AF0E2 /* EventController.swift */,
 				CE59B8301CB69A6B00D9A8BB /* InventoryController.swift */,
 				CE3BEA4F1CB717710062AFAF /* MapController.swift */,
+				CEB91C401CD7C39D00249297 /* SkullController.swift */,
+				CEB6D24E1CDBB55D0070CCCB /* ClockController.swift */,
+				CEB6D2541CE11D380070CCCB /* ContainerController.swift */,
 				CE3C3CE31CA8CBEF00BA551F /* PianoController.swift */,
 				CE006FC91CC3008700A18D63 /* PhoneController.swift */,
-				CEB91C401CD7C39D00249297 /* SkullController.swift */,
-				CE3BEA4D1CB6B1550062AFAF /* TabBarController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -335,6 +346,7 @@
 			children = (
 				CEF40DD41CAE9F1100F1B08B /* UILabelExtension.swift */,
 				CE3205721C703AD000EAA581 /* ArrayExtension.swift */,
+				CE3BEA4D1CB6B1550062AFAF /* TabBarController.swift */,
 				CE49423C1CBD3F07009F42DF /* SuperButton.swift */,
 				CEF40DD61CAEA1E400F1B08B /* Style.swift */,
 			);
@@ -461,6 +473,7 @@
 				CE2AD7AD1CCA87CA00B1353C /* key4.mp3 in Resources */,
 				CE2AD7AB1CCA87CA00B1353C /* key2.mp3 in Resources */,
 				CE3C3CFF1CA9871F00BA551F /* white6.mp3 in Resources */,
+				CEB91C431CD97A5200249297 /* Skull.plist in Resources */,
 				CE2AD7B11CCA87CA00B1353C /* key8.mp3 in Resources */,
 				CE3C3CFC1CA9871F00BA551F /* black3.mp3 in Resources */,
 				CE3C3CF91CA9871F00BA551F /* black2.mp3 in Resources */,
@@ -500,12 +513,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEB6D24F1CDBB55D0070CCCB /* ClockController.swift in Sources */,
 				CE04787F1C6C10FD008E23E1 /* horrible_house.xcdatamodeld in Sources */,
 				CE2F7A991CA234AA00A3025D /* RuleBased.swift in Sources */,
 				CE006FCA1CC3008700A18D63 /* PhoneController.swift in Sources */,
 				CEB91C411CD7C39D00249297 /* SkullController.swift in Sources */,
 				CE49423D1CBD3F07009F42DF /* SuperButton.swift in Sources */,
 				CE6F27BF1C933DE400B21818 /* Stage.swift in Sources */,
+				CEF7D9741CDBAF7D00491F51 /* Skull.swift in Sources */,
 				CEF40DD91CB41ED300F1B08B /* Detailed.swift in Sources */,
 				CE59B8311CB69A6B00D9A8BB /* InventoryController.swift in Sources */,
 				CE6F28071C99C99D00B21818 /* Detail.swift in Sources */,
@@ -529,6 +544,7 @@
 				CE50D0CC1CA03A75007AF0E2 /* EventController.swift in Sources */,
 				CEF40DD71CAEA1E400F1B08B /* Style.swift in Sources */,
 				CE3BEA501CB717710062AFAF /* MapController.swift in Sources */,
+				CEB6D2551CE11D380070CCCB /* ContainerController.swift in Sources */,
 				CE50D0C81C9D91AC007AF0E2 /* Event.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

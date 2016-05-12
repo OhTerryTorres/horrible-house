@@ -141,6 +141,7 @@ class EventController: UITableViewController {
         }
 
         self.tableView.reloadData()
+        self.house.skull.updateSkull()
     }
     
     

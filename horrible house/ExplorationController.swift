@@ -16,6 +16,8 @@ class ExplorationController: UITableViewController {
         case house = 0
         case inventory = 1
         case map = 2
+        case clock = 3
+        case skull = 4
     }
     
     
@@ -27,7 +29,10 @@ class ExplorationController: UITableViewController {
         
         // Make it so the player AUTOMATICALLY starts at the same position as the Foyer.
         setPlayerStartingRoom()
-        removeExcessViewControllersFromTabBarController()
+        if let tabBarController = self.tabBarController as? TabBarController {
+            tabBarController.refreshViewControllers()
+        }
+        
         
         self.title = self.house.currentRoom.name
         self.tabBarItem = UITabBarItem(title: "House", image: nil, tag: 0)
@@ -46,44 +51,6 @@ class ExplorationController: UITableViewController {
         
     }
     
-    
-    // Change this so that the appropriate tabs aren't taken away from a saved game
-    // ie, if the player already has the map, or other items
-    func removeExcessViewControllersFromTabBarController() {
-        if let tabBarController = self.tabBarController {
-            var viewControllers = tabBarController.viewControllers
-            for var i = viewControllers!.count - 1; i > 0; i-- {
-                viewControllers?.removeAtIndex(i)
-            }
-            tabBarController.viewControllers = viewControllers
-            
-            if tabBarController.viewControllers?.count < 2 {
-                tabBarController.tabBar.hidden = true
-            }
-        }
-    }
-    
-    func addViewControllerToTabBarController(tabIndex : TabIndex) {
-        
-        self.tabBarController!.tabBar.hidden = false
-        
-        var viewControllers = self.tabBarController!.viewControllers
-        
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        
-        switch tabIndex {
-        case .inventory: // INVENTORY
-            let ic = storyboard.instantiateViewControllerWithIdentifier("NavigationInventoryController") as! UINavigationController
-            viewControllers?.append(ic)
-        case .map: // MAP
-            let mc = storyboard.instantiateViewControllerWithIdentifier("NavigationMapController") as! UINavigationController
-            viewControllers?.append(mc)
-        default:
-            break
-        }
-        
-        self.tabBarController!.viewControllers = viewControllers
-    }
     
     
     // MARK: Tableview Functions
@@ -247,6 +214,7 @@ class ExplorationController: UITableViewController {
             break
         }
         self.tableView.reloadData()
+        self.house.skull.updateSkull()
         self.house.gameClock.passTimeByTurn()
     }
     
@@ -297,14 +265,12 @@ class ExplorationController: UITableViewController {
                         
                         // If the action is a TAKE action
                         if action.name.rangeOfString("Take") != nil {
-                            if house.player.items.count == 0 {
-                                addViewControllerToTabBarController(TabIndex.inventory)
-                            }
-                            if action.name.lowercaseString.rangeOfString("map") != nil {
-                                addViewControllerToTabBarController(TabIndex.map)
-                            }
                             self.house.player.items += [self.house.currentRoom.items[i]]
                             self.house.currentRoom.items.removeAtIndex(i)
+                            
+                            if let tabBarController = self.tabBarController as? TabBarController {
+                                tabBarController.refreshViewControllers()
+                            }
                             
                         }
                         break // THIS keeps the loop from crashing as it examines an item that does not exist.
@@ -331,7 +297,7 @@ class ExplorationController: UITableViewController {
         
         if let triggerEventName = action.triggerEventName { triggerEvent(forEventName: triggerEventName)}
         
-        if let segue = action.segue { performSegueWithIdentifier(segue, sender: nil)}
+        if let segue = action.segue { performSegueWithIdentifier(segue, sender: action)}
         
         if let changeFloor = action.changeFloor {
             switch changeFloor {
@@ -394,6 +360,18 @@ class ExplorationController: UITableViewController {
         if segue.identifier == "piano" {
             let pc = segue.destinationViewController as! PianoController
             pc.house = self.house
+        }
+        if segue.identifier == "container" {
+            let cc = segue.destinationViewController as! ContainerController
+            
+            let action = sender as! Action
+            var itemName = action.name.stringByReplacingOccurrencesOfString("Look in {[item]", withString: "")
+            itemName = itemName.stringByReplacingOccurrencesOfString("}", withString: "")
+            if let index = self.house.currentRoom.items.indexOf({$0.name == itemName}) {
+                cc.container = self.house.currentRoom.items[index]
+            }
+            
+            
         }
         
         

@@ -13,12 +13,12 @@ import UIKit
 // The skull has Ideas, which are basically Details but with more sass.
 
 class Idea {
-    let detail : Detail
+    var detail = Detail()
     var isHighPriority = false
     
     init(withDictionary: Dictionary<String, AnyObject>) {
         for (key, value) in withDictionary {
-            if key == "detail" { self.detail = Detail(withDictionary: value as! Dictionary<String, AnyObject>)
+            if key == "detail" { self.detail = Detail(withDictionary: value as! Dictionary<String, AnyObject>) }
             if key == "isHighPriority" { self.isHighPriority = true }
         }
     }
@@ -26,33 +26,46 @@ class Idea {
 
 class SkullController: UIViewController {
     
-    var ideas : [Idea] = []
-    var ideasToSayAloud : [Idea] = []
+    var house : House = (UIApplication.sharedApplication().delegate as! AppDelegate).house
+    var skull : Skull = (UIApplication.sharedApplication().delegate as! AppDelegate).house.skull
+    @IBOutlet var ideaLabel: UILabel!
     
     override func viewDidLoad() {
-        let path = NSBundle.mainBundle().pathForResource("Skull", ofType: "plist")
-        let dict = NSDictionary(contentsOfFile: path!) as! Dictionary<String,AnyObject>
         
-        // add a caveat for when reloading from a saved game
         
-        for (_, value) in dict {
-            let idea = Idea(withDictionary: value as! Dictionary<String,AnyObject>)
-            self.ideas += [idea]
+    }
+    
+    func addTestItems() {
+        // let itemA = Item()
+        // itemA.name = "Bandage"
+        // self.house.player.items += [itemA]
+    }
+    
+    
+    @IBAction func displayIdea(sender: AnyObject) {
+        if self.skull.ideasToSayAloud.count > 0 {
+            let index = self.skull.ideasToSayAloud.count - 1
+            self.ideaLabel.text = self.skull.ideasToSayAloud[index].detail.explanation
+            
+            print("removing from ideasToSayAloud: \(self.skull.ideasToSayAloud[index].detail.explanation)")
+            
+            self.skull.ideasToSayAloud.removeAtIndex(index)
+        } else {
+            self.ideaLabel.text = ""
         }
-        
         
     }
     
     override func viewWillAppear(animated: Bool) {
-        for idea in self.ideas {
-            if idea.detail.isFollowingTheRules() {
-                if idea.isHighPriority {
-                    self.ideasToSayAloud += [idea]
-                }
-            }
-        }
+        self.house = (UIApplication.sharedApplication().delegate as! AppDelegate).house
+        self.skull = (UIApplication.sharedApplication().delegate as! AppDelegate).house.skull
+        
+
     }
     
-    
+    override func viewWillDisappear(animated: Bool) {
+        (UIApplication.sharedApplication().delegate as! AppDelegate).house = self.house
+        (UIApplication.sharedApplication().delegate as! AppDelegate).house.skull = self.skull
+    }
 
 }
