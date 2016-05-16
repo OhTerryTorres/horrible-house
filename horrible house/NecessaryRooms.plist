@@ -104,6 +104,23 @@
 				<key>maxCapacity</key>
 				<integer>99</integer>
 			</dict>
+			<dict>
+				<key>name</key>
+				<string>Oven</string>
+				<key>explanation</key>
+				<string>There is an oven. It&apos;s hard to tell if it works still.</string>
+				<key>maxCapacity</key>
+				<integer>99</integer>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Turn the {[item]oven} on</string>
+						<key>result</key>
+						<string>The oven is on.</string>
+					</dict>
+				</array>
+			</dict>
 		</array>
 	</dict>
 	<key>0</key>

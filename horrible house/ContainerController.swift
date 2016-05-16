@@ -55,15 +55,40 @@ class ContainerController: UIViewController {
         if tableView == self.tableViewContainer {
             self.house.player.addItemToItems(item)
             self.container.removeItemFromItems(withName: item.name)
+            self.endCookingItemInOven(item)
         }
         if tableView == self.tableViewInventory {
             self.container.addItemToItems(item)
             self.house.player.removeItemFromItems(withName: item.name)
+            self.startCookingItemInOven(item)
         }
         self.tableViewContainer.reloadData()
         self.tableViewInventory.reloadData()
         if let tabBarController = self.tabBarController as? TabBarController {
             tabBarController.refreshViewControllers()
+        }
+    }
+    
+    // This starts the cooking timer on any items that were not in the oven before it was heated
+    
+    func startCookingItemInOven(item: Item) {
+        if let oven = container as? Oven {
+            if oven.isHeated {
+                item.cookingTimeBegan = self.house.gameClock.currentTime
+                // Delete this when done testing
+                let timeItemsWillBeCooked = GameTime(hours: item.cookingTimeBegan!.hours, minutes: item.cookingTimeBegan!.minutes, seconds: item.cookingTimeBegan!.seconds + Oven.CookingTimes.secondsUntilCooked)
+                print("\(item.name) be cooked at \(timeItemsWillBeCooked.hours):\(timeItemsWillBeCooked.minutes)")
+            }
+        }
+        
+    }
+    
+    func endCookingItemInOven(item: Item) {
+        if let _ = container as? Oven {
+            if let _ = item.cookingTimeBegan {
+                print("\(item.name) is no longer being cooked")
+                item.cookingTimeBegan = nil
+            }
         }
     }
     
@@ -96,6 +121,7 @@ class ContainerController: UIViewController {
     func numberOfSectionsInTableView(tableView: UITableView?) -> Int {
         return 1
     }
+    
     
     
 }

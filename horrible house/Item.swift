@@ -26,6 +26,9 @@ class Item: DictionaryBased, ActionPacked, Detailed, ItemBased {
     var maxCapacity : Int?
     var isContainer : Bool?
     
+    // MARK: For the oven
+    var cookingTimeBegan : GameTime?
+    
 
     required init(withDictionary: Dictionary<String, AnyObject>) {
         for (key, value) in withDictionary {
@@ -71,50 +74,96 @@ class Oven : Item {
     
     var isOn = false
     var timeTurnedOn : GameTime?
-    var secondsUntilHeated = 900 // 15 minutes
+    
     var timeHeated : GameTime?
     var isHeated = false
-    var secondsUntilCooked = 900
-    var timeCooked : GameTime?
-    var itemsCooking : [Item] = []
     
-    func turnOn() {
-        self.timeTurnedOn = (UIApplication.sharedApplication().delegate as! AppDelegate).house.gameClock.currentTime
-        self.itemsCooking = self.items
+    
+    struct CookingTimes {
+        static let secondsUntilHeated = 600 // 10 minutes
+        static let secondsUntilCooked = 900 // 15 minutes
+    }
+    
+    func turnOn(atTime currentTime : GameTime) {
+        self.isOn = true
+        self.timeTurnedOn = currentTime
+        print("Oven on at \(self.timeTurnedOn?.totalTimeInSeconds()) seconds")
+        self.timeHeated = GameTime(hours: timeTurnedOn!.hours, minutes: timeTurnedOn!.minutes, seconds: timeTurnedOn!.seconds + CookingTimes.secondsUntilHeated)
+        print("Oven will be heated at \(timeHeated!.hours):\(timeHeated!.minutes))")
+        
+        if let index = self.actions.indexOf({ $0.name.rangeOfString("on") != nil }) {
+            let dict : Dictionary<String, AnyObject> = [ "name" : "Turn the {[item]\(self.name)} off", "result" : "The oven is off."]
+            let action = Action(withDictionary: dict)
+            self.actions[index] = action
+        }
+
     }
     
     func turnOff() {
-        self.timeTurnedOn = GameTime()
-        self.timeHeated = GameTime()
+        self.isOn = false
+        self.timeTurnedOn = nil
+        self.timeHeated = nil
         self.isHeated = false
-        self.itemsCooking = []
-    }
-    
-    func checkOven() {
-        self.timeHeated = GameTime(hours: timeTurnedOn!.hours, minutes: timeTurnedOn!.minutes, seconds: timeTurnedOn!.seconds + secondsUntilHeated)
-        if (UIApplication.sharedApplication().delegate as! AppDelegate).house.gameClock.currentTime.totalTimeInSeconds() > timeHeated!.totalTimeInSeconds() {
-            self.isHeated = true
+        print("Oven off")
+        for item in items {
+            item.cookingTimeBegan = nil
         }
         
-        if isHeated {
-            self.timeCooked = GameTime(hours: timeHeated!.hours, minutes: timeHeated!.minutes, seconds: timeHeated!.seconds + secondsUntilCooked)
-            if (UIApplication.sharedApplication().delegate as! AppDelegate).house.gameClock.currentTime.totalTimeInSeconds() > timeCooked!.totalTimeInSeconds() {
-                self.cookItems()
-            }
+        if let index = self.actions.indexOf({ $0.name.rangeOfString("off") != nil }) {
+            let dict : Dictionary<String, AnyObject> = [ "name" : "Turn the {[item]\(self.name)} on", "result" : "The oven is on."]
+            let action = Action(withDictionary: dict)
+            self.actions[index] = action
         }
-        
     }
     
-    func cookItems() {
-        for item in itemsCooking {
-            if let i = items.indexOf({$0.name == item.name}) {
-                let newItem = Item()
-                newItem.name = "Burnt Clump"
-                newItem.inventoryDescription = "An ashy pile"
-                
-                items[i] = newItem
+    func checkOven(atTime currentTime : GameTime) {
+        if isOn {
+            if self.isHeated == false {
+                print("Current time is \(currentTime.totalTimeInSeconds())")
+                if currentTime.totalTimeInSeconds() > timeHeated!.totalTimeInSeconds() {
+                    print("Oven heated!!")
+                    self.isHeated = true
+                }
             }
             
+            
+            if self.isHeated == true {
+                self.setCookTimes(atTime: currentTime)
+                self.cookItems(atTime: currentTime)
+            }
+        }
+    }
+    
+    func setCookTimes(atTime currentTime: GameTime) {
+        for item in items {
+            if var _ = item.cookingTimeBegan {
+                
+            } else {
+                print("initializing cooking time")
+                item.cookingTimeBegan = self.timeHeated!
+                
+                // Delete this when done testing
+                let timeItemsWillBeCooked = GameTime(hours: item.cookingTimeBegan!.hours, minutes: item.cookingTimeBegan!.minutes, seconds: item.cookingTimeBegan!.seconds + CookingTimes.secondsUntilCooked)
+                print("\(item.name) be cooked at \(timeItemsWillBeCooked.hours):\(timeItemsWillBeCooked.minutes)")
+            }
+        }
+        
+    }
+    
+    func cookItems(atTime currentTime : GameTime) {
+        for item in items {
+            if var _ = item.cookingTimeBegan {
+                let timeSpentCooking = currentTime.totalTimeInSeconds() - item.cookingTimeBegan!.totalTimeInSeconds()
+                if timeSpentCooking >= CookingTimes.secondsUntilCooked {
+                    if let i = items.indexOf({$0.name == item.name}) {
+                        let newItem = Item()
+                        newItem.name = "Burnt Clump"
+                        newItem.inventoryDescription = "An ashy pile"
+                        
+                        items[i] = newItem
+                    }
+                }
+            }
         }
     }
     

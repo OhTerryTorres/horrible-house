@@ -42,4 +42,14 @@ class GameTime {
         let m = minutes * 60
         return seconds + m + h
     }
+    
+    func passTime(bySeconds seconds:Int) {
+        let newTime = GameTime(
+            hours: self.hours,
+            minutes: self.minutes,
+            seconds: self.seconds + seconds)
+        self.hours = newTime.hours
+        self.minutes = newTime.minutes
+        self.seconds = newTime.seconds
+    }
 }

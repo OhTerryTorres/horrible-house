@@ -166,6 +166,8 @@ class ClockController: UIViewController {
             self.clockView.layer.addSublayer(crackLayer)
             
         }
+        
+    }
     
     
     

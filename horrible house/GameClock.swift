@@ -32,6 +32,8 @@ class GameClock {
                 minutes: self.currentTime.minutes,
                 seconds: self.currentTime.seconds + seconds)
             self.currentTime = newTime
+            self.timeSensitiveActions()
+            
         }
         
     }
@@ -44,4 +46,9 @@ class GameClock {
         self.passTime(bySeconds: self.secondsPerTurn * turns)
     }
     
+    
+    
+    func timeSensitiveActions() {
+        
+    }
 }

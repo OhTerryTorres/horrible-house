@@ -15,8 +15,12 @@ protocol ItemBased : class {
 extension ItemBased {
     func setItemsForDictionary(dictArray:[Dictionary<String, AnyObject>]) {
         for dict in dictArray {
-            let item = Item(withDictionary: dict)
-            self.items += [item]
+            var item : Item?
+            if dict["name"] as? String == "Oven" { print("it's an oven!!") ; item = Oven(withDictionary: dict) ; print("item.name is \(item!.name)") }
+            else {
+                item = Item(withDictionary: dict)
+            }
+            self.items += [item!]
         }
     }
     
@@ -29,6 +33,7 @@ extension ItemBased {
         for item in self.items {
             if item.name == itemName {
                 self.items.removeAtIndex(i)
+                break // This keeps items with the same name from collapsing on each other.
             } else { i++ }
         }
         

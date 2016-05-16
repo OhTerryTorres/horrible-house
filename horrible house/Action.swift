@@ -52,6 +52,8 @@ class Action: DictionaryBased, RuleBased {
     
     // This is for special actions that trigger a segue to a viewcontroller
     var segue : String?
+    
+    // This is
 
     required init(withDictionary: Dictionary<String, AnyObject>) {
         for (key, value) in withDictionary {
