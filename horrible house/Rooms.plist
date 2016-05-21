@@ -8,6 +8,93 @@
 		<string>Kitchen</string>
 		<key>explanation</key>
 		<string>The center of the room is taken up by a worktable for the preparation of food and the kneading of dough.</string>
+		<key>items</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Knife Block</string>
+				<key>explanation</key>
+				<string>On the worktable is a knife block.</string>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Check the knife block</string>
+						<key>result</key>
+						<string>Only one of the slots has a knife handle sticking out of it.</string>
+						<key>onceOnly</key>
+						<string></string>
+						<key>revealItems</key>
+						<array>
+							<string>Knife Handle</string>
+						</array>
+					</dict>
+				</array>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Knife Handle</string>
+				<key>explanation</key>
+				<string>A knife handle protrudes from the block.</string>
+				<key>inventoryDescription</key>
+				<string>The handle of a kitchen knife.</string>
+				<key>hidden</key>
+				<string></string>
+				<key>canCarry</key>
+				<string></string>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Take {[item]Knife}</string>
+						<key>result</key>
+						<string>When the knife is separated from the knife block, it turns out there&apos;s no blade. It&apos;s just a handle.
+
+Got {[item]Knife Handle}.</string>
+						<key>onceOnly</key>
+						<string></string>
+					</dict>
+				</array>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Oven</string>
+				<key>explanation</key>
+				<string>There is an oven. It&apos;s hard to tell if it works still.</string>
+				<key>maxCapacity</key>
+				<integer>12</integer>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Turn the oven on</string>
+						<key>result</key>
+						<string>The oven is on.</string>
+					</dict>
+				</array>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Refrigerator</string>
+				<key>explanation</key>
+				<string>The refrigerator is here, too.</string>
+				<key>maxCapacity</key>
+				<integer>99</integer>
+				<key>items</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Paper Bag</string>
+						<key>explanation</key>
+						<string>There&apos;s a paper bag. It looks like there&apos;s something in it.</string>
+						<key>inventoryDescription</key>
+						<string>A paper bag. There&apos;s something in it.</string>
+						<key>inventoryEvent</key>
+						<string></string>
+					</dict>
+				</array>
+			</dict>
+		</array>
 	</dict>
 	<key>3</key>
 	<dict>
@@ -74,7 +161,7 @@ If a player &quot;knocks&quot; with no deadwood, they receive an amount of point
 				<key>name</key>
 				<string>Playing Cards</string>
 				<key>explanation</key>
-				<string>There is a piano against the other wall.</string>
+				<string>There are playing cards on the table.</string>
 				<key>hidden</key>
 				<string></string>
 				<key>canCarry</key>

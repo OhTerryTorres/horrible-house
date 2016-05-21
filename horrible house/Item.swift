@@ -20,6 +20,9 @@ class Item: DictionaryBased, ActionPacked, Detailed, ItemBased {
     var canCarry = false
     var hidden = false
     
+    // This lets the Inventory know of the item executes an event when selected
+    var inventoryEvent : String?
+    
     // MARK: For Containers
     
     var items : [Item] = []
@@ -39,21 +42,30 @@ class Item: DictionaryBased, ActionPacked, Detailed, ItemBased {
             
             if key == "actions" { self.setActionsForArrayOfDictionaries(value as! [Dictionary<String, AnyObject>]) }
             
+            if key == "inventoryEvent" { if value as! String == "" {self.inventoryEvent = self.name}
+            else { self.inventoryEvent = value as? String } }
+            
             if key == "canCarry" { self.canCarry = true }
             if key == "hidden" { self.hidden = true }
             
             // Container properties
             
-            if key == "items" { self.setItemsForDictionary(value as! [Dictionary<String, AnyObject>]) }
+            if key == "items" { print("name is \(name)"); self.setItemsForDictionary(value as! [Dictionary<String, AnyObject>]) }
             if key == "maxCapacity" { self.maxCapacity = value as? Int }
             if self.items.count > 0 || self.maxCapacity > 0 { self.isContainer = true }
         }
         
         // Adds a default TAKE action to every item.
         // It is only revealed to the player if the item can actually be carried.
-        let takeDict : Dictionary<String, AnyObject> = [ "name" : "Take {[item]\(self.name)}", "result" : "Got {[item]\(self.name)}.", "onceOnly" : true]
-        let takeAction = Action(withDictionary: takeDict)
-        actions += [takeAction]
+        // First, check to see if there isn't already a customized TAKE action for the item.
+        if let _ = self.actions.indexOf({$0.name.rangeOfString("Take") != nil}) {
+            print("\(self.name) already has a Take action")
+        } else {
+            print("\(self.name) needs a Take action")
+            let takeDict : Dictionary<String, AnyObject> = [ "name" : "Take {[item]\(self.name)}", "result" : "Got {[item]\(self.name)}.", "onceOnly" : true]
+            let takeAction = Action(withDictionary: takeDict)
+            actions += [takeAction]
+        }
         
         // Add a LOOK IN action for any containers
         if self.isContainer == true {
@@ -92,7 +104,7 @@ class Oven : Item {
         print("Oven will be heated at \(timeHeated!.hours):\(timeHeated!.minutes))")
         
         if let index = self.actions.indexOf({ $0.name.rangeOfString("on") != nil }) {
-            let dict : Dictionary<String, AnyObject> = [ "name" : "Turn the {[item]\(self.name)} off", "result" : "The oven is off."]
+            let dict : Dictionary<String, AnyObject> = [ "name" : "Turn the oven off", "result" : "The oven is off."]
             let action = Action(withDictionary: dict)
             self.actions[index] = action
         }
@@ -110,7 +122,7 @@ class Oven : Item {
         }
         
         if let index = self.actions.indexOf({ $0.name.rangeOfString("off") != nil }) {
-            let dict : Dictionary<String, AnyObject> = [ "name" : "Turn the {[item]\(self.name)} on", "result" : "The oven is on."]
+            let dict : Dictionary<String, AnyObject> = [ "name" : "Turn the oven on", "result" : "The oven is on."]
             let action = Action(withDictionary: dict)
             self.actions[index] = action
         }

@@ -38,14 +38,49 @@ class InventoryController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath)
+        cell.userInteractionEnabled = false
         
         let item = self.inventoryArray[indexPath.row]
         
         cell.textLabel!.text = item.name
         cell.detailTextLabel!.text = item.inventoryDescription
         
+        if let _ = item.inventoryEvent {
+            cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+            cell.userInteractionEnabled = true
+        } else {
+            cell.accessoryType = UITableViewCellAccessoryType.None
+        }
+        
+        
         return cell
     }
     
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let item = self.inventoryArray[indexPath.row]
+        
+        if let eventName = item.inventoryEvent {
+            if let index = self.house.events.indexOf({$0.name == eventName}) {
+                self.house.currentEvent = self.house.events[index]
+                performSegueWithIdentifier("event", sender: nil)
+            }            
+        }
+    }
+    
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        (UIApplication.sharedApplication().delegate as! AppDelegate).house = self.house
+        
+        if segue.identifier == "event" {
+            let ec = segue.destinationViewController as! EventController
+            ec.house = self.house
+            ec.isInventoryEvent = true
+        }
+    }
+    
+    @IBAction func unwind(segue: UIStoryboardSegue) {
+        
+    }
     
 }

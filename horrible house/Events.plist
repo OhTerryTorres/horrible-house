@@ -2,6 +2,67 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>1</key>
+	<dict>
+		<key>name</key>
+		<string>Paper Bag</string>
+		<key>stages</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Paper Bag</string>
+				<key>explanation</key>
+				<string>The paper bag looks wrinkled from repeated clutching and wringing. The opening is rolled closed.</string>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Open it</string>
+						<key>roomChange</key>
+						<string>The paper bag looks wrinkled from repeated clutching and wringing. There&apos;s something round, dense, and sticky inside.</string>
+						<key>revealItems</key>
+						<array>
+							<string>Sticky Thing</string>
+						</array>
+						<key>onceOnly</key>
+						<string></string>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>Forget about it</string>
+						<key>triggerEventName</key>
+						<string></string>
+					</dict>
+				</array>
+				<key>items</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Sticky Thing</string>
+						<key>actions</key>
+						<array>
+							<dict>
+								<key>name</key>
+								<string>Take {[item]Sticky Thing}</string>
+								<key>consumeItems</key>
+								<array>
+									<string>Paper Bag</string>
+								</array>
+								<key>onceOnly</key>
+								<string></string>
+								<key>triggerEventName</key>
+								<string></string>
+							</dict>
+						</array>
+						<key>hidden</key>
+						<string></string>
+						<key>canCarry</key>
+						<string></string>
+					</dict>
+				</array>
+			</dict>
+		</array>
+	</dict>
 	<key>0</key>
 	<dict>
 		<key>name</key>

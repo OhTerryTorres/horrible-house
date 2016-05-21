@@ -92,6 +92,11 @@ class ContainerController: UIViewController {
         }
     }
     
+    override func viewWillAppear(animated: Bool) {
+        self.tableViewContainer.reloadData()
+        self.tableViewInventory.reloadData()
+    }
+    
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         var string = ""

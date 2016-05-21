@@ -41,10 +41,16 @@ class Action: DictionaryBased, RuleBased {
     // Used to select an item by name and allow the player to carry it.
     var liberateItems : [String] = []
     
+    // Used to eliminate a consumable item from the player's inventory.
+    var consumeItems : [String] = []
+
+    
     // If a triggerEvent name is listed, choosing this action will trigger that event.
     // If a triggerEvent name is listed, but it is BLANK, the event will end and go back to the house.
     var triggerEventName : String?
     
+    // The action can replace itself with another action
+    // Ex: "Open Chest" replaced with "Look in Chest"
     var replaceAction : Action?
     
     // 0 goes to basement, 1 goes to first floor, 2 goes to second floor.
@@ -63,10 +69,11 @@ class Action: DictionaryBased, RuleBased {
             if key == "rules" { self.setRulesForArray(value as! [String]) }
             if key == "revealItems" { self.revealItems = value as! [String] }
             if key == "liberateItems" { self.liberateItems = value as! [String] }
+            if key == "consumeItems" { self.consumeItems = value as! [String] ; for itemName in self.consumeItems { print("consume \(itemName)") } }
             if key == "onceOnly" { self.onceOnly = true }
             
             // Rather than storing the triggerEvent itself, we'll store a string we can use to
-            // search house.events for the event letter. This, as opposed to storing the event
+            // search house.events for the event name. This, as opposed to storing the event
             // from house.events before house.events even exists!
             if key == "triggerEventName" { self.triggerEventName = value as? String }
                 

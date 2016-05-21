@@ -23,6 +23,15 @@ extension ActionPacked {
         }
     }
     
+    func getActionsForArrayOfDictionaries(dictArray:[Dictionary<String, AnyObject>]) -> [Action] {
+        var actions : [Action] = []
+        for dict in dictArray {
+            let action = Action(withDictionary: dict)
+            actions += [action]
+        }
+        return actions
+    }
+    
     func numberOfActionsThatFollowTheRules() -> Int {
         var i = 0
         for action in actions {

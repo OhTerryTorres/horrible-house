@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+
 extension UILabel {
     
     // Uses the tag system to set the right color to the text.
@@ -16,7 +17,7 @@ extension UILabel {
     // with the "Dining Room" text being the color Color.roomColor.
     
     
-    func setAttributedTextWithTags(var string: String) {
+    func setAttributedTextWithTags(var string: String, isAnimated : Bool) {
         
         var mutableStringArray = [NSMutableAttributedString]()
         var rangeAndTagArray = [(range : NSRange, tag : String)]()
@@ -70,6 +71,31 @@ extension UILabel {
         }
         
         self.attributedText = newMutableString
+        
+        if isAnimated {
+            var typewriteRange = NSMakeRange(1, newMutableString.length)
+            dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0)) {
+                for var i = 1; typewriteRange.location < newMutableString.length; i++ {
+                    typewriteRange.location = i
+                    typewriteRange.length -= 1
+                    print("typewriteRange is \(typewriteRange)")
+                    print("newMutableString is \(newMutableString)")
+                    
+                    let newerMutableString = NSMutableAttributedString(string: string)
+                    for (range,tag) in rangeAndTagArray {
+                        newerMutableString.addAttribute(NSForegroundColorAttributeName, value: self.textColorForTag(tag), range: range)
+                    }
+                    
+                    newerMutableString.replaceCharactersInRange(typewriteRange, withString: "")
+                    print("newerMutableString is \(newerMutableString)")
+                    dispatch_async(dispatch_get_main_queue()) {
+                        self.attributedText = newerMutableString
+                    }
+                    NSThread.sleepForTimeInterval(0.02)
+                }
+            }
+        }
+        
     }
     
     func textColorForTag(tag: String) -> UIColor {

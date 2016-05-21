@@ -41,6 +41,7 @@ class ExplorationController: UITableViewController {
     
     
     func resolveAction(action: Action, isItemAction: Bool) {
+        
         if let result = action.result { self.update = self.translateSpecialText(result) }
         if let roomChange = action.roomChange { self.house.currentRoom.explanation = roomChange }
         
@@ -48,6 +49,13 @@ class ExplorationController: UITableViewController {
             for item in self.house.currentRoom.items {
                 if item.name == itemName {
                     item.hidden = false
+                }
+            }
+        }
+        for itemName in action.liberateItems {
+            for item in self.house.currentRoom.items {
+                if item.name == itemName {
+                    item.canCarry = true
                 }
             }
         }
@@ -337,18 +345,19 @@ class ExplorationController: UITableViewController {
             // UPDATE
         case 0:
             cell.textLabel!.numberOfLines = 0;
-            cell.textLabel!.setAttributedTextWithTags(self.update)
+            cell.textLabel!.setAttributedTextWithTags(self.update, isAnimated: true)
+            cell.textLabel!.baselineAdjustment = UIBaselineAdjustment.AlignBaselines
             cell.userInteractionEnabled = false
             
             // ROOM EXPLANATION
         case 1:
             cell.textLabel!.numberOfLines = 0;
-            cell.textLabel!.setAttributedTextWithTags(self.house.currentRoom.explanation)
+            cell.textLabel!.setAttributedTextWithTags(self.house.currentRoom.explanation, isAnimated: false)
             for detail in self.house.currentRoom.details {
                 if detail.isFollowingTheRules() {
                     var string = cell.textLabel?.attributedText?.string
                     string = string! + " " + detail.explanation
-                    cell.textLabel!.setAttributedTextWithTags(string!)
+                    cell.textLabel!.setAttributedTextWithTags(string!, isAnimated: false)
                 }
             }
             for item in self.house.currentRoom.items {
@@ -360,14 +369,14 @@ class ExplorationController: UITableViewController {
                             string = string! + " " + detail.explanation
                         }
                     }
-                    cell.textLabel!.setAttributedTextWithTags(string!)
+                    cell.textLabel!.setAttributedTextWithTags(string!, isAnimated: false)
                 }
             }
             cell.userInteractionEnabled = false
             // ROOM ACTIONS
         case 2:
             let action = self.house.currentRoom.actions[indexPath.row]
-            cell.textLabel!.setAttributedTextWithTags(action.name)
+            cell.textLabel!.setAttributedTextWithTags(action.name, isAnimated: false)
             cell.userInteractionEnabled = true
             
             // DIRECTIONS
@@ -392,14 +401,14 @@ class ExplorationController: UITableViewController {
                     directionString = "Go west to {[room]\(room.name)}"
                 } else { directionString = "Go west" }
             }
-            cell.textLabel!.setAttributedTextWithTags(directionString)
+            cell.textLabel!.setAttributedTextWithTags(directionString, isAnimated: false)
             
             // ITEM ACTIONS
         default:
             // -3 to deal with the other table sections.
             let item = self.house.currentRoom.items[indexPath.section-3]
             let action = item.actions[indexPath.row]
-            cell.textLabel!.setAttributedTextWithTags(action.name)
+            cell.textLabel!.setAttributedTextWithTags(action.name, isAnimated: false)
             cell.userInteractionEnabled = true
         }
         
@@ -409,25 +418,58 @@ class ExplorationController: UITableViewController {
     
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        var action = Action?()
+        
+        print("1 getNumberOfTableSections is \(self.getNumberOfTableSections())")
+        
         switch ( indexPath.section ) {
             
             // ROOM ACTIONS
         case 2:
-            resolveAction(self.house.currentRoom.actions[indexPath.row], isItemAction: false)
+            action = self.house.currentRoom.actions[indexPath.row]
+            resolveAction(action!, isItemAction: false)
             
             // DIRECTIONS
         case getNumberOfTableSections()-1:
             resolveDirection(forIndexPath: indexPath)
             self.update = ""
             self.title = self.house.currentRoom.name
-            
+            tableView.reloadData()
+        
             // ITEM ACTIONS
         default:
-            resolveAction(self.house.currentRoom.items[indexPath.section-3].actions[indexPath.row], isItemAction: true)
+            action = self.house.currentRoom.items[indexPath.section-3].actions[indexPath.row]
+            resolveAction(action!, isItemAction: true)
             
             break
         }
-        self.tableView.reloadData()
+        
+        if let _ = action?.triggerEventName {
+            
+        } else {
+            
+            if let actionName = action?.name {
+                if actionName.rangeOfString("Take") != nil {
+                    print("JAJAJAJA")
+                    print("animating table changes (TAKE action)")
+                    let sections = NSMutableIndexSet(indexesInRange: NSMakeRange(0, 1))
+                    print("sections before removal is \(sections)")
+                    //sections.removeIndex(indexPath.section)
+                    print("sections after removal is \(sections)")
+                    print("2 getNumberOfTableSections is \(self.getNumberOfTableSections())")
+                    self.tableView.reloadData()
+                    self.tableView.reloadSections(sections, withRowAnimation: UITableViewRowAnimation.Automatic)
+                } else {
+                    print("GAGAGAGA")
+                    print("animating table changes")
+                    let sections = NSIndexSet(indexesInRange: NSMakeRange(0, tableView.numberOfSections))
+                    print("sections is \(sections)")
+                    self.tableView.reloadSections(sections, withRowAnimation: UITableViewRowAnimation.Automatic)
+                }
+            }
+
+        }
+        
         self.house.skull.updateSkull()
         self.house.gameClock.passTimeByTurn()
     }

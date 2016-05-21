@@ -24,6 +24,16 @@ extension ItemBased {
         }
     }
     
+    func getItemsForDictionary(dictArray:[Dictionary<String, AnyObject>]) -> [Item] {
+        var items : [Item] = []
+        for dict in dictArray {
+            var item : Item?
+            item = Item(withDictionary: dict)
+            items += [item!]
+        }
+        return items
+    }
+    
     func addItemToItems(item:Item) {
         self.items += [item]
     }
@@ -32,6 +42,7 @@ extension ItemBased {
         var i = 0
         for item in self.items {
             if item.name == itemName {
+                print("removing \(itemName) from items")
                 self.items.removeAtIndex(i)
                 break // This keeps items with the same name from collapsing on each other.
             } else { i++ }

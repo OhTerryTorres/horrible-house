@@ -13,9 +13,10 @@ class EventController: UITableViewController {
     enum Sections : Int {
         case update = 0
         case explanation = 1
-        case items = 2
-        case actions = 3
-        case numberOfSections = 4
+        case roomActions = 2
+        case numberOfSections = 3
+        // Each item has its own section
+        // In switch cases, they will count as Default
     }
 
     
@@ -24,7 +25,7 @@ class EventController: UITableViewController {
     var house : House = (UIApplication.sharedApplication().delegate as! AppDelegate).house
     var update = ""
 
-    
+    var isInventoryEvent = false
     
     
     
@@ -50,6 +51,15 @@ class EventController: UITableViewController {
             for item in self.house.currentEvent.currentStage!.items {
                 if item.name == itemName {
                     item.canCarry = true
+                }
+            }
+        }
+        
+        for itemName in action.consumeItems {
+            for item in self.house.player.items {
+                if item.name == itemName {
+                    print("consuming item in inventory")
+                    self.house.player.removeItemFromItems(withName: itemName)
                 }
             }
         }
@@ -167,7 +177,13 @@ class EventController: UITableViewController {
             }
         }
         if eventName == "" {
-            performSegueWithIdentifier("exit", sender: nil)
+            print("exiting event")
+            if self.isInventoryEvent {
+                print("about to exit to Inventory")
+                performSegueWithIdentifier("exitToInventory", sender: nil)
+            } else {
+                performSegueWithIdentifier("exit", sender: nil)
+            }
         }
     }
     
@@ -192,6 +208,10 @@ class EventController: UITableViewController {
             let ec = segue.destinationViewController as! ExplorationController
             ec.house = self.house
         }
+        if segue.identifier == "exitToInventory" {
+            let ic = segue.destinationViewController as! InventoryController
+            ic.house = self.house
+        }
     
     }
     
@@ -207,6 +227,7 @@ class EventController: UITableViewController {
         self.navigationItem.setHidesBackButton(true, animated:false);
         self.title = self.house.currentEvent.currentStage!.name
         
+        
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -216,7 +237,7 @@ class EventController: UITableViewController {
     // MARK: Tableview Functions
     
     func getNumberOfTableSections() -> Int {
-        var numberOfSections = 4
+        var numberOfSections = Sections.numberOfSections.rawValue
         for _ in self.house.currentEvent.currentStage!.items {
             numberOfSections++
         }
@@ -242,25 +263,25 @@ class EventController: UITableViewController {
         switch ( section ) {
             
             // UPDATE
-        case 0:
+        case Sections.update.rawValue:
             // Hide update section if self.update is empty
             if ( self.update != "" ) {
                 rows = 1
             }
             
             // ROOM EXPLANATION
-        case 1:
+        case Sections.explanation.rawValue:
             rows = 1
             
             // ROOM ACTIONS
-        case 2:
+        case Sections.roomActions.rawValue:
             rows = self.house.currentEvent.currentStage!.actions.count
             
             // ITEM ACTIONS
         default:
-            // -3 to deal with the other table sections.
+            // -2 to deal with the other table sections.
             if self.house.currentEvent.currentStage!.items.count > 0 {
-                let item = self.house.currentEvent.currentStage!.items[section-3]
+                let item = self.house.currentEvent.currentStage!.items[section-section]
                 rows = item.actions.count
             }
         }
@@ -275,15 +296,15 @@ class EventController: UITableViewController {
         switch ( indexPath.section ) {
             
             // UPDATE
-        case 0:
+        case Sections.update.rawValue:
             cell.textLabel!.numberOfLines = 0;
-            cell.textLabel!.setAttributedTextWithTags(self.update)
+            cell.textLabel!.setAttributedTextWithTags(self.update, isAnimated: true)
             cell.userInteractionEnabled = false
             
             // EVENT EXPLANATION
-        case 1:
+        case Sections.explanation.rawValue:
             cell.textLabel!.numberOfLines = 0;
-            cell.textLabel!.setAttributedTextWithTags(self.house.currentEvent.currentStage!.explanation)
+            cell.textLabel!.setAttributedTextWithTags(self.house.currentEvent.currentStage!.explanation, isAnimated: false)
             for item in self.house.currentEvent.currentStage!.items {
                 if item.hidden == false {
                     var string = cell.textLabel?.attributedText?.string
@@ -293,22 +314,22 @@ class EventController: UITableViewController {
                             string = string! + " " + detail.explanation
                         }
                     }
-                    cell.textLabel!.setAttributedTextWithTags(string!)
+                    cell.textLabel!.setAttributedTextWithTags(string!, isAnimated: false)
                 }
             }
             cell.userInteractionEnabled = false
             // ROOM ACTIONS
-        case 2:
+        case Sections.roomActions.rawValue:
             let action = self.house.currentEvent.currentStage!.actions[indexPath.row]
-            cell.textLabel!.setAttributedTextWithTags(action.name)
+            cell.textLabel!.setAttributedTextWithTags(action.name, isAnimated: false)
             cell.userInteractionEnabled = true
             
             // ITEM ACTIONS
         default:
             // -3 to deal with the other table sections.
-            let item = self.house.currentEvent.currentStage!.items[indexPath.section-3]
+            let item = self.house.currentEvent.currentStage!.items[indexPath.section-indexPath.section]
             let action = item.actions[indexPath.row]
-            cell.textLabel!.setAttributedTextWithTags(action.name)
+            cell.textLabel!.setAttributedTextWithTags(action.name, isAnimated: false)
             cell.userInteractionEnabled = true
         }
         
@@ -317,20 +338,50 @@ class EventController: UITableViewController {
     
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        var action = Action?()
+        
         switch ( indexPath.section ) {
             
             // ROOM ACTIONS
-        case 2:
-            resolveAction(self.house.currentEvent.currentStage!.actions[indexPath.row], isItemAction: false)
+        case Sections.roomActions.rawValue:
+            print("room action selected")
+            action = self.house.currentEvent.currentStage!.actions[indexPath.row]
+            resolveAction(action!, isItemAction: false)
             
             // ITEM ACTIONS
         default:
-            resolveAction(self.house.currentEvent.currentStage!.items[indexPath.section-3].actions[indexPath.row], isItemAction: true)
+            print("item action selected")
+            action = self.house.currentEvent.currentStage!.items[indexPath.section-indexPath.section].actions[indexPath.row]
+            resolveAction(action!, isItemAction: true)
             
             break
         }
+        print("row \(indexPath.row) in section \(indexPath.section) selected")
         
-        self.tableView.reloadData()
+        // self.tableView.reloadData()
+        print("number of sections is \(tableView.numberOfSections)")
+        
+        if let _ = action?.triggerEventName {
+            
+        } else {
+            
+            if let actionName = action?.name {
+                if actionName.rangeOfString("Take") != nil {
+                    print("JAJAJAJA")
+                    print("animating table changes (TAKE action")
+                    let sections = NSIndexSet(indexesInRange: NSMakeRange(0, tableView.numberOfSections-1))
+                    self.tableView.reloadSections(sections, withRowAnimation: UITableViewRowAnimation.Automatic)
+                } else {
+                    print("GAGAGAGA")
+                    print("animating table changes")
+                    let sections = NSIndexSet(indexesInRange: NSMakeRange(0, tableView.numberOfSections))
+                    self.tableView.reloadSections(sections, withRowAnimation: UITableViewRowAnimation.Automatic)
+                }
+            }
+        }
+        
+        
+        
         self.house.skull.updateSkull()
     }
 
@@ -341,29 +392,25 @@ class EventController: UITableViewController {
         switch indexPath.section {
             
             // UPDATE
-        case 0:
+        case Sections.update.rawValue:
             break
             
             // ROOM EXPLANATION
-        case 1:
+        case Sections.explanation.rawValue:
             break
             
             // ROOM ACTIONS
-        case 2:
+        case Sections.roomActions.rawValue:
             if self.house.currentEvent.currentStage!.actions[indexPath.row].isFollowingTheRules() == false {
                 height = 0
             }
             
-            // DIRECTIONS
-        case getNumberOfTableSections()-1:
-            break
-            
             // ITEM ACTIONS
         default:
-            print("default")
             // -3 to deal with the other table sections.
-            let item = self.house.currentEvent.currentStage!.items[indexPath.section-3]
+            let item = self.house.currentEvent.currentStage!.items[indexPath.section-indexPath.section]
             if item.hidden == true {
+                print("\(item.name) IS HIDDEN!")
                 height = 0
             }
             if item.actions[indexPath.row].name.rangeOfString("Take") != nil && item.canCarry == false {
@@ -373,9 +420,8 @@ class EventController: UITableViewController {
                 print("\(item.actions[indexPath.row].name) is not following the rules")
                 height = 0
             }
+            
         }
-        
-        
         
         return height
     }
