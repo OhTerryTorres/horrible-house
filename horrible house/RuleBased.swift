@@ -49,15 +49,25 @@ extension RuleBased {
                 break
             case Rule.RuleType.enteredRoom:
                 var i = 0; for room in house.rooms {
-                    if room.timesEntered > 0 { i++ }
+                    if room.timesEntered > 0 { i += 1 }
                 }; if i == 0 { rulesFollowed = false }
             case Rule.RuleType.nopeEnteredRoom:
                 var i = 0; for room in house.rooms {
-                    if room.timesEntered == 0 { i++ }
+                    if room.timesEntered == 0 { i += 1 }
                 }; if i == 0 { rulesFollowed = false }
             case Rule.RuleType.completedEvent:
+                if let index = house.events.indexOf({$0.name == rule.name}) {
+                    if house.events[index].completed == false {
+                        rulesFollowed = false
+                    }
+                }
                 break
             case Rule.RuleType.nopeCompletedEvent:
+                if let index = house.events.indexOf({$0.name == rule.name}) {
+                    if house.events[index].completed == true {
+                        rulesFollowed = false
+                    }
+                }
                 break
             default:
                 break;

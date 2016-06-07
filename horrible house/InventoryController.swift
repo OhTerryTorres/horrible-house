@@ -45,9 +45,13 @@ class InventoryController: UITableViewController {
         cell.textLabel!.text = item.name
         cell.detailTextLabel!.text = item.inventoryDescription
         
-        if let _ = item.inventoryEvent {
-            cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
-            cell.userInteractionEnabled = true
+        if let eventName = item.inventoryEvent {
+            if let index = self.house.events.indexOf({$0.name == eventName}) {
+                if self.house.events[index].isFollowingTheRules() {
+                    cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+                    cell.userInteractionEnabled = true
+                }
+            }
         } else {
             cell.accessoryType = UITableViewCellAccessoryType.None
         }

@@ -38,7 +38,7 @@ class TabBarController : UITabBarController {
                 viewControllers?.removeAtIndex(i)
                 print("no Item tab")
             }
-            else {i++}
+            else {i += 1}
         }
         print("viewControllers.count is \(viewControllers!.count)")
         self.viewControllers = viewControllers

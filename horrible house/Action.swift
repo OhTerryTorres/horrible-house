@@ -41,8 +41,16 @@ class Action: DictionaryBased, RuleBased {
     // Used to select an item by name and allow the player to carry it.
     var liberateItems : [String] = []
     
+    // Used to add an item directly to the player's inventory.
+    // Unlike the other item altering action properties, this one is an array of Items.
+    // As such, consumeItem entries in the ROOMS.plist will likely be the first time such an item is generated.
+    var addItems : [Item] = []
+    
     // Used to eliminate a consumable item from the player's inventory.
     var consumeItems : [String] = []
+    
+    // When revealed, a hidden character is added to the current room's position.
+    var revealCharacters : [String] = []
 
     
     // If a triggerEvent name is listed, choosing this action will trigger that event.
@@ -67,9 +75,21 @@ class Action: DictionaryBased, RuleBased {
             if key == "result" { self.result = value as? String }
             if key == "roomChange" { self.roomChange = value as? String }
             if key == "rules" { self.setRulesForArray(value as! [String]) }
+            
             if key == "revealItems" { self.revealItems = value as! [String] }
             if key == "liberateItems" { self.liberateItems = value as! [String] }
-            if key == "consumeItems" { self.consumeItems = value as! [String] ; for itemName in self.consumeItems { print("consume \(itemName)") } }
+            
+            if key == "addItems" {
+                for dict in value as! [Dictionary<String, AnyObject>] {
+                    let item = Item(withDictionary: dict)
+                    self.addItems += [item]
+                }
+            }
+            
+            if key == "consumeItems" { self.consumeItems = value as! [String] }
+            
+            if key == "revealCharacters" { self.revealCharacters = value as! [String] }
+                        
             if key == "onceOnly" { self.onceOnly = true }
             
             // Rather than storing the triggerEvent itself, we'll store a string we can use to

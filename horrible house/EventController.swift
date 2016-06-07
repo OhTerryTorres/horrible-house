@@ -66,40 +66,38 @@ class EventController: UITableViewController {
         
         if isItemAction {
             print("isItemAction")
-            for var i = 0; i < self.house.currentEvent.currentStage!.items.count; i++ {
-                for var o = 0; o < self.house.currentEvent.currentStage!.items[i].actions.count; o++ {
-                    if self.house.currentEvent.currentStage!.items[i].actions[o].name == action.name {
-                        self.house.currentEvent.currentStage!.items[i].actions[o].timesPerformed += 1
-                        
-                        // If the action has a REPLACE action
-                        if let replaceAction = action.replaceAction {
-                            self.house.currentEvent.currentStage!.items[i].actions[o] = replaceAction
-                        }
-                        
-                        // If the action can only be performed ONCE
-                        if action.onceOnly == true {
-                            self.house.currentEvent.currentStage!.items[i].actions.removeAtIndex(o)
-                        }
-                        
-                        // If the action is a TAKE action
-                        if action.name.rangeOfString("Take") != nil {
-                            self.house.player.items += [self.house.currentEvent.currentStage!.items[i]]
-                            self.house.currentEvent.currentStage!.items.removeAtIndex(i)
-                            
-                            if let tabBarController = self.tabBarController as? TabBarController {
-                                tabBarController.refreshViewControllers()
-                            }
-                            
-                        }
-                        break // THIS keeps the loop from crashing as it examines an item that does not exist.
-                        // It also makes sure multiple similar actions aren't renamed.
-                        // this seems like a clumsy solution, but it currently works.
+            for i in 0 ..< self.house.currentEvent.currentStage!.items.count {
+                if let index = self.house.currentEvent.currentStage!.items[i].actions.indexOf({$0.name == action.name}) {
+                    self.house.currentEvent.currentStage!.items[i].actions[index].timesPerformed += 1
+                    
+                    // If the action has a REPLACE action
+                    if let replaceAction = action.replaceAction {
+                        self.house.currentEvent.currentStage!.items[i].actions[index] = replaceAction
                     }
+                    
+                    // If the action can only be performed ONCE
+                    if action.onceOnly == true {
+                        self.house.currentEvent.currentStage!.items[i].actions.removeAtIndex(index)
+                    }
+                    
+                    // If the action is a TAKE action
+                    if action.name.rangeOfString("Take") != nil {
+                        self.house.player.items += [self.house.currentEvent.currentStage!.items[i]]
+                        self.house.currentEvent.currentStage!.items.removeAtIndex(i)
+                        
+                        if let tabBarController = self.tabBarController as? TabBarController {
+                            tabBarController.refreshViewControllers()
+                        }
+                        
+                    }
+                    break // THIS keeps the loop from crashing as it examines an item that does not exist.
+                    // It also makes sure multiple similar actions aren't renamed.
+                    // this seems like a clumsy solution, but it currently works.
                 }
             }
         } else { // Room Actions
             print("isRoomAction")
-            for var i = 0; i < self.house.currentEvent.currentStage!.actions.count; i++ {
+            for i in 0 ..< self.house.currentEvent.currentStage!.actions.count {
                 if self.house.currentEvent.currentStage!.actions[i].name == action.name {
                     action.timesPerformed += 1
                     if let replaceAction = action.replaceAction {
@@ -138,33 +136,30 @@ class EventController: UITableViewController {
     
     func handleContextSensitiveActions(action: Action, isItemAction: Bool) {
         if isItemAction {
-            for var i = 0; i < self.house.currentRoom.items.count; i++ {
-                for var o = 0; o < self.house.currentRoom.items[i].actions.count; o++ {
-                    if self.house.currentRoom.items[i].actions[o].name == action.name {
+            for i in 0 ..< self.house.currentRoom.items.count {
+                if let _ = self.house.currentRoom.items[i].actions.indexOf({$0.name == action.name}) {
                         
-                        let item = self.house.currentRoom.items[i]
+                    let item = self.house.currentRoom.items[i]
+                    
+                    
+                    // OVEN ACTIONS
+                    
+                    if let oven = item as? Oven {
                         
-                        
-                        // OVEN ACTIONS
-                        
-                        if let oven = item as? Oven {
-                            
-                            print("Shit! an oven!")
-                            if action.name.lowercaseString.rangeOfString("on") != nil {
-                                oven.turnOn(atTime: self.house.gameClock.currentTime)
-                            }
-                            if action.name.lowercaseString.rangeOfString("off") != nil {
-                                oven.turnOff()
-                            }
-                            if action.name.lowercaseString.rangeOfString("look") != nil {
-                                oven.checkOven(atTime: self.house.gameClock.currentTime)
-                            }
+                        print("Shit! an oven!")
+                        if action.name.lowercaseString.rangeOfString("on") != nil {
+                            oven.turnOn(atTime: self.house.gameClock.currentTime)
+                        }
+                        if action.name.lowercaseString.rangeOfString("off") != nil {
+                            oven.turnOff()
+                        }
+                        if action.name.lowercaseString.rangeOfString("look") != nil {
+                            oven.checkOven(atTime: self.house.gameClock.currentTime)
                         }
                     }
                 }
             }
         }
-        
     }
     
     
@@ -189,11 +184,12 @@ class EventController: UITableViewController {
     
     // This deals with text that needs to be formatted to include game properties.
     // ex. The current time.
-    func translateSpecialText(var string: String) -> String {
+    func translateSpecialText(string: String) -> String {
+        var newString = ""
         if (string.rangeOfString("[currentTime]") != nil) {
-            string = string.stringByReplacingOccurrencesOfString("[currentTime]", withString: "\(self.house.gameClock.currentTime.hours):\(self.house.gameClock.currentTime.minutes)")
+            newString = string.stringByReplacingOccurrencesOfString("[currentTime]", withString: "\(self.house.gameClock.currentTime.hours):\(self.house.gameClock.currentTime.minutes)")
         }
-        return string
+        return newString
     }
     
     
@@ -201,6 +197,8 @@ class EventController: UITableViewController {
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        self.house.currentEvent.completed = true
         
         (UIApplication.sharedApplication().delegate as! AppDelegate).house = self.house
         
@@ -239,7 +237,7 @@ class EventController: UITableViewController {
     func getNumberOfTableSections() -> Int {
         var numberOfSections = Sections.numberOfSections.rawValue
         for _ in self.house.currentEvent.currentStage!.items {
-            numberOfSections++
+            numberOfSections += 1
         }
         return numberOfSections
     }
@@ -297,14 +295,14 @@ class EventController: UITableViewController {
             
             // UPDATE
         case Sections.update.rawValue:
-            cell.textLabel!.numberOfLines = 0;
-            cell.textLabel!.setAttributedTextWithTags(self.update, isAnimated: true)
+            cell.textLabel!.numberOfLines = 0
+            cell.textLabel!.setAttributedTextWithTags(self.update)
             cell.userInteractionEnabled = false
             
             // EVENT EXPLANATION
         case Sections.explanation.rawValue:
-            cell.textLabel!.numberOfLines = 0;
-            cell.textLabel!.setAttributedTextWithTags(self.house.currentEvent.currentStage!.explanation, isAnimated: false)
+            cell.textLabel!.numberOfLines = 0
+            cell.textLabel!.setAttributedTextWithTags(self.house.currentEvent.currentStage!.explanation)
             for item in self.house.currentEvent.currentStage!.items {
                 if item.hidden == false {
                     var string = cell.textLabel?.attributedText?.string
@@ -314,14 +312,14 @@ class EventController: UITableViewController {
                             string = string! + " " + detail.explanation
                         }
                     }
-                    cell.textLabel!.setAttributedTextWithTags(string!, isAnimated: false)
+                    cell.textLabel!.setAttributedTextWithTags(string!)
                 }
             }
             cell.userInteractionEnabled = false
             // ROOM ACTIONS
         case Sections.roomActions.rawValue:
             let action = self.house.currentEvent.currentStage!.actions[indexPath.row]
-            cell.textLabel!.setAttributedTextWithTags(action.name, isAnimated: false)
+            cell.textLabel!.setAttributedTextWithTags(action.name)
             cell.userInteractionEnabled = true
             
             // ITEM ACTIONS
@@ -329,7 +327,7 @@ class EventController: UITableViewController {
             // -3 to deal with the other table sections.
             let item = self.house.currentEvent.currentStage!.items[indexPath.section-indexPath.section]
             let action = item.actions[indexPath.row]
-            cell.textLabel!.setAttributedTextWithTags(action.name, isAnimated: false)
+            cell.textLabel!.setAttributedTextWithTags(action.name)
             cell.userInteractionEnabled = true
         }
         
@@ -426,8 +424,42 @@ class EventController: UITableViewController {
         return height
     }
     
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch ( section ) {
+            
+        // UPDATE
+        case Sections.update.rawValue:
+            if self.update != "" {
+                return "UPDATE"
+            } else { return nil }
+            
+        // ROOM EXPLANATION
+        case Sections.explanation.rawValue:
+            return nil
+            
+        // ROOM ACTIONS
+        case Sections.roomActions.rawValue:
+            return "ACT"
+            
+        // ITEM ACTIONS
+        default:
+            return nil
+        }
+    }
+    
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
+    }
+    
+    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        
+        let header:UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
+        var frame = header.frame
+        frame.size.height = 10
+        header.frame = frame
+        
+        header.textLabel!.font = UIFont.boldSystemFontOfSize(10)
+        header.textLabel!.frame = header.frame
     }
     
     override func didReceiveMemoryWarning() {

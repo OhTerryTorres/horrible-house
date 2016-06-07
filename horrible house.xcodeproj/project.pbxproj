@@ -17,18 +17,6 @@
 		CE0478A91C6C145A008E23E1 /* Rooms.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE0478A81C6C145A008E23E1 /* Rooms.plist */; };
 		CE0478AB1C6C3452008E23E1 /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0478AA1C6C3452008E23E1 /* Room.swift */; };
 		CE0478AD1C6C3B4F008E23E1 /* House.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0478AC1C6C3B4F008E23E1 /* House.swift */; };
-		CE2AD7A81CCA87CA00B1353C /* key#.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = CE2AD79C1CCA87CA00B1353C /* key#.mp3 */; };
-		CE2AD7A91CCA87CA00B1353C /* key0.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = CE2AD79D1CCA87CA00B1353C /* key0.mp3 */; };
-		CE2AD7AA1CCA87CA00B1353C /* key1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = CE2AD79E1CCA87CA00B1353C /* key1.mp3 */; };
-		CE2AD7AB1CCA87CA00B1353C /* key2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = CE2AD79F1CCA87CA00B1353C /* key2.mp3 */; };
-		CE2AD7AC1CCA87CA00B1353C /* key3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = CE2AD7A01CCA87CA00B1353C /* key3.mp3 */; };
-		CE2AD7AD1CCA87CA00B1353C /* key4.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = CE2AD7A11CCA87CA00B1353C /* key4.mp3 */; };
-		CE2AD7AE1CCA87CA00B1353C /* key5.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = CE2AD7A21CCA87CA00B1353C /* key5.mp3 */; };
-		CE2AD7AF1CCA87CA00B1353C /* key6.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = CE2AD7A31CCA87CA00B1353C /* key6.mp3 */; };
-		CE2AD7B01CCA87CA00B1353C /* key7.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = CE2AD7A41CCA87CA00B1353C /* key7.mp3 */; };
-		CE2AD7B11CCA87CA00B1353C /* key8.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = CE2AD7A51CCA87CA00B1353C /* key8.mp3 */; };
-		CE2AD7B21CCA87CA00B1353C /* key9.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = CE2AD7A61CCA87CA00B1353C /* key9.mp3 */; };
-		CE2AD7B31CCA87CA00B1353C /* keyStar.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = CE2AD7A71CCA87CA00B1353C /* keyStar.mp3 */; };
 		CE2AD7B51CCF950B00B1353C /* GameTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2AD7B41CCF950B00B1353C /* GameTime.swift */; };
 		CE2AD7B71CCF95B500B1353C /* GameClock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2AD7B61CCF95B500B1353C /* GameClock.swift */; };
 		CE2F7A971CA224C100A3025D /* DictionaryBased.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2F7A961CA224C100A3025D /* DictionaryBased.swift */; };
@@ -36,6 +24,7 @@
 		CE2F7A9B1CA2351500A3025D /* ItemBased.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2F7A9A1CA2351500A3025D /* ItemBased.swift */; };
 		CE2F7AA01CA2FA3200A3025D /* ActionPacked.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2F7A9F1CA2FA3200A3025D /* ActionPacked.swift */; };
 		CE3205731C703AD000EAA581 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3205721C703AD000EAA581 /* ArrayExtension.swift */; };
+		CE3780CD1CF63D0900345457 /* Inhabitable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3780CC1CF63D0900345457 /* Inhabitable.swift */; };
 		CE3BEA4E1CB6B1550062AFAF /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3BEA4D1CB6B1550062AFAF /* TabBarController.swift */; };
 		CE3BEA501CB717710062AFAF /* MapController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3BEA4F1CB717710062AFAF /* MapController.swift */; };
 		CE3C3CE41CA8CBEF00BA551F /* PianoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3C3CE31CA8CBEF00BA551F /* PianoController.swift */; };
@@ -112,18 +101,6 @@
 		CE0478A81C6C145A008E23E1 /* Rooms.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Rooms.plist; sourceTree = "<group>"; };
 		CE0478AA1C6C3452008E23E1 /* Room.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
 		CE0478AC1C6C3B4F008E23E1 /* House.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = House.swift; sourceTree = "<group>"; };
-		CE2AD79C1CCA87CA00B1353C /* key#.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "key#.mp3"; path = "sound/key#.mp3"; sourceTree = SOURCE_ROOT; };
-		CE2AD79D1CCA87CA00B1353C /* key0.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = key0.mp3; path = sound/key0.mp3; sourceTree = SOURCE_ROOT; };
-		CE2AD79E1CCA87CA00B1353C /* key1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = key1.mp3; path = sound/key1.mp3; sourceTree = SOURCE_ROOT; };
-		CE2AD79F1CCA87CA00B1353C /* key2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = key2.mp3; path = sound/key2.mp3; sourceTree = SOURCE_ROOT; };
-		CE2AD7A01CCA87CA00B1353C /* key3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = key3.mp3; path = sound/key3.mp3; sourceTree = SOURCE_ROOT; };
-		CE2AD7A11CCA87CA00B1353C /* key4.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = key4.mp3; path = sound/key4.mp3; sourceTree = SOURCE_ROOT; };
-		CE2AD7A21CCA87CA00B1353C /* key5.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = key5.mp3; path = sound/key5.mp3; sourceTree = SOURCE_ROOT; };
-		CE2AD7A31CCA87CA00B1353C /* key6.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = key6.mp3; path = sound/key6.mp3; sourceTree = SOURCE_ROOT; };
-		CE2AD7A41CCA87CA00B1353C /* key7.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = key7.mp3; path = sound/key7.mp3; sourceTree = SOURCE_ROOT; };
-		CE2AD7A51CCA87CA00B1353C /* key8.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = key8.mp3; path = sound/key8.mp3; sourceTree = SOURCE_ROOT; };
-		CE2AD7A61CCA87CA00B1353C /* key9.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = key9.mp3; path = sound/key9.mp3; sourceTree = SOURCE_ROOT; };
-		CE2AD7A71CCA87CA00B1353C /* keyStar.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = keyStar.mp3; path = sound/keyStar.mp3; sourceTree = SOURCE_ROOT; };
 		CE2AD7B41CCF950B00B1353C /* GameTime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameTime.swift; sourceTree = "<group>"; };
 		CE2AD7B61CCF95B500B1353C /* GameClock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameClock.swift; sourceTree = "<group>"; };
 		CE2F7A961CA224C100A3025D /* DictionaryBased.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryBased.swift; sourceTree = "<group>"; };
@@ -131,6 +108,7 @@
 		CE2F7A9A1CA2351500A3025D /* ItemBased.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemBased.swift; sourceTree = "<group>"; };
 		CE2F7A9F1CA2FA3200A3025D /* ActionPacked.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionPacked.swift; sourceTree = "<group>"; };
 		CE3205721C703AD000EAA581 /* ArrayExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
+		CE3780CC1CF63D0900345457 /* Inhabitable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Inhabitable.swift; sourceTree = "<group>"; };
 		CE3BEA4D1CB6B1550062AFAF /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		CE3BEA4F1CB717710062AFAF /* MapController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapController.swift; sourceTree = "<group>"; };
 		CE3C3CE31CA8CBEF00BA551F /* PianoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoController.swift; sourceTree = "<group>"; };
@@ -271,6 +249,7 @@
 				CEF40DD81CB41ED300F1B08B /* Detailed.swift */,
 				CE2F7A981CA234AA00A3025D /* RuleBased.swift */,
 				CE2F7A9A1CA2351500A3025D /* ItemBased.swift */,
+				CE3780CC1CF63D0900345457 /* Inhabitable.swift */,
 			);
 			name = Protocols;
 			sourceTree = "<group>";
@@ -313,18 +292,6 @@
 		CE3C3CE91CA9865F00BA551F /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
-				CE2AD79C1CCA87CA00B1353C /* key#.mp3 */,
-				CE2AD79D1CCA87CA00B1353C /* key0.mp3 */,
-				CE2AD79E1CCA87CA00B1353C /* key1.mp3 */,
-				CE2AD79F1CCA87CA00B1353C /* key2.mp3 */,
-				CE2AD7A01CCA87CA00B1353C /* key3.mp3 */,
-				CE2AD7A11CCA87CA00B1353C /* key4.mp3 */,
-				CE2AD7A21CCA87CA00B1353C /* key5.mp3 */,
-				CE2AD7A31CCA87CA00B1353C /* key6.mp3 */,
-				CE2AD7A41CCA87CA00B1353C /* key7.mp3 */,
-				CE2AD7A51CCA87CA00B1353C /* key8.mp3 */,
-				CE2AD7A61CCA87CA00B1353C /* key9.mp3 */,
-				CE2AD7A71CCA87CA00B1353C /* keyStar.mp3 */,
 				CE3C3CEA1CA9871F00BA551F /* white1.mp3 */,
 				CE3C3CEB1CA9871F00BA551F /* black1.mp3 */,
 				CE3C3CEC1CA9871F00BA551F /* white2.mp3 */,
@@ -459,33 +426,21 @@
 			files = (
 				CE3C3D001CA9871F00BA551F /* black5.mp3 in Resources */,
 				CE3C3CFA1CA9871F00BA551F /* white3.mp3 in Resources */,
-				CE2AD7AC1CCA87CA00B1353C /* key3.mp3 in Resources */,
 				CE50D0CA1C9DA8B2007AF0E2 /* Events.plist in Resources */,
-				CE2AD7AE1CCA87CA00B1353C /* key5.mp3 in Resources */,
 				CE3C3D011CA9871F00BA551F /* white7.mp3 in Resources */,
 				CE50D0F71CA1C0D6007AF0E2 /* NecessaryRooms.plist in Resources */,
 				CE3C3CFE1CA9871F00BA551F /* black4.mp3 in Resources */,
-				CE2AD7AA1CCA87CA00B1353C /* key1.mp3 in Resources */,
-				CE2AD7A81CCA87CA00B1353C /* key#.mp3 in Resources */,
 				CE3C3CF61CA9871F00BA551F /* white1.mp3 in Resources */,
-				CE2AD7A91CCA87CA00B1353C /* key0.mp3 in Resources */,
-				CE2AD7B31CCA87CA00B1353C /* keyStar.mp3 in Resources */,
-				CE2AD7AD1CCA87CA00B1353C /* key4.mp3 in Resources */,
-				CE2AD7AB1CCA87CA00B1353C /* key2.mp3 in Resources */,
 				CE3C3CFF1CA9871F00BA551F /* white6.mp3 in Resources */,
 				CEB91C431CD97A5200249297 /* Skull.plist in Resources */,
-				CE2AD7B11CCA87CA00B1353C /* key8.mp3 in Resources */,
 				CE3C3CFC1CA9871F00BA551F /* black3.mp3 in Resources */,
 				CE3C3CF91CA9871F00BA551F /* black2.mp3 in Resources */,
 				CE3C3CF81CA9871F00BA551F /* white2.mp3 in Resources */,
 				CE0478841C6C10FD008E23E1 /* LaunchScreen.storyboard in Resources */,
 				CE0478A91C6C145A008E23E1 /* Rooms.plist in Resources */,
-				CE2AD7AF1CCA87CA00B1353C /* key6.mp3 in Resources */,
 				CE3C3CFD1CA9871F00BA551F /* white5.mp3 in Resources */,
-				CE2AD7B01CCA87CA00B1353C /* key7.mp3 in Resources */,
 				CE3C3D051CA9C5FC00BA551F /* Characters.plist in Resources */,
 				CE3C3CF71CA9871F00BA551F /* black1.mp3 in Resources */,
-				CE2AD7B21CCA87CA00B1353C /* key9.mp3 in Resources */,
 				CE3C3CFB1CA9871F00BA551F /* white4.mp3 in Resources */,
 				CE3C3CE81CA9863900BA551F /* Media.xcassets in Resources */,
 				CE04787C1C6C10FD008E23E1 /* Main.storyboard in Resources */,
@@ -536,6 +491,7 @@
 				CEF40DD51CAE9F1100F1B08B /* UILabelExtension.swift in Sources */,
 				CE2AD7B51CCF950B00B1353C /* GameTime.swift in Sources */,
 				CE6F27BD1C9335C900B21818 /* Character.swift in Sources */,
+				CE3780CD1CF63D0900345457 /* Inhabitable.swift in Sources */,
 				CE0478AD1C6C3B4F008E23E1 /* House.swift in Sources */,
 				CE0478771C6C10FD008E23E1 /* AppDelegate.swift in Sources */,
 				CE2F7A971CA224C100A3025D /* DictionaryBased.swift in Sources */,

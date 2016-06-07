@@ -250,7 +250,7 @@ func circleCircumferencePoints(sides:Int,x:CGFloat,y:CGFloat,radius:CGFloat,adju
         let xpo = cx - r * cos(angle * CGFloat(i)+degree2radian(adjustment))
         let ypo = cy - r * sin(angle * CGFloat(i)+degree2radian(adjustment))
         points.append(CGPoint(x: xpo, y: ypo))
-        i--;
+        i -= 1;
     }
     return points
 }

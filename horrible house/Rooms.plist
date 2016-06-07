@@ -2,12 +2,172 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>6</key>
+	<dict>
+		<key>name</key>
+		<string>Upstairs Hallway</string>
+		<key>explanation</key>
+		<string>A hallway with tall windows looking out onto foggy, moonlit landscape.</string>
+		<key>placementGuidelines</key>
+		<dict>
+			<key>floor</key>
+			<integer>2</integer>
+			<key>edge</key>
+			<string></string>
+		</dict>
+		<key>actions</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Look out the window</string>
+				<key>roomChange</key>
+				<string>A hallway with tall windows looking out onto foggy, moonlit landscape. Glass litters the floors below where one windows was broken.</string>
+				<key>revealCharacters</key>
+				<array>
+					<string>Huge Bat</string>
+				</array>
+				<key>triggerEventName</key>
+				<string>Looking Out the Window</string>
+				<key>rules</key>
+				<array>
+					<string>\nopeCompletedLooking Out the Window</string>
+				</array>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Look out the window</string>
+				<key>result</key>
+				<string>Now that the winow has been smashed, ambient noise from outside can be heard. It&apos;s more comforting than the absolute silence that came before.</string>
+				<key>rules</key>
+				<array>
+					<string>\completedLooking Out the Window</string>
+				</array>
+			</dict>
+		</array>
+		<key>characters</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Huge Bat</string>
+				<key>explanation</key>
+				<string>A huge bat is flapping around, looking for a way out.</string>
+				<key>behavior</key>
+				<string>Roam</string>
+				<key>hidden</key>
+				<string></string>
+			</dict>
+		</array>
+	</dict>
+	<key>5</key>
+	<dict>
+		<key>name</key>
+		<string>Pantry</string>
+		<key>explanation</key>
+		<string>THIS IS A COPY OF THE KITCHEN. But that should change soon!!</string>
+		<key>placementGuidelines</key>
+		<dict>
+			<key>floor</key>
+			<integer>0</integer>
+		</dict>
+		<key>items</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Knife Block</string>
+				<key>explanation</key>
+				<string>On the worktable is a knife block.</string>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Check the knife block</string>
+						<key>result</key>
+						<string>Only one of the slots has a knife handle sticking out of it.</string>
+						<key>onceOnly</key>
+						<string></string>
+						<key>revealItems</key>
+						<array>
+							<string>Knife Handle</string>
+						</array>
+					</dict>
+				</array>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Knife Handle</string>
+				<key>explanation</key>
+				<string>A knife handle protrudes from the block.</string>
+				<key>inventoryDescription</key>
+				<string>The handle of a kitchen knife.</string>
+				<key>hidden</key>
+				<string></string>
+				<key>canCarry</key>
+				<string></string>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Take {[item]Knife}</string>
+						<key>result</key>
+						<string>When the knife is separated from the knife block, it turns out there&apos;s no blade. It&apos;s just a handle.
+
+Got {[item]Knife Handle}.</string>
+						<key>onceOnly</key>
+						<string></string>
+					</dict>
+				</array>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Oven</string>
+				<key>explanation</key>
+				<string>There is an oven. It&apos;s hard to tell if it works still.</string>
+				<key>maxCapacity</key>
+				<integer>12</integer>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Turn the oven on</string>
+						<key>result</key>
+						<string>The oven is on.</string>
+					</dict>
+				</array>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Refrigerator</string>
+				<key>explanation</key>
+				<string>The refrigerator is here, too.</string>
+				<key>maxCapacity</key>
+				<integer>99</integer>
+				<key>items</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Paper Bag</string>
+						<key>explanation</key>
+						<string>There&apos;s a paper bag. It looks like there&apos;s something in it.</string>
+						<key>inventoryDescription</key>
+						<string>A paper bag. There&apos;s something in it.</string>
+						<key>inventoryEvent</key>
+						<string></string>
+					</dict>
+				</array>
+			</dict>
+		</array>
+	</dict>
 	<key>4</key>
 	<dict>
 		<key>name</key>
 		<string>Kitchen</string>
 		<key>explanation</key>
 		<string>The center of the room is taken up by a worktable for the preparation of food and the kneading of dough.</string>
+		<key>placementGuidelines</key>
+		<dict>
+			<key>floor</key>
+			<integer>1</integer>
+		</dict>
 		<key>items</key>
 		<array>
 			<dict>
@@ -102,6 +262,13 @@ Got {[item]Knife Handle}.</string>
 		<string>Day Room</string>
 		<key>explanation</key>
 		<string>There are tall bay windows along one wall, with bench seats underneath each.</string>
+		<key>placementGuidelines</key>
+		<dict>
+			<key>floor</key>
+			<integer>1</integer>
+			<key>edge</key>
+			<string></string>
+		</dict>
 		<key>items</key>
 		<array>
 			<dict>
@@ -185,7 +352,7 @@ If a player &quot;knocks&quot; with no deadwood, they receive an amount of point
 				<key>name</key>
 				<string>Sit by the window</string>
 				<key>result</key>
-				<string>The view outside is largely brush and overgrowth. Above that, the moon is visible amongst wispy clouds. Its light illuminates the room rather well.</string>
+				<string>The view outside is largely brush and overgrowth obscured by fog. Above that, the moon is visible amongst wispy clouds. Its light illuminates the room rather well.</string>
 			</dict>
 		</array>
 	</dict>
@@ -194,9 +361,12 @@ If a player &quot;knocks&quot; with no deadwood, they receive an amount of point
 		<key>name</key>
 		<string>Gallery</string>
 		<key>explanation</key>
-		<string>The room is vacant except for pieces of art along the walls.
-
-</string>
+		<string>The room is vacant except for pieces of art along the walls:</string>
+		<key>placementGuidelines</key>
+		<dict>
+			<key>floor</key>
+			<integer>1</integer>
+		</dict>
 		<key>items</key>
 		<array>
 			<dict>
@@ -308,6 +478,11 @@ Well, of course, the jaw was literally chiseled when it was sculpted.</string>
 		<string>Parlor</string>
 		<key>explanation</key>
 		<string>A room where people wait before they go to do something in another room.</string>
+		<key>placementGuidelines</key>
+		<dict>
+			<key>floor</key>
+			<integer>1</integer>
+		</dict>
 		<key>items</key>
 		<array>
 			<dict>
@@ -472,6 +647,11 @@ Well, of course, the jaw was literally chiseled when it was sculpted.</string>
 		<string>Dining Room</string>
 		<key>explanation</key>
 		<string>The dining room is opulent. Or it was, at least.</string>
+		<key>placementGuidelines</key>
+		<dict>
+			<key>floor</key>
+			<integer>1</integer>
+		</dict>
 		<key>items</key>
 		<array>
 			<dict>

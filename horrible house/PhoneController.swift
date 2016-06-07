@@ -89,7 +89,7 @@ class PhoneController: UIViewController {
                     keyHeight * 0.75
                 )
                 
-                i++
+                i += 1
             }
         }
     }
@@ -114,7 +114,7 @@ class PhoneController: UIViewController {
     
     func dialNumber(sender: NSTimer) {
         let string = "key\(sender.userInfo!)"
-        SystemSoundID.playFileNamed(string, withExtenstion: "mp3")
+        //SystemSoundID.playFileNamed(string, withExtenstion: "mp3")
         print("WOW \(string)")
         
     }

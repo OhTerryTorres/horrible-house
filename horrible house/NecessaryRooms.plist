@@ -2,6 +2,38 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>3 - 2</key>
+	<dict>
+		<key>name</key>
+		<string>Second Floor Landing</string>
+		<key>explanation</key>
+		<string>The top of the staircase that leads down to the ground floor.</string>
+		<key>actions</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Go downstairs</string>
+				<key>changeFloor</key>
+				<integer>1</integer>
+			</dict>
+		</array>
+	</dict>
+	<key>4</key>
+	<dict>
+		<key>name</key>
+		<string>Stairs Ascending</string>
+		<key>explanation</key>
+		<string>Stairs leading up to the second floor are here.</string>
+		<key>actions</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Go upstairs</string>
+				<key>changeFloor</key>
+				<integer>2</integer>
+			</dict>
+		</array>
+	</dict>
 	<key>3</key>
 	<dict>
 		<key>name</key>
@@ -103,6 +135,16 @@
 				<string>It&apos;s just a box.</string>
 				<key>maxCapacity</key>
 				<integer>99</integer>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Net</string>
+				<key>explanation</key>
+				<string>There&apos;s a butterfly net lying on the floor.</string>
+				<key>inventoryDescription</key>
+				<string>A butterfly net with a long handle</string>
+				<key>inventoryEvent</key>
+				<string></string>
 			</dict>
 		</array>
 	</dict>

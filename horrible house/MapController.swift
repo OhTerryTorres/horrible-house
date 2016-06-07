@@ -56,7 +56,7 @@ class MapController: UIViewController {
             break
         }
         
-        let changeFloorButton = UIBarButtonItem(title: string, style: UIBarButtonItemStyle.Plain, target: self, action: "changeFloor")
+        let changeFloorButton = UIBarButtonItem(title: string, style: UIBarButtonItemStyle.Plain, target: self, action: #selector(MapController.changeFloor))
         navigationItem.rightBarButtonItem = changeFloorButton
     }
     
@@ -81,9 +81,11 @@ class MapController: UIViewController {
         print("heightByRooms is \(heightByRooms)")
         print("widthByRooms is \(widthByRooms)")
         
-        for var y = heightByRooms; y > -1; y-- {
+        
+        
+        for y in heightByRooms.stride(to: -1, by: -1) {
             print("y is \(y)")
-            for var x = widthByRooms; x > -1; x-- {
+            for x in widthByRooms.stride(to: -1, by: -1) {
                 print("x is \(x)")
                 let roomView = UIView()
                 roomView.frame = CGRectMake(
@@ -186,7 +188,7 @@ class MapController: UIViewController {
     }
     
     func changeFloor() {
-        self.currentFloor++
+        self.currentFloor += 1
         if self.currentFloor > 2 {
             self.currentFloor = 0
         }

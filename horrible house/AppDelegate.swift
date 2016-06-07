@@ -30,11 +30,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ]
         // This gives us two rows with four rooms, with noRooms (walls) on either side of the foyer.
         static let b = [
+            [[0, 0, 0],
+            [0, 0, 1,],
+            [0, 0, 6,]],
+            
             [[1, 1, 3],
             [1, 1, 1],
-            [0, 2, 0]], // first floor = 1
+            [0, 2, 5]], // first floor = 1
             
-            [[0, 0, 4],
+            [[0, 1, 4],
             [0, 0, 0],
             [0, 0, 0]]  // basement = 0
         ]

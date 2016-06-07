@@ -102,10 +102,10 @@ class ContainerController: UIViewController {
         var string = ""
         
         if tableView == self.tableViewContainer {
-            string = self.container.name
+            string = self.container.name.uppercaseString
         }
         if tableView == self.tableViewInventory {
-            string = "Inventory"
+            string = "INVENTORY"
         }
         
         return string
@@ -127,6 +127,13 @@ class ContainerController: UIViewController {
         return 1
     }
     
+    
+    func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        
+        let header:UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
+        
+        header.textLabel!.font = UIFont.boldSystemFontOfSize(10)
+    }
     
     
 }

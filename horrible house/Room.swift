@@ -8,17 +8,18 @@
 
 import UIKit
 
-class Room: DictionaryBased, ItemBased, ActionPacked, Detailed {
+class Room: DictionaryBased, ItemBased, ActionPacked, Detailed, Inhabitable {
     
     var name = ""
     var explanation = ""
     var details: [Detail] = []
     var actions: [Action] = []
-    var position = (x: 0, y: 0, z:0)
+    var position = (x: 0, y: 0, z: 0)
     var timesEntered = 0
-    var charactersPresent: [Character] = []
+    var characters: [Character] = []
     var items: [Item] = []
-    var placementGuidelines: [String] = []
+    var placementGuidelines: Dictionary<String, AnyObject>?
+    var isInHouse = false
     
     required init(withDictionary: Dictionary<String, AnyObject>) {
         for (key, value) in withDictionary {
@@ -27,11 +28,9 @@ class Room: DictionaryBased, ItemBased, ActionPacked, Detailed {
             if key == "details" { self.setDetailsForArrayOfDictionaries(value as! [Dictionary<String, AnyObject>]) }
             if key == "actions" { self.setActionsForArrayOfDictionaries(value as! [Dictionary<String, AnyObject>]) }
             if key == "items" { self.setItemsForDictionary(value as! [Dictionary<String, AnyObject>]) }
+            if key == "characters" { self.setCharactersForDictionary(value as! [Dictionary<String, AnyObject>]) }
             if key == "placementGuidelines" {
-                let placementGuidlines = value as! [String]
-                for placement in placementGuidlines {
-                    self.placementGuidelines += [placement]
-                }
+                self.placementGuidelines = value as? Dictionary<String, AnyObject>
             }
         }
     }

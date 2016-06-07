@@ -17,7 +17,7 @@ extension UILabel {
     // with the "Dining Room" text being the color Color.roomColor.
     
     
-    func setAttributedTextWithTags(var string: String, isAnimated : Bool) {
+    func setAttributedTextWithTags(var string: String) {
         
         var mutableStringArray = [NSMutableAttributedString]()
         var rangeAndTagArray = [(range : NSRange, tag : String)]()
@@ -72,6 +72,9 @@ extension UILabel {
         
         self.attributedText = newMutableString
         
+        
+        // This shall be sealed away until it may be needed again one day.
+        /*
         if isAnimated {
             var typewriteRange = NSMakeRange(1, newMutableString.length)
             dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0)) {
@@ -95,6 +98,7 @@ extension UILabel {
                 }
             }
         }
+        */
         
     }
     

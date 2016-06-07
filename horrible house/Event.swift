@@ -14,6 +14,7 @@ class Event: DictionaryBased, RuleBased {
     var stages : [Stage] = []
     var currentStage : Stage?
     var rules: [Rule] = []
+    var completed = false
 
     required init(withDictionary: Dictionary<String, AnyObject>) {
         for (key, value) in withDictionary {

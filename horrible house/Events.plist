@@ -2,6 +2,35 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>2</key>
+	<dict>
+		<key>name</key>
+		<string>Looking Out the Window</string>
+		<key>rules</key>
+		<array>
+			<string>\playerInRoomWithHuge Bat</string>
+		</array>
+		<key>stages</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Looking Out the Window</string>
+				<key>explanation</key>
+				<string>After looking down on the overgrown yard for moment, there is a crash a shower of broken glass and something flies through the window into the hallway.
+
+With a shriek and flutter, it&apos;s gone again.</string>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Brush the glass off your clothes and carry on</string>
+						<key>triggerEventName</key>
+						<string></string>
+					</dict>
+				</array>
+			</dict>
+		</array>
+	</dict>
 	<key>1</key>
 	<dict>
 		<key>name</key>
