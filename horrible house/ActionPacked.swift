@@ -36,7 +36,7 @@ extension ActionPacked {
         var i = 0
         for action in actions {
             if action.isFollowingTheRules() {
-                i++
+                i += 1
             }
         }
         return i

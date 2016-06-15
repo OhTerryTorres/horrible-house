@@ -102,6 +102,19 @@ extension UILabel {
         
     }
     
+    
+    func setTextWithTypeAnimation(typedText: String) {
+        self.text = ""
+        dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0)) {
+            for character in typedText.characters {
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.text = self.text! + String(character)
+                }
+                NSThread.sleepForTimeInterval(0.02)
+            }
+        }
+    }
+    
     func textColorForTag(tag: String) -> UIColor {
         var textColor = UIColor.blackColor()
         

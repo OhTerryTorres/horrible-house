@@ -67,6 +67,11 @@ class ContainerController: UIViewController {
         if let tabBarController = self.tabBarController as? TabBarController {
             tabBarController.refreshViewControllers()
         }
+        
+        
+        // This is especially helpful for a shifting inventory
+        self.house.skull.updateSkull()
+        
     }
     
     // This starts the cooking timer on any items that were not in the oven before it was heated

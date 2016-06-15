@@ -34,12 +34,14 @@ extension RuleBased {
             case Rule.RuleType.hasItem:
                 rulesFollowed = false
                 if let _ = house.player.items.indexOf({$0.name == rule.name}) {
+                    print("RULEBASED – player does NOT have \(rule.name)")
                     rulesFollowed = true
                 }
                 
             case Rule.RuleType.nopeHasItem:
                 rulesFollowed = true
                 if let _ = house.player.items.indexOf({$0.name == rule.name}) {
+                    print("RULEBASED – player DOES have \(rule.name)")
                     rulesFollowed = false
                 }
                 
@@ -67,6 +69,25 @@ extension RuleBased {
                     if house.events[index].completed == true {
                         rulesFollowed = false
                     }
+                }
+                break
+            case Rule.RuleType.inRoomWithCharacter:
+                print("RULEBASED – RuleType:  inRoomWithCharacter")
+                if let index = house.currentRoom.characters.indexOf({$0.name == rule.name}) {
+                    let character = house.currentRoom.characters[index]
+                    if character.hidden == true {
+                        rulesFollowed = false
+                    }
+                } else {
+                    print("RULEBASED – player is NOT in room with \(rule.name)")
+                    rulesFollowed = false
+                }
+                break
+            case Rule.RuleType.nopeInRoomWithCharacter:
+                print("RULEBASED – RuleType:  nopeInRoomWithCharacter")
+                if let _ = house.currentRoom.characters.indexOf({$0.name == rule.name}) {
+                    print("RULEBASED – player IS in room with \(rule.name)")
+                    rulesFollowed = false
                 }
                 break
             default:

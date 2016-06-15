@@ -22,12 +22,14 @@ class Rule {
         static let metCharacter = "metCharacter"
         static let enteredRoom = "enteredRoom"
         static let completedEvent = "completedEvent"
+        static let inRoomWithCharacter = "inRoomWithCharacter"
         
         // Checks to see if the player has NOT done something
         static let nopeHasItem = "nopeHasItem"
         static let nopeMetCharacter = "nopeMetCharacter"
         static let nopeEnteredRoom = "nopeEnteredRoom"
         static let nopeCompletedEvent = "nopeCompletedEvent"
+        static let nopeInRoomWithCharacter = "nopeInRoomWithCharacter"
     }
     
 
@@ -54,6 +56,10 @@ class Rule {
             type = RuleType.nopeCompletedEvent
             self.name = self.name.stringByReplacingOccurrencesOfString("\\nopeCompleted", withString: "")
         }
+        if self.name.rangeOfString("\\nopeInRoomWith") != nil {
+            type = RuleType.nopeInRoomWithCharacter
+            self.name = self.name.stringByReplacingOccurrencesOfString("\\nopeInRoomWith", withString: "")
+        }
 
         
         if self.name.rangeOfString("\\has") != nil {
@@ -71,6 +77,10 @@ class Rule {
         if self.name.rangeOfString("\\completed") != nil {
             type = RuleType.completedEvent
             self.name = self.name.stringByReplacingOccurrencesOfString("\\completed", withString: "")
+        }
+        if self.name.rangeOfString("\\inRoomWith") != nil {
+            type = RuleType.inRoomWithCharacter
+            self.name = self.name.stringByReplacingOccurrencesOfString("\\inRoomWith", withString: "")
         }
         
     }

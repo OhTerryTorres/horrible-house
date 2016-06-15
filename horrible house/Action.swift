@@ -10,6 +10,12 @@ import UIKit
 
 class Action: DictionaryBased, RuleBased {
     
+    enum ActionType: String {
+        case Item
+        case Room
+        case Inventory
+    }
+    
     // MARK: Properties
     
     // The text displayed to the player
@@ -49,8 +55,16 @@ class Action: DictionaryBased, RuleBased {
     // Used to eliminate a consumable item from the player's inventory.
     var consumeItems : [String] = []
     
+    
+    // These will add characters to the current room
+    // Or, if the initializing dictionary has a startingRoom property, they'll spawn in that room
+    var spawnCharacters : [Character] = []
+    
     // When revealed, a hidden character is added to the current room's position.
     var revealCharacters : [String] = []
+    
+    // This helps remove Characters entirely from the house.npcs list and whatver room they are in.
+    var removeCharacters : [String] = []
 
     
     // If a triggerEvent name is listed, choosing this action will trigger that event.
@@ -67,8 +81,6 @@ class Action: DictionaryBased, RuleBased {
     // This is for special actions that trigger a segue to a viewcontroller
     var segue : String?
     
-    // This is
-
     required init(withDictionary: Dictionary<String, AnyObject>) {
         for (key, value) in withDictionary {
             if key == "name" { self.name = value as! String }
@@ -88,7 +100,14 @@ class Action: DictionaryBased, RuleBased {
             
             if key == "consumeItems" { self.consumeItems = value as! [String] }
             
+            if key == "spawnCharacters" {
+                for dict in value as! [Dictionary<String, AnyObject>] {
+                    let character = Character(withDictionary: dict)
+                    self.spawnCharacters += [character]
+                }
+            }
             if key == "revealCharacters" { self.revealCharacters = value as! [String] }
+            if key == "removeCharacters" { self.removeCharacters = value as! [String] }
                         
             if key == "onceOnly" { self.onceOnly = true }
             

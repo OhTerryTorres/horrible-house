@@ -40,7 +40,10 @@ class ExplorationController: UITableViewController {
     
     
     
-    func resolveAction(action: Action, isItemAction: Bool) {
+    func resolveAction(action: Action, actionType: Action.ActionType) {
+        
+        print("ExC – in resolveAction")
+
         
         if let result = action.result { self.update = self.translateSpecialText(result) }
         if let roomChange = action.roomChange { self.house.currentRoom.explanation = roomChange }
@@ -48,6 +51,7 @@ class ExplorationController: UITableViewController {
         for itemName in action.revealItems {
             for item in self.house.currentRoom.items {
                 if item.name == itemName {
+                    print("ExC – \(itemName) is no longer hidden!")
                     item.hidden = false
                 }
             }
@@ -55,23 +59,39 @@ class ExplorationController: UITableViewController {
         for itemName in action.liberateItems {
             for item in self.house.currentRoom.items {
                 if item.name == itemName {
+                    print("ExC – \(itemName) has been liberated and can be carried!")
                     item.canCarry = true
                 }
             }
         }
         
         for item in action.addItems {
-            print("adding item to inventory")
+            print("ExC – adding \(item.name) to inventory")
             self.house.player.items += [item]
         }
         
         for itemName in action.consumeItems {
             for item in self.house.player.items {
                 if item.name == itemName {
-                    print("consuming item in inventory")
+                    print("ExC – consuming item in inventory")
                     self.house.player.removeItemFromItems(withName: itemName)
                 }
             }
+        }
+        
+        for character in action.spawnCharacters {
+            if let roomName = character.startingRoom {
+                if let room = self.house.roomForName(roomName) {
+                    room.characters += [character]
+                    character.position = room.position
+                }
+            } else {
+                print("ExC – spawning \(character.name) in current room")
+                self.house.currentRoom.characters += [character]
+                character.position = self.house.currentRoom.position
+            }
+            self.house.npcs += [character]
+            print("ExC – \(character.name) IS IN THE HOUSE!")
         }
         
         for characterName in action.revealCharacters {
@@ -80,12 +100,42 @@ class ExplorationController: UITableViewController {
                     character.hidden = false
                     character.position = self.house.currentRoom.position
                     self.house.npcs += [character]
-                    print("\(character.name) IS IN THE HOUSE!")
+                    print("ExC – \(character.name) IS REVEALED!")
                 }
             }
         }
         
-        if isItemAction {
+        for characterName in action.removeCharacters {
+            print("ExC – characterName is \(characterName)")
+            var character = Character?()
+            
+            if let index = self.house.npcs.indexOf({$0.name == characterName}) {
+                print("ExC – \(characterName) is at self.house.npcs[\(index)]")
+                character = self.house.npcs[index]
+                print("ExC – self.house.npcs.count was \(self.house.npcs.count)")
+                self.house.npcs.removeAtIndex(index)
+                print("ExC – self.house.npcs.count is now \(self.house.npcs.count)")
+            }
+            
+            if let c = character {
+                
+                if let index = self.house.map[c.position.z][c.position.y][c.position.x].characters.indexOf({ $0.name == c.name }) {
+                    // ******
+                    // Test this to see if characters need to be removed via the house.MAP or just the house.ROOMS array
+                    // ******
+                    self.house.map[c.position.z][c.position.y][c.position.x].characters.removeAtIndex(index)
+                    print("ExC – \(c.name) is being removed from \(self.house.map[c.position.z][c.position.y][c.position.x].name)")
+                }
+            }
+            
+            if let index = self.house.currentRoom.characters.indexOf({$0.name == characterName}) {
+                self.house.currentRoom.characters.removeAtIndex(index)
+            }
+            
+        }
+        
+        switch actionType {
+        case .Item:
             for i in 0 ..< self.house.currentRoom.items.count-1 {
                 if let index = self.house.currentRoom.items[i].actions.indexOf({$0.name == action.name}) {
                     self.house.currentRoom.items[i].actions[index].timesPerformed += 1
@@ -114,7 +164,7 @@ class ExplorationController: UITableViewController {
                     // this seems like a clumsy solution, but it currently works.
                 }
             }
-        } else { // Room Actions
+        case .Room:
             for i in 0 ..< self.house.currentRoom.actions.count {
                 if self.house.currentRoom.actions[i].name == action.name {
                     action.timesPerformed += 1
@@ -127,10 +177,33 @@ class ExplorationController: UITableViewController {
                     break
                 }
             }
+        case .Inventory:
+            for item in self.house.player.items {
+                if let index = item.actions.indexOf({$0.name == action.name}) {
+                    if item.actions[index].isFollowingTheRules() {
+                        item.actions[index].timesPerformed += 1
+                        
+                        // If the action has a REPLACE action
+                        if let replaceAction = action.replaceAction {
+                            item.actions[index] = replaceAction
+                        }
+                        
+                        // If the action can only be performed ONCE
+                        if action.onceOnly == true {
+                            item.actions.removeAtIndex(index)
+                        }
+                        
+                        break // THIS keeps the loop from crashing as it examines an item that does not exist.
+                        // It also makes sure multiple similar actions aren't renamed.
+                        // this seems like a clumsy solution, but it currently works.
+                        
+                    }
+                }
+            }
         }
         
         // This should be done before any transitions occur
-        self.handleContextSensitiveActions(action, isItemAction: isItemAction)
+        self.handleContextSensitiveActions(action, actionType: actionType)
         
         if let triggerEventName = action.triggerEventName { triggerEvent(forEventName: triggerEventName)}
         
@@ -145,8 +218,9 @@ class ExplorationController: UITableViewController {
         }
     }
     
-    func handleContextSensitiveActions(action: Action, isItemAction: Bool) {
-        if isItemAction {
+    func handleContextSensitiveActions(action: Action, actionType: Action.ActionType) {
+        switch actionType {
+        case .Item:
             for i in 0 ..< self.house.currentRoom.items.count {
                 for o in 0 ..< self.house.currentRoom.items[i].actions.count {
                     if self.house.currentRoom.items[i].actions[o].name == action.name {
@@ -157,8 +231,8 @@ class ExplorationController: UITableViewController {
                         // OVEN ACTIONS
                         
                         if let oven = item as? Oven {
-
-                            print("Shit! an oven!")
+                            
+                            print("ExC – Shit! an oven!")
                             if action.name.lowercaseString.rangeOfString("on") != nil {
                                 oven.turnOn(atTime: self.house.gameClock.currentTime)
                             }
@@ -168,12 +242,14 @@ class ExplorationController: UITableViewController {
                             if action.name.lowercaseString.rangeOfString("look") != nil {
                                 oven.checkOven(atTime: self.house.gameClock.currentTime)
                             }
-                        }   
+                        }
                     }
                 }
             }
+        default:
+            break
         }
-        
+
     }
     
     func resolveDirection(forIndexPath indexPath: NSIndexPath) {
@@ -194,7 +270,7 @@ class ExplorationController: UITableViewController {
         for event in self.house.events {
             if event.name == eventName {
                 if event.isFollowingTheRules() {
-                    print("moving to event \(event.name)")
+                    print("ExC – moving to event \(event.name)")
                     performSegueWithIdentifier("event", sender: event)
                 }
             }
@@ -220,7 +296,7 @@ class ExplorationController: UITableViewController {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         
-        print("leaving EXPLORATION CONTROLLER")
+        print("ExC – leaving EXPLORATION CONTROLLER")
         
         (UIApplication.sharedApplication().delegate as! AppDelegate).house = self.house
         
@@ -274,6 +350,7 @@ class ExplorationController: UITableViewController {
     override func viewWillAppear(animated: Bool) {
         self.update = ""
         self.tableView.reloadData()
+        print("ExC – reloading table")
     }
 
     @IBAction func unwind(segue: UIStoryboardSegue) {
@@ -292,8 +369,9 @@ class ExplorationController: UITableViewController {
     }
     
     func getNumberOfTableSections() -> Int {
-        var numberOfSections = 4
-        for _ in self.house.currentRoom.items {
+        var numberOfSections = 5
+        for item in self.house.currentRoom.items {
+            print("ExC – \(item.name) exists, and will have its own section in the tableview")
             numberOfSections += 1
         }
         return numberOfSections
@@ -304,8 +382,9 @@ class ExplorationController: UITableViewController {
     // 0: Update
     // 1: Explanation
     // 2: Room Actions
-    // 3 through (sections.count - 2): Item Actions
-    // sections.count: Directions
+    // 3 through (sections.count - 3): Item Actions
+    // sections.count - 2: Inventory Actions
+    // sections.count - 1: Directions
     
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -331,6 +410,17 @@ class ExplorationController: UITableViewController {
             // DIRECTIONS
         case getNumberOfTableSections()-1:
             rows = self.house.getRoomsAroundCharacter(self.house.player).count
+            
+            // INVENTORY ACTIONS
+        case getNumberOfTableSections()-2:
+            for item in self.house.player.items {
+                for action in item.actions {
+                    if action.isFollowingTheRules() {
+                        print("ExC – rows += 1")
+                        rows += 1
+                    }
+                }
+            }
             
             // ITEM ACTIONS
         default:
@@ -372,15 +462,6 @@ class ExplorationController: UITableViewController {
             }
             
             
-            // Adds each non-hidden character's "explanation" property to the room explanation.
-            for character in self.house.currentRoom.characters {
-                if character.hidden == false && character.name != "Player" {
-                    var string = cell.textLabel?.attributedText?.string
-                    string = string! + " " + character.explanation
-                    cell.textLabel!.setAttributedTextWithTags(string!)
-                }
-            }
-            
             // Adds each item's "explanation" property to the room explanation.
             for item in self.house.currentRoom.items {
                 if item.hidden == false {
@@ -394,6 +475,18 @@ class ExplorationController: UITableViewController {
                     cell.textLabel!.setAttributedTextWithTags(string!)
                 }
             }
+            
+            // Adds each non-hidden character's "explanation" property to the room explanation.
+            for character in self.house.currentRoom.characters {
+                print("ExC – \(character.name) is in currentRoom.characters")
+                print("ExC – \(character.name)'s position \(character.position)")
+                if character.hidden == false && character.name != "Player" {
+                    var string = cell.textLabel?.attributedText?.string
+                    string = string! + " " + character.explanation
+                    cell.textLabel!.setAttributedTextWithTags(string!)
+                }
+            }
+            
             cell.userInteractionEnabled = false
             // ROOM ACTIONS
         case 2:
@@ -426,6 +519,23 @@ class ExplorationController: UITableViewController {
             cell.textLabel!.setAttributedTextWithTags(directionString)
             cell.userInteractionEnabled = true
             
+            // INVENTORY ACTIONS
+        case getNumberOfTableSections()-2:
+            
+            var inventoryActions : [Action] = []
+            for item in self.house.player.items {
+                for action in item.actions {
+                    if action.isFollowingTheRules() {
+                        print("ExC – rows += 1 FUCK")
+                        inventoryActions += [action]
+                    }
+                }
+            }
+            let action = inventoryActions[indexPath.row]
+            cell.textLabel!.setAttributedTextWithTags(action.name)
+            cell.userInteractionEnabled = true
+            
+            
             // ITEM ACTIONS
         default:
             // -3 to deal with the other table sections.
@@ -438,62 +548,100 @@ class ExplorationController: UITableViewController {
         return cell
     }
     
-    
-    
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
+    func newTurn() {
+        print("ExC – in newTurn")
         self.house.skull.updateSkull()
         self.house.gameClock.passTimeByTurn()
         self.house.triggerNPCBehaviors()
-        
-        
+    }
+    
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+
         var action = Action?()
         
         switch ( indexPath.section ) {
             
             // ROOM ACTIONS
         case 2:
+            print("ExC – selected Room Action \n")
             action = self.house.currentRoom.actions[indexPath.row]
-            resolveAction(action!, isItemAction: false)
+            resolveAction(action!, actionType: Action.ActionType.Room)
             
             // DIRECTIONS
         case getNumberOfTableSections()-1:
+            print("ExC – selected Direction \n")
             resolveDirection(forIndexPath: indexPath)
             self.update = ""
             self.title = self.house.currentRoom.name
-            self.tableView.reloadData()
-            let sections = NSIndexSet(indexesInRange: NSMakeRange(0, tableView.numberOfSections))
-            self.tableView.reloadSections(sections, withRowAnimation: UITableViewRowAnimation.Fade)
+            
+            //self.tableView.reloadData()
+            //let sections = NSIndexSet(indexesInRange: NSMakeRange(0, tableView.numberOfSections))
+            //self.tableView.reloadSections(sections, withRowAnimation: UITableViewRowAnimation.Fade)
+            //print("ExC – reloading table")
+            
+        // INVENTORY ACTIONS
+        case getNumberOfTableSections()-2:
+            print("ExC – selected Inventory Action \n")
+            var inventoryActions : [Action] = []
+            for item in self.house.player.items {
+                print("ExC – OH")
+                for action in item.actions {
+                    print("ExC – MY")
+                    if action.isFollowingTheRules() {
+                        print("ExC – GOD")
+                        inventoryActions += [action]
+                    }
+                }
+            }
+            print("ExC – indexPath.row is \(indexPath.row)")
+            if inventoryActions.count > indexPath.row {
+                print("ExC – BOOP, resolving inventoryActions[\(indexPath.row)]: \(inventoryActions[indexPath.row].name)")
+                action = inventoryActions[indexPath.row]
+                resolveAction(inventoryActions[indexPath.row], actionType: Action.ActionType.Inventory)
+            }
+            
+            
         
             // ITEM ACTIONS
         default:
+            print("ExC – selected Item Action \n")
             action = self.house.currentRoom.items[indexPath.section-3].actions[indexPath.row]
-            resolveAction(action!, isItemAction: true)
+            resolveAction(action!, actionType: Action.ActionType.Item)
             
             break
         }
         
+        self.newTurn()
+        
         if let _ = action?.triggerEventName {
             
-        } else if let _ = action?.segue{
+        } else if let _ = action?.segue {
             
         } else {
+            print("ExC – special table reload functions")
             
             if let actionName = action?.name {
-                if actionName.rangeOfString("Take") != nil {
+                if actionName.rangeOfString("Take") != nil { // TAKE: In case of picking up an item, slide in UPDATE section saying so.
 
                     let sections = NSMutableIndexSet(indexesInRange: NSMakeRange(0, 1))
                     
                     self.tableView.reloadData()
                     self.tableView.reloadSections(sections, withRowAnimation: UITableViewRowAnimation.Left  )
-                } else {
+                    print("ExC – reloading table")
+                } else { // In case of any other action, fade entire tableview
                     
                     if let _ = action?.changeFloor {
                         self.tableView.reloadData()
                     }
                     let sections = NSIndexSet(indexesInRange: NSMakeRange(0, tableView.numberOfSections))
                     self.tableView.reloadSections(sections, withRowAnimation: UITableViewRowAnimation.Fade)
+                    print("ExC – reloading table")
                 }
+            } else { // DIRECTION: in case of moving from one room to another, fade entire tablevew.
+                self.tableView.reloadData()
+                let sections = NSIndexSet(indexesInRange: NSMakeRange(0, tableView.numberOfSections))
+                self.tableView.reloadSections(sections, withRowAnimation: UITableViewRowAnimation.Fade)
             }
             
         }
@@ -541,19 +689,25 @@ class ExplorationController: UITableViewController {
         case getNumberOfTableSections()-1:
             break
             
+        // INVENTORY ACTIONS
+        case getNumberOfTableSections()-2:
+            break
+            
             // ITEM ACTIONS
         default:
             // -3 to deal with the other table sections.
             let item = self.house.currentRoom.items[indexPath.section-3]
             
             if item.hidden == true {
+                print("ExC – cell height for \(item.name) is 0 (hidden)")
                 height = 0
             }
             if item.actions[indexPath.row].name.rangeOfString("Take") != nil && item.canCarry == false {
+                print("ExC – cell height for \(item.actions[indexPath.row].name) is 0 (cannot carry)")
                 height = 0
             }
             if item.actions[indexPath.row].isFollowingTheRules() == false {
-                print("\(item.actions[indexPath.row].name) is not following the rules")
+                print("ExC – cell height for \(item.actions[indexPath.row].name) is 0 (against the rules)")
                 height = 0
             }
         }

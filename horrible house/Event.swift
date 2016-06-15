@@ -40,11 +40,11 @@ class Event: DictionaryBased, RuleBased {
     // This will make the first stage in self.stages that follows the rules
     // into the default stage. This can be changed if a better method appears.
     func setCurrentStage() {
-        print("begin setCurrentStage")
+        print("EVENT – begin setCurrentStage")
         for stage in self.stages {
             if stage.isFollowingTheRules() { self.currentStage = stage ; break }
         }
-        print("end setCurrentStage")
+        print("EVENT – end setCurrentStage")
     }
     
     init() {

@@ -14,7 +14,8 @@ class EventController: UITableViewController {
         case update = 0
         case explanation = 1
         case roomActions = 2
-        case numberOfSections = 3
+        case inventoryActions
+        case numberOfSections = 4
         // Each item has its own section
         // In switch cases, they will count as Default
     }
@@ -38,7 +39,7 @@ class EventController: UITableViewController {
         if let roomChange = action.roomChange { self.house.currentEvent.currentStage!.explanation = roomChange }
         
         for itemName in action.revealItems {
-            print("revealItems")
+            print("EvC – revealItems")
             for item in self.house.currentEvent.currentStage!.items {
                 if item.name == itemName {
                     item.hidden = false
@@ -47,7 +48,7 @@ class EventController: UITableViewController {
         }
         
         for itemName in action.liberateItems {
-            print("liberateItems")
+            print("EvC – liberateItems")
             for item in self.house.currentEvent.currentStage!.items {
                 if item.name == itemName {
                     item.canCarry = true
@@ -55,17 +56,72 @@ class EventController: UITableViewController {
             }
         }
         
+        for item in action.addItems {
+            print("EvC – adding item to inventory")
+            self.house.player.items += [item]
+        }
+        
         for itemName in action.consumeItems {
             for item in self.house.player.items {
                 if item.name == itemName {
-                    print("consuming item in inventory")
+                    print("EvC – consuming item in inventory")
                     self.house.player.removeItemFromItems(withName: itemName)
                 }
             }
         }
         
+        for character in action.spawnCharacters {
+            if let roomName = character.startingRoom {
+                if let room = self.house.roomForName(roomName) {
+                    room.characters += [character]
+                    character.position = room.position
+                }
+            } else {
+                print("EvC – spawning \(character.name) in current room")
+                self.house.currentRoom.characters += [character]
+                character.position = self.house.currentRoom.position
+            }
+            self.house.npcs += [character]
+            print("EvC – \(character.name) IS IN THE HOUSE!")
+        }
+        
+        for characterName in action.revealCharacters {
+            for character in self.house.currentRoom.characters {
+                if character.name == characterName {
+                    character.hidden = false
+                    character.position = self.house.currentRoom.position
+                    self.house.npcs += [character]
+                    print("EvC – \(character.name) IS REVEALED!")
+                }
+            }
+        }
+        
+        for characterName in action.removeCharacters {
+            var character = Character?()
+            
+            if let index = self.house.npcs.indexOf({$0.name == characterName}) {
+                character = self.house.npcs[index]
+                self.house.npcs.removeAtIndex(index)
+            }
+            
+            if let c = character {
+                
+                if let index = self.house.map[c.position.z][c.position.y][c.position.x].characters.indexOf({ $0.name == c.name }) {
+                    // ******
+                    // Test this to see if characters need to be removed via the house.MAP or just the house.ROOMS array
+                    // ******
+                    self.house.map[c.position.z][c.position.y][c.position.x].characters.removeAtIndex(index)
+                }
+            }
+            
+            if let index = self.house.currentRoom.characters.indexOf({$0.name == characterName}) {
+                self.house.currentRoom.characters.removeAtIndex(index)
+            }
+            
+        }
+        
         if isItemAction {
-            print("isItemAction")
+            print("EvC – isItemAction")
             for i in 0 ..< self.house.currentEvent.currentStage!.items.count {
                 if let index = self.house.currentEvent.currentStage!.items[i].actions.indexOf({$0.name == action.name}) {
                     self.house.currentEvent.currentStage!.items[i].actions[index].timesPerformed += 1
@@ -96,7 +152,7 @@ class EventController: UITableViewController {
                 }
             }
         } else { // Room Actions
-            print("isRoomAction")
+            print("EvC – isRoomAction")
             for i in 0 ..< self.house.currentEvent.currentStage!.actions.count {
                 if self.house.currentEvent.currentStage!.actions[i].name == action.name {
                     action.timesPerformed += 1
@@ -146,7 +202,7 @@ class EventController: UITableViewController {
                     
                     if let oven = item as? Oven {
                         
-                        print("Shit! an oven!")
+                        print("EvC – Shit! an oven!")
                         if action.name.lowercaseString.rangeOfString("on") != nil {
                             oven.turnOn(atTime: self.house.gameClock.currentTime)
                         }
@@ -172,9 +228,9 @@ class EventController: UITableViewController {
             }
         }
         if eventName == "" {
-            print("exiting event")
+            print("EvC – exiting event")
             if self.isInventoryEvent {
-                print("about to exit to Inventory")
+                print("EvC – about to exit to Inventory")
                 performSegueWithIdentifier("exitToInventory", sender: nil)
             } else {
                 performSegueWithIdentifier("exit", sender: nil)
@@ -275,6 +331,17 @@ class EventController: UITableViewController {
         case Sections.roomActions.rawValue:
             rows = self.house.currentEvent.currentStage!.actions.count
             
+        // INVENTORY ACTIONS
+        case Sections.inventoryActions.rawValue:
+            for item in self.house.player.items {
+                for action in item.actions {
+                    if action.isFollowingTheRules() {
+                        print("EvC – rows += 1")
+                        rows += 1
+                    }
+                }
+            }
+            
             // ITEM ACTIONS
         default:
             // -2 to deal with the other table sections.
@@ -322,6 +389,21 @@ class EventController: UITableViewController {
             cell.textLabel!.setAttributedTextWithTags(action.name)
             cell.userInteractionEnabled = true
             
+        case Sections.inventoryActions.rawValue:
+            
+            var inventoryActions : [Action] = []
+            for item in self.house.player.items {
+                for action in item.actions {
+                    if action.isFollowingTheRules() {
+                        print("EvC – rows += 1 FUCK")
+                        inventoryActions += [action]
+                    }
+                }
+            }
+            let action = inventoryActions[indexPath.row]
+            cell.textLabel!.setAttributedTextWithTags(action.name)
+            cell.userInteractionEnabled = true
+            
             // ITEM ACTIONS
         default:
             // -3 to deal with the other table sections.
@@ -342,22 +424,42 @@ class EventController: UITableViewController {
             
             // ROOM ACTIONS
         case Sections.roomActions.rawValue:
-            print("room action selected")
+            print("EvC – room action selected")
             action = self.house.currentEvent.currentStage!.actions[indexPath.row]
             resolveAction(action!, isItemAction: false)
             
+        // INVENTORY ACTIONS
+        case Sections.inventoryActions.rawValue:
+            print("EvC – selected Inventory Action \n")
+            var inventoryActions : [Action] = []
+            for item in self.house.player.items {
+                print("EvC – OH")
+                for action in item.actions {
+                    print("EvC – MY")
+                    if action.isFollowingTheRules() {
+                        print("EvC – GOD")
+                        inventoryActions += [action]
+                    }
+                }
+            }
+            print("EvC – indexPath.row is \(indexPath.row)")
+            if inventoryActions.count > indexPath.row {
+                print("EvC – BOOP")
+                resolveAction(inventoryActions[indexPath.row], isItemAction: true)
+            }
+            
             // ITEM ACTIONS
         default:
-            print("item action selected")
+            print("EvC – item action selected")
             action = self.house.currentEvent.currentStage!.items[indexPath.section-indexPath.section].actions[indexPath.row]
             resolveAction(action!, isItemAction: true)
             
             break
         }
-        print("row \(indexPath.row) in section \(indexPath.section) selected")
+        print("EvC – row \(indexPath.row) in section \(indexPath.section) selected")
         
         // self.tableView.reloadData()
-        print("number of sections is \(tableView.numberOfSections)")
+        print("EvC – number of sections is \(tableView.numberOfSections)")
         
         if let _ = action?.triggerEventName {
             
@@ -365,24 +467,66 @@ class EventController: UITableViewController {
             
             if let actionName = action?.name {
                 if actionName.rangeOfString("Take") != nil {
-                    print("JAJAJAJA")
-                    print("animating table changes (TAKE action")
+                    print("EvC – JAJAJAJA")
+                    print("EvC – animating table changes (TAKE action")
                     let sections = NSIndexSet(indexesInRange: NSMakeRange(0, tableView.numberOfSections-1))
                     self.tableView.reloadSections(sections, withRowAnimation: UITableViewRowAnimation.Automatic)
                 } else {
-                    print("GAGAGAGA")
-                    print("animating table changes")
+                    print("EvC – GAGAGAGA")
+                    print("EvC – animating table changes")
                     let sections = NSIndexSet(indexesInRange: NSMakeRange(0, tableView.numberOfSections))
                     self.tableView.reloadSections(sections, withRowAnimation: UITableViewRowAnimation.Automatic)
                 }
             }
         }
-        
-        
+                
         
         self.house.skull.updateSkull()
+        
+        
+        if let _ = action?.triggerEventName {
+            
+        } else if let _ = action?.segue{
+            
+        } else {
+            
+            if let actionName = action?.name {
+                if actionName.rangeOfString("Take") != nil {
+                    
+                    let sections = NSMutableIndexSet(indexesInRange: NSMakeRange(0, 1))
+                    
+                    self.tableView.reloadData()
+                    self.tableView.reloadSections(sections, withRowAnimation: UITableViewRowAnimation.Left  )
+                } else {
+                    
+                    if let _ = action?.changeFloor {
+                        self.tableView.reloadData()
+                    }
+                    let sections = NSIndexSet(indexesInRange: NSMakeRange(0, tableView.numberOfSections))
+                    self.tableView.reloadSections(sections, withRowAnimation: UITableViewRowAnimation.Fade)
+                }
+            }
+            
+        }
+        
+        self.scrollToTop()
     }
 
+    func scrollToTop() {
+        if (self.numberOfSectionsInTableView(self.tableView) > 0 ) {
+            
+            let numberOfSections = self.tableView.numberOfSections
+            let numberOfRows = self.tableView.numberOfRowsInSection(numberOfSections-1)
+            
+            // let indexPath = NSIndexPath(forRow: numberOfRows-1, inSection: (numberOfSections-1))
+            if numberOfRows > 0 && numberOfSections > 0 {
+                // self.tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: UITableViewScrollPosition.Top, animated: false)
+            }
+            
+            let top = NSIndexPath(forRow: Foundation.NSNotFound, inSection: 0);
+            self.tableView.scrollToRowAtIndexPath(top, atScrollPosition: UITableViewScrollPosition.Top, animated: true);
+        }
+    }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height = UITableViewAutomaticDimension
@@ -408,14 +552,14 @@ class EventController: UITableViewController {
             // -3 to deal with the other table sections.
             let item = self.house.currentEvent.currentStage!.items[indexPath.section-indexPath.section]
             if item.hidden == true {
-                print("\(item.name) IS HIDDEN!")
+                print("EvC – \(item.name) IS HIDDEN!")
                 height = 0
             }
             if item.actions[indexPath.row].name.rangeOfString("Take") != nil && item.canCarry == false {
                 height = 0
             }
             if item.actions[indexPath.row].isFollowingTheRules() == false {
-                print("\(item.actions[indexPath.row].name) is not following the rules")
+                print("EvC – \(item.actions[indexPath.row].name) is not following the rules")
                 height = 0
             }
             

@@ -37,7 +37,7 @@ class Skull {
                 } else {
                     self.ideasToSayAloud.insert(idea, atIndex: 0)
                 }
-                print("adding \(idea.detail.explanation)")
+                print("SKULL – adding \(idea.detail.explanation)")
                 
                 if let index = self.ideas.indexOf({$0.detail.explanation == idea.detail.explanation}) {
                     self.ideas.removeAtIndex(index)

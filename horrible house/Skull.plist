@@ -2,6 +2,36 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>8</key>
+	<dict>
+		<key>name</key>
+		<string>Item: Roasted Bat</string>
+		<key>detail</key>
+		<dict>
+			<key>explanation</key>
+			<string>You cooked the bat?! Why would you do something like that?!</string>
+			<key>rules</key>
+			<array>
+				<string>\hasRoasted Bat</string>
+			</array>
+		</dict>
+		<key>isHighPriority</key>
+		<true/>
+	</dict>
+	<key>7</key>
+	<dict>
+		<key>name</key>
+		<string>Item: Huge Bat</string>
+		<key>detail</key>
+		<dict>
+			<key>explanation</key>
+			<string>A bat?! You know, that poor fellow is more scared of you than you are of it.</string>
+			<key>rules</key>
+			<array>
+				<string>\hasHuge Bat</string>
+			</array>
+		</dict>
+	</dict>
 	<key>6</key>
 	<dict>
 		<key>name</key>
@@ -53,7 +83,7 @@
 		<key>detail</key>
 		<dict>
 			<key>explanation</key>
-			<string>Oh, that&apos;s... pretty creepy. I don&apos;t recognize that.</string>
+			<string>Oh, that doll&apos;s... pretty creepy. I don&apos;t recognize that.</string>
 			<key>rules</key>
 			<array>
 				<string>\hasArmless Doll</string>

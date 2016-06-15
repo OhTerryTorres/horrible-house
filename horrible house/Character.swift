@@ -24,6 +24,8 @@ class Character: ItemBased {
     var hidden = false
     var behavior = Behavior.Default
     
+    var startingRoom : String?
+    
     
     init(name:String, position:(x: Int, y: Int, z: Int)) {
         self.name = name
@@ -40,6 +42,7 @@ class Character: ItemBased {
             }
             if key == "hidden" { self.hidden = true }
             if key == "items" { self.setItemsForDictionary(value as! [Dictionary<String, AnyObject>]) }
+            if key == "startingRoom" { self.startingRoom = value as? String }
         }
     }
     

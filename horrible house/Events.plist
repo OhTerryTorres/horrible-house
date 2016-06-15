@@ -16,14 +16,23 @@
 				<key>name</key>
 				<string>Looking Out the Window</string>
 				<key>explanation</key>
-				<string>After looking down on the overgrown yard for moment, there is a crash a shower of broken glass and something flies through the window into the hallway.
-
-With a shriek and flutter, it&apos;s gone again.</string>
+				<string>After looking down on the overgrown yard for moment, there is a crash and a shower of broken glass and something flies through the window.</string>
 				<key>actions</key>
 				<array>
 					<dict>
 						<key>name</key>
 						<string>Brush the glass off your clothes and carry on</string>
+						<key>spawnCharacters</key>
+						<array>
+							<dict>
+								<key>name</key>
+								<string>Huge Bat</string>
+								<key>explanation</key>
+								<string>A huge bat is flapping around, looking for a way out.</string>
+								<key>behavior</key>
+								<string>Roam</string>
+							</dict>
+						</array>
 						<key>triggerEventName</key>
 						<string></string>
 					</dict>

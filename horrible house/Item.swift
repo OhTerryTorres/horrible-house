@@ -50,7 +50,7 @@ class Item: DictionaryBased, ActionPacked, Detailed, ItemBased {
             
             // Container properties
             
-            if key == "items" { print("name is \(name)"); self.setItemsForDictionary(value as! [Dictionary<String, AnyObject>]) }
+            if key == "items" { print("ITEM – name is \(name)"); self.setItemsForDictionary(value as! [Dictionary<String, AnyObject>]) }
             if key == "maxCapacity" { self.maxCapacity = value as? Int }
             if self.items.count > 0 || self.maxCapacity > 0 { self.isContainer = true }
         }
@@ -59,9 +59,9 @@ class Item: DictionaryBased, ActionPacked, Detailed, ItemBased {
         // It is only revealed to the player if the item can actually be carried.
         // First, check to see if there isn't already a customized TAKE action for the item.
         if let _ = self.actions.indexOf({$0.name.rangeOfString("Take") != nil}) {
-            print("\(self.name) already has a Take action")
-        } else {
-            print("\(self.name) needs a Take action")
+            print("ITEM – \(self.name) already has a Take action")
+        } else if self.canCarry == true {
+            print("ITEM – \(self.name) needs a Take action")
             let takeDict : Dictionary<String, AnyObject> = [ "name" : "Take {[item]\(self.name)}", "result" : "Got {[item]\(self.name)}.", "onceOnly" : true]
             let takeAction = Action(withDictionary: takeDict)
             actions += [takeAction]
@@ -99,9 +99,9 @@ class Oven : Item {
     func turnOn(atTime currentTime : GameTime) {
         self.isOn = true
         self.timeTurnedOn = currentTime
-        print("Oven on at \(self.timeTurnedOn?.totalTimeInSeconds()) seconds")
+        print("OVEN – Oven on at \(self.timeTurnedOn?.totalTimeInSeconds()) seconds")
         self.timeHeated = GameTime(hours: timeTurnedOn!.hours, minutes: timeTurnedOn!.minutes, seconds: timeTurnedOn!.seconds + CookingTimes.secondsUntilHeated)
-        print("Oven will be heated at \(timeHeated!.hours):\(timeHeated!.minutes))")
+        print("OVEN – Oven will be heated at \(timeHeated!.hours):\(timeHeated!.minutes))")
         
         if let index = self.actions.indexOf({ $0.name.rangeOfString("on") != nil }) {
             let dict : Dictionary<String, AnyObject> = [ "name" : "Turn the oven off", "result" : "The oven is off."]
@@ -116,7 +116,7 @@ class Oven : Item {
         self.timeTurnedOn = nil
         self.timeHeated = nil
         self.isHeated = false
-        print("Oven off")
+        print("OVEN – Oven off")
         for item in items {
             item.cookingTimeBegan = nil
         }
@@ -131,9 +131,9 @@ class Oven : Item {
     func checkOven(atTime currentTime : GameTime) {
         if isOn {
             if self.isHeated == false {
-                print("Current time is \(currentTime.totalTimeInSeconds())")
+                print("OVEN – Current time is \(currentTime.totalTimeInSeconds())")
                 if currentTime.totalTimeInSeconds() > timeHeated!.totalTimeInSeconds() {
-                    print("Oven heated!!")
+                    print("OVEN – Oven heated!!")
                     self.isHeated = true
                 }
             }
@@ -151,12 +151,12 @@ class Oven : Item {
             if var _ = item.cookingTimeBegan {
                 
             } else {
-                print("initializing cooking time")
+                print("OVEN – initializing cooking time")
                 item.cookingTimeBegan = self.timeHeated!
                 
                 // Delete this when done testing
                 let timeItemsWillBeCooked = GameTime(hours: item.cookingTimeBegan!.hours, minutes: item.cookingTimeBegan!.minutes, seconds: item.cookingTimeBegan!.seconds + CookingTimes.secondsUntilCooked)
-                print("\(item.name) be cooked at \(timeItemsWillBeCooked.hours):\(timeItemsWillBeCooked.minutes)")
+                print("OVEN – \(item.name) be cooked at \(timeItemsWillBeCooked.hours):\(timeItemsWillBeCooked.minutes)")
             }
         }
         
@@ -169,8 +169,15 @@ class Oven : Item {
                 if timeSpentCooking >= CookingTimes.secondsUntilCooked {
                     if let i = items.indexOf({$0.name == item.name}) {
                         let newItem = Item()
+                        
                         newItem.name = "Burnt Clump"
                         newItem.inventoryDescription = "An ashy pile"
+                        
+                        if item.name == "Huge Bat" {
+                            newItem.name = "Roasted Bat"
+                            newItem.inventoryDescription = "A bat, cooked alive"
+                        }
+                        
                         
                         items[i] = newItem
                     }

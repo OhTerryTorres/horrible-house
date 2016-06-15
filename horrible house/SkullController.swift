@@ -31,7 +31,15 @@ class SkullController: UIViewController {
     @IBOutlet var ideaLabel: UILabel!
     
     override func viewDidLoad() {
-        
+        for idea in self.skull.ideasToSayAloud {
+            if idea.detail.isFollowingTheRules() == false {
+                print("SKULLCONTROLLER – It turns out \(idea.detail.explanation) is not following the rules")
+                if let index = self.skull.ideasToSayAloud.indexOf({$0.detail.explanation == idea.detail.explanation}) {
+                    self.skull.ideas += [idea]
+                    self.skull.ideasToSayAloud.removeAtIndex(index)
+                }
+            }
+        }
         
     }
     
@@ -45,7 +53,9 @@ class SkullController: UIViewController {
     @IBAction func displayIdea(sender: AnyObject) {
         if self.skull.ideasToSayAloud.count > 0 {
             let index = self.skull.ideasToSayAloud.count - 1
-            self.ideaLabel.text = self.skull.ideasToSayAloud[index].detail.explanation
+            
+            let string = "\(self.skull.ideasToSayAloud[index].detail.explanation)"
+            self.ideaLabel.setTextWithTypeAnimation(string)
             
             print("removing from ideasToSayAloud: \(self.skull.ideasToSayAloud[index].detail.explanation)")
             
@@ -55,6 +65,7 @@ class SkullController: UIViewController {
         }
         
     }
+    
     
     override func viewWillAppear(animated: Bool) {
         self.house = (UIApplication.sharedApplication().delegate as! AppDelegate).house

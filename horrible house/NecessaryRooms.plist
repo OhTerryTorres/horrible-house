@@ -130,21 +130,53 @@
 			</dict>
 			<dict>
 				<key>name</key>
-				<string>Box</string>
-				<key>inventoryDescription</key>
-				<string>It&apos;s just a box.</string>
-				<key>maxCapacity</key>
-				<integer>99</integer>
-			</dict>
-			<dict>
-				<key>name</key>
 				<string>Net</string>
 				<key>explanation</key>
 				<string>There&apos;s a butterfly net lying on the floor.</string>
 				<key>inventoryDescription</key>
 				<string>A butterfly net with a long handle</string>
-				<key>inventoryEvent</key>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Snatch bat with the {[item]net}</string>
+						<key>result</key>
+						<string>Swinging the net deftly, you ensnare the huge bat. It continues to flap and flail for a moment until it suddenly stops, eyes unblinking, breathing rapidly.
+
+Got {[item]Huge Bat}.</string>
+						<key>rules</key>
+						<array>
+							<string>\inRoomWithHuge Bat</string>
+						</array>
+						<key>removeCharacters</key>
+						<array>
+							<string>Huge Bat</string>
+						</array>
+						<key>addItems</key>
+						<array>
+							<dict>
+								<key>name</key>
+								<string>Huge Bat</string>
+								<key>explanation</key>
+								<string>There is a huge bat, paralyzed by shock.</string>
+								<key>inventoryDescription</key>
+								<string>A bat, paralyzed by shock</string>
+							</dict>
+						</array>
+						<key>onceOnly</key>
+						<string></string>
+					</dict>
+				</array>
+				<key>canCarry</key>
 				<string></string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Box</string>
+				<key>inventoryDescription</key>
+				<string>It&apos;s just a box.</string>
+				<key>maxCapacity</key>
+				<integer>99</integer>
 			</dict>
 		</array>
 	</dict>

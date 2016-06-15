@@ -22,10 +22,6 @@
 				<string>Look out the window</string>
 				<key>roomChange</key>
 				<string>A hallway with tall windows looking out onto foggy, moonlit landscape. Glass litters the floors below where one windows was broken.</string>
-				<key>revealCharacters</key>
-				<array>
-					<string>Huge Bat</string>
-				</array>
 				<key>triggerEventName</key>
 				<string>Looking Out the Window</string>
 				<key>rules</key>
@@ -42,19 +38,6 @@
 				<array>
 					<string>\completedLooking Out the Window</string>
 				</array>
-			</dict>
-		</array>
-		<key>characters</key>
-		<array>
-			<dict>
-				<key>name</key>
-				<string>Huge Bat</string>
-				<key>explanation</key>
-				<string>A huge bat is flapping around, looking for a way out.</string>
-				<key>behavior</key>
-				<string>Roam</string>
-				<key>hidden</key>
-				<string></string>
 			</dict>
 		</array>
 	</dict>

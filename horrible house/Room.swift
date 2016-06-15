@@ -18,6 +18,7 @@ class Room: DictionaryBased, ItemBased, ActionPacked, Detailed, Inhabitable {
     var timesEntered = 0
     var characters: [Character] = []
     var items: [Item] = []
+    
     var placementGuidelines: Dictionary<String, AnyObject>?
     var isInHouse = false
     
@@ -32,6 +33,7 @@ class Room: DictionaryBased, ItemBased, ActionPacked, Detailed, Inhabitable {
             if key == "placementGuidelines" {
                 self.placementGuidelines = value as? Dictionary<String, AnyObject>
             }
+            
         }
     }
     
