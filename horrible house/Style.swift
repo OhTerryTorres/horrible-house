@@ -12,6 +12,7 @@ import UIKit
 struct Color {
     static let roomColor = UIColor.redColor()
     static let itemColor = UIColor.greenColor()
+    static let specialColor = UIColor.blueColor()
 }
 
 struct Font {

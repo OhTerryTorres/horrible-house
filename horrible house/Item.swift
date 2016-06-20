@@ -32,6 +32,12 @@ class Item: DictionaryBased, ActionPacked, Detailed, ItemBased {
     // MARK: For the oven
     var cookingTimeBegan : GameTime?
     
+    // This is used to initialize a TAKE action
+    var takeDict : Dictionary<String, AnyObject> {
+        let dict = [ "name" : "Take {[item]\(self.name)}", "result" : "Got {[item]\(self.name)}.", "onceOnly" : true]
+        return dict as! Dictionary<String, AnyObject>
+    }
+    
 
     required init(withDictionary: Dictionary<String, AnyObject>) {
         for (key, value) in withDictionary {
@@ -58,13 +64,12 @@ class Item: DictionaryBased, ActionPacked, Detailed, ItemBased {
         // Adds a default TAKE action to every item.
         // It is only revealed to the player if the item can actually be carried.
         // First, check to see if there isn't already a customized TAKE action for the item.
+        
         if let _ = self.actions.indexOf({$0.name.rangeOfString("Take") != nil}) {
             print("ITEM – \(self.name) already has a Take action")
         } else if self.canCarry == true {
             print("ITEM – \(self.name) needs a Take action")
-            let takeDict : Dictionary<String, AnyObject> = [ "name" : "Take {[item]\(self.name)}", "result" : "Got {[item]\(self.name)}.", "onceOnly" : true]
-            let takeAction = Action(withDictionary: takeDict)
-            actions += [takeAction]
+            self.enableCarrying()
         }
         
         // Add a LOOK IN action for any containers
@@ -78,6 +83,20 @@ class Item: DictionaryBased, ActionPacked, Detailed, ItemBased {
     
     init() {
         
+    }
+    
+    func enableCarrying() {
+        self.canCarry = true
+        actions += [Action(withDictionary: takeDict)]
+    }
+    
+    func disableCarrying() {
+        self.canCarry = false
+        let takeAction = Action(withDictionary: takeDict)
+        if let index = self.actions.indexOf({$0.name == takeAction.name}) {
+            self.actions.removeAtIndex(index)
+        }
+
     }
     
 }

@@ -49,19 +49,15 @@ class ExplorationController: UITableViewController {
         if let roomChange = action.roomChange { self.house.currentRoom.explanation = roomChange }
         
         for itemName in action.revealItems {
-            for item in self.house.currentRoom.items {
-                if item.name == itemName {
-                    print("ExC – \(itemName) is no longer hidden!")
-                    item.hidden = false
-                }
+            if let index = self.house.currentRoom.items.indexOf({$0.name == itemName}) {
+                print("ExC – \(itemName) is no longer hidden!")
+                self.house.currentRoom.items[index].hidden = false
             }
         }
         for itemName in action.liberateItems {
-            for item in self.house.currentRoom.items {
-                if item.name == itemName {
-                    print("ExC – \(itemName) has been liberated and can be carried!")
-                    item.canCarry = true
-                }
+            if let index = self.house.currentRoom.items.indexOf({$0.name == itemName}) {
+                print("ExC – \(itemName) has been liberated and can be carried!")
+                self.house.currentRoom.items[index].enableCarrying()
             }
         }
         
@@ -71,21 +67,19 @@ class ExplorationController: UITableViewController {
         }
         
         for itemName in action.consumeItems {
-            for item in self.house.player.items {
-                if item.name == itemName {
-                    print("ExC – consuming item in inventory")
-                    self.house.player.removeItemFromItems(withName: itemName)
-                }
+            if let _ = self.house.player.items.indexOf({$0.name == itemName}) {
+                print("ExC – consuming item in inventory")
+                self.house.player.removeItemFromItems(withName: itemName)
             }
         }
         
         for character in action.spawnCharacters {
-            if let roomName = character.startingRoom {
+            if let roomName = character.startingRoom { // Spawn character in room specified
                 if let room = self.house.roomForName(roomName) {
                     room.characters += [character]
                     character.position = room.position
                 }
-            } else {
+            } else { // Spawn character in currentRoom
                 print("ExC – spawning \(character.name) in current room")
                 self.house.currentRoom.characters += [character]
                 character.position = self.house.currentRoom.position
@@ -95,13 +89,12 @@ class ExplorationController: UITableViewController {
         }
         
         for characterName in action.revealCharacters {
-            for character in self.house.currentRoom.characters {
-                if character.name == characterName {
-                    character.hidden = false
-                    character.position = self.house.currentRoom.position
-                    self.house.npcs += [character]
-                    print("ExC – \(character.name) IS REVEALED!")
-                }
+            if let index = self.house.currentRoom.characters.indexOf({$0.name == characterName}) {
+                let character = self.house.currentRoom.characters[index]
+                character.hidden = false
+                character.position = self.house.currentRoom.position
+                self.house.npcs += [character]
+                print("ExC – \(character.name) IS REVEALED!")
             }
         }
         
@@ -697,6 +690,12 @@ class ExplorationController: UITableViewController {
         default:
             // -3 to deal with the other table sections.
             let item = self.house.currentRoom.items[indexPath.section-3]
+            if item.name == "Huge Bat" {
+                print("ExC – Huge Bat canCarry is \(item.canCarry)")
+                for action in item.actions {
+                    print("ExC – Huge Bat action is \(action.name)")
+                }
+            }
             
             if item.hidden == true {
                 print("ExC – cell height for \(item.name) is 0 (hidden)")

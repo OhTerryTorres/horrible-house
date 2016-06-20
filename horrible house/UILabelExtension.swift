@@ -124,6 +124,9 @@ extension UILabel {
         if (tag.rangeOfString("item") != nil) {
             textColor = Color.itemColor
         }
+        if (tag.rangeOfString("special") != nil) {
+            textColor = Color.specialColor
+        }
         
         return textColor
     }

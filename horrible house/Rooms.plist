@@ -2,6 +2,83 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>7</key>
+	<dict>
+		<key>name</key>
+		<string>Office</string>
+		<key>explanation</key>
+		<string>The office.</string>
+		<key>items</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Writing Desk</string>
+				<key>explanation</key>
+				<string>A writing desk faces the wall. It has a set of drawers and many compartments for holding letters and other documents.</string>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Check the top desk drawer</string>
+						<key>result</key>
+						<string>It is filled to the brim with paper clips.</string>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>Check the bottom desk drawer</string>
+						<key>triggerEventName</key>
+						<string>Bottom Desk Drawer</string>
+					</dict>
+				</array>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Knife Handle</string>
+				<key>explanation</key>
+				<string>A knife handle protrudes from the block.</string>
+				<key>inventoryDescription</key>
+				<string>The handle of a kitchen knife.</string>
+				<key>hidden</key>
+				<string></string>
+				<key>canCarry</key>
+				<string></string>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Take {[item]Knife}</string>
+						<key>result</key>
+						<string>When the knife is separated from the knife block, it turns out there&apos;s no blade. It&apos;s just a handle.
+
+Got {[item]Knife Handle}.</string>
+						<key>onceOnly</key>
+						<string></string>
+					</dict>
+				</array>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Refrigerator</string>
+				<key>explanation</key>
+				<string>The refrigerator is here, too.</string>
+				<key>maxCapacity</key>
+				<integer>99</integer>
+				<key>items</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Paper Bag</string>
+						<key>explanation</key>
+						<string>There&apos;s a paper bag. It looks like there&apos;s something in it.</string>
+						<key>inventoryDescription</key>
+						<string>A paper bag. There&apos;s something in it.</string>
+						<key>inventoryEvent</key>
+						<string></string>
+					</dict>
+				</array>
+			</dict>
+		</array>
+	</dict>
 	<key>6</key>
 	<dict>
 		<key>name</key>
@@ -528,10 +605,6 @@ Well, of course, the jaw was literally chiseled when it was sculpted.</string>
 							<array>
 								<string>Wrench</string>
 							</array>
-							<key>liberateItems</key>
-							<array>
-								<string>Wrench</string>
-							</array>
 							<key>rules</key>
 							<array>
 								<string>\nopeHasWrench</string>
@@ -567,6 +640,8 @@ Well, of course, the jaw was literally chiseled when it was sculpted.</string>
 				<key>explanation</key>
 				<string>There&apos;s something hard in one of the seat cushions.</string>
 				<key>hidden</key>
+				<string></string>
+				<key>canCarry</key>
 				<string></string>
 			</dict>
 			<dict>

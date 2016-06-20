@@ -9,29 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "horrible house/ExplorationController.swift"
-            timestampString = "487689226.547172"
+            filePath = "horrible house/EventController.swift"
+            timestampString = "487799557.604436"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "60"
-            endingLineNumber = "60"
-            landmarkName = "resolveAction(_:actionType:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "horrible house/ExplorationController.swift"
-            timestampString = "487689186.470652"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "52"
-            endingLineNumber = "52"
-            landmarkName = "resolveAction(_:actionType:)"
+            startingLineNumber = "163"
+            endingLineNumber = "163"
+            landmarkName = "resolveAction(_:isItemAction:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

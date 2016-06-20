@@ -32,7 +32,6 @@ class EventController: UITableViewController {
     
     
     
-    
     func resolveAction(action: Action, isItemAction: Bool) {
         
         if let result = action.result { self.update = result }
@@ -133,6 +132,7 @@ class EventController: UITableViewController {
                     
                     // If the action can only be performed ONCE
                     if action.onceOnly == true {
+                        print("item is \(self.house.currentEvent.currentStage!.items[i].name), action is \(self.house.currentEvent.currentStage!.items[i].actions[index].name)")
                         self.house.currentEvent.currentStage!.items[i].actions.removeAtIndex(index)
                     }
                     
@@ -188,6 +188,7 @@ class EventController: UITableViewController {
             self.update = ""
             self.title = self.house.currentRoom.name
         }
+        
     }
     
     func handleContextSensitiveActions(action: Action, isItemAction: Bool) {
@@ -346,10 +347,11 @@ class EventController: UITableViewController {
         default:
             // -2 to deal with the other table sections.
             if self.house.currentEvent.currentStage!.items.count > 0 {
-                let item = self.house.currentEvent.currentStage!.items[section-section]
+                let item = self.house.currentEvent.currentStage!.items[section-4]
                 rows = item.actions.count
             }
         }
+        
         return rows
     }
     
@@ -406,8 +408,9 @@ class EventController: UITableViewController {
             
             // ITEM ACTIONS
         default:
-            // -3 to deal with the other table sections.
-            let item = self.house.currentEvent.currentStage!.items[indexPath.section-indexPath.section]
+            // -4 to deal with the other table sections.
+            let item = self.house.currentEvent.currentStage!.items[indexPath.section-4]
+            print("\(item.name) has a cell now")
             let action = item.actions[indexPath.row]
             cell.textLabel!.setAttributedTextWithTags(action.name)
             cell.userInteractionEnabled = true
@@ -451,15 +454,13 @@ class EventController: UITableViewController {
             // ITEM ACTIONS
         default:
             print("EvC – item action selected")
-            action = self.house.currentEvent.currentStage!.items[indexPath.section-indexPath.section].actions[indexPath.row]
+            action = self.house.currentEvent.currentStage!.items[indexPath.section-4].actions[indexPath.row]
             resolveAction(action!, isItemAction: true)
             
             break
         }
-        print("EvC – row \(indexPath.row) in section \(indexPath.section) selected")
         
         // self.tableView.reloadData()
-        print("EvC – number of sections is \(tableView.numberOfSections)")
         
         if let _ = action?.triggerEventName {
             
@@ -467,12 +468,10 @@ class EventController: UITableViewController {
             
             if let actionName = action?.name {
                 if actionName.rangeOfString("Take") != nil {
-                    print("EvC – JAJAJAJA")
                     print("EvC – animating table changes (TAKE action")
                     let sections = NSIndexSet(indexesInRange: NSMakeRange(0, tableView.numberOfSections-1))
                     self.tableView.reloadSections(sections, withRowAnimation: UITableViewRowAnimation.Automatic)
                 } else {
-                    print("EvC – GAGAGAGA")
                     print("EvC – animating table changes")
                     let sections = NSIndexSet(indexesInRange: NSMakeRange(0, tableView.numberOfSections))
                     self.tableView.reloadSections(sections, withRowAnimation: UITableViewRowAnimation.Automatic)
@@ -510,6 +509,7 @@ class EventController: UITableViewController {
         }
         
         self.scrollToTop()
+        
     }
 
     func scrollToTop() {
@@ -550,18 +550,22 @@ class EventController: UITableViewController {
             // ITEM ACTIONS
         default:
             // -3 to deal with the other table sections.
-            let item = self.house.currentEvent.currentStage!.items[indexPath.section-indexPath.section]
+            let item = self.house.currentEvent.currentStage!.items[indexPath.section-4]
+    
             if item.hidden == true {
                 print("EvC – \(item.name) IS HIDDEN!")
                 height = 0
             }
             if item.actions[indexPath.row].name.rangeOfString("Take") != nil && item.canCarry == false {
+                print("EvC – \(item.name) cannot be carried!")
                 height = 0
             }
             if item.actions[indexPath.row].isFollowingTheRules() == false {
-                print("EvC – \(item.actions[indexPath.row].name) is not following the rules")
+                print("EvC – \(item.actions[indexPath.row].name) is not following the rules!")
                 height = 0
             }
+            
+            print("EvC – HEIGHT – item is \(item.name), height is \(height)")
             
         }
         
