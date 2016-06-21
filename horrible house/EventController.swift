@@ -51,7 +51,7 @@ class EventController: UITableViewController {
             for item in self.house.currentEvent.currentStage!.items {
                 if item.name == itemName {
                     item.canCarry = true
-                }
+                    }
             }
         }
         
