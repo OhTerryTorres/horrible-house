@@ -20,7 +20,7 @@ class ExplorationController: UITableViewController {
     
     // self.house will allows access to self.house!.currentEvent and self.house.currntEvent.currentStage!
     // Then the house can be passed back to other viewcontrollers
-    var house : House = (UIApplication.sharedApplication().delegate as! AppDelegate).house
+    var house = House(layout: House.LayoutOptions.a)
     var update = ""
     
 
@@ -28,10 +28,14 @@ class ExplorationController: UITableViewController {
     // This can be changed so the starting room could potentially be a saved room from a previous session.
     //
     func setPlayerStartingRoom() {
-        var room = Room?()
-        room = self.house.foyer
-        room?.timesEntered += 1
-        self.house.currentRoom = room!
+        if let _ = NSUserDefaults.standardUserDefaults().objectForKey("savedHouse") {
+        } else {
+            var room = Room?()
+            room = self.house.foyer
+            room?.timesEntered += 1
+            self.house.currentRoom = room!
+        }
+
         self.house.player.position = self.house.currentRoom.position
         
     }

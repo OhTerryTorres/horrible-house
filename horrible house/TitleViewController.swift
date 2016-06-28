@@ -16,10 +16,10 @@ class TitleViewController: UIViewController {
     
     @IBOutlet var restartGameButton: UIButton!
     
-    
+    var house : House?
     
     override func viewDidLoad() {
-        if NSUserDefaults.standardUserDefaults().objectForKey("savedHouse") != nil {
+        if let _ = NSUserDefaults.standardUserDefaults().objectForKey("savedHouse") {
             self.startGameButton.titleLabel?.text = "RETURN TO THE HOUSE"
         } else {
             self.restartGameButton.hidden = true
@@ -27,10 +27,22 @@ class TitleViewController: UIViewController {
     }
 
     @IBAction func startGame(sender: AnyObject) {
-        
+        if let houseData = NSUserDefaults.standardUserDefaults().objectForKey("houseData") {
+            self.house = NSKeyedUnarchiver.unarchiveObjectWithData(houseData as! NSData) as? House
+        } else {
+            self.restartGame(self)
+        }
+        performSegueWithIdentifier("segue", sender: self)
     }
 
     @IBAction func restartGame(sender: AnyObject) {
-        
+        self.house = (UIApplication.sharedApplication().delegate as! AppDelegate).house
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let tbc = segue.destinationViewController as! TabBarController
+        let nvc = tbc.viewControllers![0] as! UINavigationController
+        let exc = nvc.viewControllers[0] as! ExplorationController
+        exc.house = self.house!
     }
 }

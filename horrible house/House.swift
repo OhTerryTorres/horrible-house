@@ -8,7 +8,7 @@
 
 import UIKit
 
-class House {
+class House : NSObject {
     struct RoomType {
         static let noRoom = 0
         static let normal = 1
@@ -30,8 +30,8 @@ class House {
         
         // This gives us two rows with four rooms.
         static let a = [
-            [1, 2],
-            [1, 1]
+            [[1, 2],
+            [1, 1]]
         ]
         // This gives us two rows with four rooms, with noRooms (walls) on either side of the foyer.
         static let b = [
@@ -99,6 +99,7 @@ class House {
 
     
     init(layout:[[[Int]]]) {
+        super.init()
         self.layout = layout.reverse()
         
         // Reverse each floor's layout so that north and south make sense
