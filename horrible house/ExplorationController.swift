@@ -276,7 +276,12 @@ class ExplorationController: UITableViewController {
     func translateSpecialText(string: String) -> String {
         var string = string
         if (string.rangeOfString("[currentTime]") != nil) {
-            string = string.stringByReplacingOccurrencesOfString("[currentTime]", withString: "\(self.house.gameClock.currentTime.hours):\(self.house.gameClock.currentTime.minutes)")
+            if self.house.gameClock.currentTime.minutes < 10 {
+                print("XXXXX")
+                string = string.stringByReplacingOccurrencesOfString("[currentTime]", withString: "\(self.house.gameClock.currentTime.hours):0\(self.house.gameClock.currentTime.minutes) and \(self.house.gameClock.currentTime.seconds) seconds")
+            } else { 
+            string = string.stringByReplacingOccurrencesOfString("[currentTime]", withString: "\(self.house.gameClock.currentTime.hours):\(self.house.gameClock.currentTime.minutes) and \(self.house.gameClock.currentTime.seconds) seconds")
+            }
         }
         return string
     }
@@ -544,7 +549,11 @@ class ExplorationController: UITableViewController {
     func newTurn() {
         print("ExC – in newTurn")
         self.house.skull.updateSkull()
-        self.house.gameClock.passTimeByTurn()
+        
+        // *******
+        // Keep this commented out if we want time kept as REAL time
+        //self.house.gameClock.passTimeByTurn()
+        
         self.house.triggerNPCBehaviors()
     }
     

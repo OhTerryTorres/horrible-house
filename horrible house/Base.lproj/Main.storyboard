@@ -355,6 +355,52 @@
             </objects>
             <point key="canvasLocation" x="1401" y="-971"/>
         </scene>
+        <!--Title View Controller-->
+        <scene sceneID="kn7-3y-m2R">
+            <objects>
+                <viewController id="jI2-Yt-DWI" customClass="TitleViewController" customModule="horrible_house" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="nTP-S0-dTJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="MQg-y6-p95"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="XLN-9W-LVx">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Horrible House" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YgJ-bM-JQO">
+                                <rect key="frame" x="51" y="46" width="214" height="56"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="31"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xsf-A4-8x3">
+                                <rect key="frame" x="90" y="156" width="136" height="30"/>
+                                <state key="normal" title="ENTER THE HOUSE"/>
+                                <connections>
+                                    <action selector="startGame:" destination="jI2-Yt-DWI" eventType="touchUpInside" id="lct-h7-sJU"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gmT-dh-VEv">
+                                <rect key="frame" x="93" y="259" width="131" height="30"/>
+                                <state key="normal" title="I want a new house"/>
+                                <connections>
+                                    <action selector="restartGame:" destination="jI2-Yt-DWI" eventType="touchUpInside" id="opT-FK-zbt"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="restartGame" destination="gmT-dh-VEv" id="TOb-ep-ZJS"/>
+                        <outlet property="restartGameButton" destination="gmT-dh-VEv" id="Mbz-5b-YnD"/>
+                        <outlet property="startGameButton" destination="Xsf-A4-8x3" id="PHC-nR-MJW"/>
+                        <outlet property="titleLabel" destination="YgJ-bM-JQO" id="q1f-zn-fMd"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Qab-ig-PxF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="267" y="-311"/>
+        </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="yf4-sw-tb9">
             <objects>

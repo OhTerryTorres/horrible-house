@@ -25,6 +25,7 @@
 		CE2F7AA01CA2FA3200A3025D /* ActionPacked.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2F7A9F1CA2FA3200A3025D /* ActionPacked.swift */; };
 		CE3205731C703AD000EAA581 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3205721C703AD000EAA581 /* ArrayExtension.swift */; };
 		CE3780CD1CF63D0900345457 /* Inhabitable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3780CC1CF63D0900345457 /* Inhabitable.swift */; };
+		CE3B95331D22B86E00129984 /* TitleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3B95321D22B86E00129984 /* TitleViewController.swift */; };
 		CE3BEA4E1CB6B1550062AFAF /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3BEA4D1CB6B1550062AFAF /* TabBarController.swift */; };
 		CE3BEA501CB717710062AFAF /* MapController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3BEA4F1CB717710062AFAF /* MapController.swift */; };
 		CE3C3CE41CA8CBEF00BA551F /* PianoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3C3CE31CA8CBEF00BA551F /* PianoController.swift */; };
@@ -109,6 +110,7 @@
 		CE2F7A9F1CA2FA3200A3025D /* ActionPacked.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionPacked.swift; sourceTree = "<group>"; };
 		CE3205721C703AD000EAA581 /* ArrayExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		CE3780CC1CF63D0900345457 /* Inhabitable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Inhabitable.swift; sourceTree = "<group>"; };
+		CE3B95321D22B86E00129984 /* TitleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleViewController.swift; sourceTree = "<group>"; };
 		CE3BEA4D1CB6B1550062AFAF /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		CE3BEA4F1CB717710062AFAF /* MapController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapController.swift; sourceTree = "<group>"; };
 		CE3C3CE31CA8CBEF00BA551F /* PianoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoController.swift; sourceTree = "<group>"; };
@@ -285,6 +287,7 @@
 				CEB6D2541CE11D380070CCCB /* ContainerController.swift */,
 				CE3C3CE31CA8CBEF00BA551F /* PianoController.swift */,
 				CE006FC91CC3008700A18D63 /* PhoneController.swift */,
+				CE3B95321D22B86E00129984 /* TitleViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -492,6 +495,7 @@
 				CE2AD7B51CCF950B00B1353C /* GameTime.swift in Sources */,
 				CE6F27BD1C9335C900B21818 /* Character.swift in Sources */,
 				CE3780CD1CF63D0900345457 /* Inhabitable.swift in Sources */,
+				CE3B95331D22B86E00129984 /* TitleViewController.swift in Sources */,
 				CE0478AD1C6C3B4F008E23E1 /* House.swift in Sources */,
 				CE0478771C6C10FD008E23E1 /* AppDelegate.swift in Sources */,
 				CE2F7A971CA224C100A3025D /* DictionaryBased.swift in Sources */,

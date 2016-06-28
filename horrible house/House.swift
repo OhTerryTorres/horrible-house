@@ -19,6 +19,36 @@ class House {
         static let stairsDownToFirst = 6
     }
     
+    struct LayoutOptions {
+        // 0 is a No Room (wall).
+        // 1 is a Room.
+        // 2 is the Foyer.
+        // 3 is First -> Basement Stairs.
+        // 4 is Basement -> First Stairs.
+        // 5 is First -> Second Stairs.
+        // 6 is Second -> First Stairs.
+        
+        // This gives us two rows with four rooms.
+        static let a = [
+            [1, 2],
+            [1, 1]
+        ]
+        // This gives us two rows with four rooms, with noRooms (walls) on either side of the foyer.
+        static let b = [
+            [[0, 0, 0],
+                [0, 0, 1,],
+                [0, 0, 6,]],
+            
+            [[1, 1, 3],
+                [1, 1, 1],
+                [0, 2, 5]], // first floor = 1
+            
+            [[0, 1, 4],
+                [0, 0, 0],
+                [0, 0, 0]]  // basement = 0
+        ]
+    }
+    
     
     enum Direction: String {
         case North, South, East, West

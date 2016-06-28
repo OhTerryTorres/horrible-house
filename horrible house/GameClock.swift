@@ -16,12 +16,37 @@ class GameClock {
     var secondsPerTurn = 30
     var isBroken = false
     
+    var timer = NSTimer()
+    var isPaused = false
+    
     init() {
         self.currentTime = self.startTime
+        
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(1, target:self, selector: Selector("addSecond"), userInfo: nil, repeats: true)
+    }
+    
+    dynamic func addSecond() {
+        let newTime = GameTime(
+            hours: self.currentTime.hours,
+            minutes: self.currentTime.minutes,
+            seconds: self.currentTime.seconds + 1)
+        self.currentTime = newTime
+    }
+    
+    func pauseResume() {
+        if isPaused{
+            timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: Selector("addSecond"), userInfo: nil, repeats: true)
+            isPaused = false
+        } else {
+            timer.invalidate()
+            isPaused = true
+        }
     }
     
     init(withCurrentTime currentTime: GameTime) {
         self.currentTime = currentTime
+        
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(1, target:self, selector: Selector("addSecond"), userInfo: nil, repeats: true)
     }
     
     

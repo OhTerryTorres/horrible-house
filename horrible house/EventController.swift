@@ -467,10 +467,13 @@ class EventController: UITableViewController {
         } else {
             
             if let actionName = action?.name {
-                if actionName.rangeOfString("Take") != nil {
-                    print("EvC – animating table changes (TAKE action")
-                    let sections = NSIndexSet(indexesInRange: NSMakeRange(0, tableView.numberOfSections-1))
-                    self.tableView.reloadSections(sections, withRowAnimation: UITableViewRowAnimation.Automatic)
+                if actionName.rangeOfString("Take") != nil { // TAKE: In case of picking up an item, slide in UPDATE section saying so.
+                    
+                    let sections = NSMutableIndexSet(indexesInRange: NSMakeRange(0, 1))
+                    
+                    self.tableView.reloadData()
+                    self.tableView.reloadSections(sections, withRowAnimation: UITableViewRowAnimation.Left  )
+                    print("ExC – reloading table")
                 } else {
                     print("EvC – animating table changes")
                     let sections = NSIndexSet(indexesInRange: NSMakeRange(0, tableView.numberOfSections))

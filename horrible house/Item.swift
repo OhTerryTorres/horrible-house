@@ -42,6 +42,7 @@ class Item: DictionaryBased, ActionPacked, Detailed, ItemBased {
     required init(withDictionary: Dictionary<String, AnyObject>) {
         for (key, value) in withDictionary {
             if key == "name" { self.name = value as! String }
+            
             if key == "explanation" { self.explanation = value as! String }
             if key == "inventoryDescription" { self.inventoryDescription = value as! String }
             if key == "details" { self.setDetailsForArrayOfDictionaries(value as! [Dictionary<String, AnyObject>]) }

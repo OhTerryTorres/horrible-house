@@ -83,6 +83,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]C}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -128,6 +132,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]E}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -139,6 +147,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]F}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -150,6 +162,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]G}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -161,6 +177,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]H}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -172,6 +192,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]I}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -183,6 +207,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]J}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -194,6 +222,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]K}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -205,6 +237,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]L}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -216,6 +252,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]M}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -227,6 +267,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]N}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -238,6 +282,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]O}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -249,6 +297,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]P}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -260,6 +312,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]Q}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -271,6 +327,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]R}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -282,6 +342,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]S}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -293,8 +357,28 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]T}</string>
+								<key>result</key>
+								<string>There is a single tortilla chip inside. It seems to have be preserved in the folder.</string>
+								<key>revealItems</key>
+								<array>
+									<string>Tortilla Chip</string>
+								</array>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>Tortilla Chip</string>
+						<key>inventoryDescription</key>
+						<string>It is old and hard</string>
+						<key>actions</key>
+						<array/>
+						<key>hidden</key>
+						<string></string>
+						<key>canCarry</key>
+						<string></string>
 					</dict>
 					<dict>
 						<key>name</key>
@@ -304,6 +388,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]U}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -315,6 +403,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]V}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -326,6 +418,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]W}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -337,6 +433,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]X}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -348,6 +448,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]Y}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -359,6 +463,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]Z}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
