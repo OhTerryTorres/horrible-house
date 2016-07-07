@@ -8,7 +8,7 @@
 
 import UIKit
 
-class Action: DictionaryBased, RuleBased {
+class Action: NSObject, NSCoding, DictionaryBased, RuleBased {
     
     enum ActionType: String {
         case Item
@@ -82,6 +82,7 @@ class Action: DictionaryBased, RuleBased {
     var segue : String?
     
     required init(withDictionary: Dictionary<String, AnyObject>) {
+        super.init()
         for (key, value) in withDictionary {
             if key == "name" { self.name = value as! String }
             if key == "result" { self.result = value as? String }
@@ -125,7 +126,124 @@ class Action: DictionaryBased, RuleBased {
         }
     }
     
+    init(
+        name: String,
+        result: String?,
+        roomChange: String?,
+        rules: [Rule],
+        timesPerformed: Int,
+        onceOnly: Bool,
+        revealItems: [String],
+        liberateItems: [String],
+        addItems: [Item],
+        consumeItems: [String],
+        spawnCharacters: [Character],
+        revealCharacters: [String],
+        removeCharacters: [String],
+        replaceAction: Action?,
+        changeFloor: Int?,
+        segue: String?
+        ) {
+        self.name = name
+        if let rs = result { self.result = rs }
+        if let rc = roomChange { self.roomChange = rc }
+        self.rules = rules
+        self.timesPerformed = timesPerformed
+        self.onceOnly = onceOnly
+        self.revealItems = revealItems
+        self.liberateItems = liberateItems
+        self.addItems = addItems
+        self.consumeItems = consumeItems
+        self.spawnCharacters = spawnCharacters
+        self.revealCharacters = revealCharacters
+        self.removeCharacters = removeCharacters
+        if let ra = replaceAction { self.replaceAction = ra }
+        if let cf = changeFloor { self.changeFloor = cf }
+        if let sg = segue { self.segue = sg }
+    }
     
     
+    override init() {
+        
+    }
+    
+    // MARK: ENCODING
+    
+    func encodeWithCoder(coder: NSCoder) {
+        coder.encodeObject(self.name, forKey: "name")
+        
+        if let result = self.result {
+            coder.encodeObject(result, forKey: "result")
+        }
+        
+        if let roomChange = self.roomChange {
+            coder.encodeObject(roomChange, forKey: "roomChange")
+        }
+        
+        coder.encodeObject(self.rules, forKey: "rules")
+        coder.encodeInteger(self.timesPerformed, forKey: "timesPerformed")
+        
+        coder.encodeBool(self.onceOnly, forKey: "onceOnly")
+        
+        coder.encodeObject(self.revealItems, forKey: "revealItems")
+        coder.encodeObject(self.liberateItems, forKey: "liberateItems")
+        coder.encodeObject(self.addItems, forKey: "addItems")
+        coder.encodeObject(self.consumeItems, forKey: "consumeItems")
+        
+        coder.encodeObject(self.spawnCharacters, forKey: "spawnCharacters")
+        coder.encodeObject(self.revealCharacters, forKey: "revealCharacters")
+        coder.encodeObject(self.removeCharacters, forKey: "removeCharacters")
+        
+        if let replaceAction = self.replaceAction {
+            coder.encodeObject(replaceAction, forKey: "replaceAction")
+        }
+        
+        if let changeFloor = self.changeFloor {
+            coder.encodeInteger(changeFloor, forKey: "changeFloor")
+        }
+        
+        if let segue = self.segue {
+            coder.encodeObject(segue, forKey: "segue")
+        }
+        
+        
+    }
+    
+    required convenience init?(coder decoder: NSCoder) {
+        
+        guard let name = decoder.decodeObjectForKey("name") as? String,
+            let result = decoder.decodeObjectForKey("result") as? String,
+            let roomChange = decoder.decodeObjectForKey("roomChange") as? String,
+            let rules = decoder.decodeObjectForKey("rules") as? [Rule],
+            let revealItems = decoder.decodeObjectForKey("revealItems") as? [String],
+            let liberateItems = decoder.decodeObjectForKey("liberateItems") as? [String],
+            let addItems = decoder.decodeObjectForKey("addItems") as? [Item],
+            let consumeItems = decoder.decodeObjectForKey("consumeItems") as? [String],
+            let spawnCharacters = decoder.decodeObjectForKey("spawnCharacters") as? [Character],
+            let revealCharacters = decoder.decodeObjectForKey("revealCharacters") as? [String],
+            let removeCharacters = decoder.decodeObjectForKey("removeCharacters") as? [String],
+            let replaceAction = decoder.decodeObjectForKey("replaceAction") as? Action,
+            let segue = decoder.decodeObjectForKey("segue") as? String
+            else { return nil }
+        
+        self.init(
+            name: name,
+            result: result,
+            roomChange: roomChange,
+            rules: rules,
+            timesPerformed: decoder.decodeIntegerForKey("timesPerformed"),
+            onceOnly: decoder.decodeBoolForKey("onceOnly"),
+            revealItems: revealItems,
+            liberateItems: liberateItems,
+            addItems: addItems,
+            consumeItems: consumeItems,
+            spawnCharacters: spawnCharacters,
+            revealCharacters: revealCharacters,
+            removeCharacters: removeCharacters,
+            replaceAction: replaceAction,
+            changeFloor: decoder.decodeIntegerForKey("changeFloor"),
+            segue: segue
+        )
+    }
 
 }

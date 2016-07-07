@@ -12,7 +12,7 @@ import UIKit
 
 // The skull has Ideas, which are basically Details but with more sass.
 
-class Idea {
+class Idea: NSObject, NSCoding {
     var detail = Detail()
     var isHighPriority = false
     
@@ -22,6 +22,36 @@ class Idea {
             if key == "isHighPriority" { self.isHighPriority = true }
         }
     }
+    
+    override init() {
+        
+    }
+    
+    init(detail: Detail, isHighPriority: Bool){
+        self.detail = detail
+        self.isHighPriority = isHighPriority
+    }
+    
+    // MARK: ENCODING
+    
+    func encodeWithCoder(coder: NSCoder) {
+        
+        coder.encodeObject(self.detail, forKey: "detail")
+        coder.encodeBool(self.isHighPriority, forKey: "isHighPriority")
+        
+    }
+    
+    required convenience init?(coder decoder: NSCoder) {
+        
+        guard let detail = decoder.decodeObjectForKey("detail") as? Detail
+            else { return nil }
+        
+        self.init(
+            detail: detail,
+            isHighPriority: decoder.decodeBoolForKey("isHighPriority")
+        )
+    }
+    
 }
 
 class SkullController: UIViewController {

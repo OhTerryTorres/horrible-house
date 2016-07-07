@@ -8,13 +8,18 @@
 
 import UIKit
 
-class Skull {
+class Skull: NSObject, NSCoding {
     
     var ideas : [Idea] = []
     var ideasToSayAloud : [Idea] = []
     
     
-    init() {
+    init(ideas: [Idea], ideasToSayAloud: [Idea]) {
+        self.ideas = ideas
+        self.ideasToSayAloud = ideasToSayAloud
+    }
+    
+    override init() {
         let path = NSBundle.mainBundle().pathForResource("Skull", ofType: "plist")
         let dict = NSDictionary(contentsOfFile: path!) as! Dictionary<String,AnyObject>
         
@@ -46,6 +51,27 @@ class Skull {
             }
         }
 
+    }
+    
+    // MARK: ENCODING
+    
+    func encodeWithCoder(coder: NSCoder) {
+        
+        coder.encodeObject(self.ideas, forKey: "ideas")
+        coder.encodeObject(self.ideasToSayAloud, forKey: "ideasToSayAloud")
+        
+    }
+    
+    required convenience init?(coder decoder: NSCoder) {
+        
+        guard let ideas = decoder.decodeObjectForKey("ideas") as? [Idea],
+            let ideasToSayAloud = decoder.decodeObjectForKey("ideasToSayAloud") as? [Idea]
+            else { return nil }
+        
+        self.init(
+            ideas: ideas,
+            ideasToSayAloud: ideasToSayAloud
+        )
     }
 
 }

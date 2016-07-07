@@ -8,7 +8,7 @@
 
 import UIKit
 
-class House : NSObject {
+class House : NSObject, NSCoding {
     struct RoomType {
         static let noRoom = 0
         static let normal = 1
@@ -54,7 +54,7 @@ class House : NSObject {
         case North, South, East, West
     }
     
-    let gameClock = GameClock()
+    var gameClock = GameClock()
     
     // MARK: Properties
     var width = 0
@@ -100,6 +100,7 @@ class House : NSObject {
     
     init(layout:[[[Int]]]) {
         super.init()
+        
         self.layout = layout.reverse()
         
         // Reverse each floor's layout so that north and south make sense
@@ -112,6 +113,12 @@ class House : NSObject {
         self.loadEvents()
         self.loadRooms()
         self.drawMap()
+        
+        
+    }
+    
+    override init(){
+        
     }
     
     // MARK: Setup Functions
@@ -572,5 +579,126 @@ class House : NSObject {
         }
     }
     
+    
+    // MARK: ENCODING
+    
+    required convenience init?(coder decoder: NSCoder) {
+        
+        guard let gameClock = decoder.decodeObjectForKey("gameClock") as? GameClock,
+            let rooms = decoder.decodeObjectForKey("rooms") as? [Room],
+            let events = decoder.decodeObjectForKey("events") as? [Event],
+            let player = decoder.decodeObjectForKey("player") as? Character,
+            let npcs = decoder.decodeObjectForKey("npcs") as? [Character],
+            let layout = decoder.decodeObjectForKey("layout") as? [[[Int]]],
+            let map = decoder.decodeObjectForKey("map") as? [[[Room]]],
+            let currentFloor = decoder.decodeObjectForKey("currentFloor") as? [[Room]],
+            let currentRoom = decoder.decodeObjectForKey("currentRoom") as? Room,
+            let currentEvent = decoder.decodeObjectForKey("currentEvent") as? Event,
+            let skull = decoder.decodeObjectForKey("skull") as? Skull,
+            let noRoom = decoder.decodeObjectForKey("noRoom") as? Room,
+            let foyer = decoder.decodeObjectForKey("foyer") as? Room,
+            let stairsDownToBasement = decoder.decodeObjectForKey("stairsDownToBasement") as? Room,
+            let stairsUpToFirst = decoder.decodeObjectForKey("stairsUpToFirst") as? Room,
+            let stairsUpToSecond = decoder.decodeObjectForKey("stairsUpToSeconds") as? Room,
+            let stairsDownToFirst = decoder.decodeObjectForKey("stairsDownToFirst") as? Room
+            else { return nil }
+        
+        self.init(
+            gameClock: gameClock,
+            width: decoder.decodeIntegerForKey("width"),
+            height: decoder.decodeIntegerForKey("height"),
+            depth: decoder.decodeIntegerForKey("depth"),
+            rooms: rooms,
+            events : events,
+            player : player,
+            npcs : npcs,
+            layout : layout,
+            map : map,
+            currentFloor : currentFloor,
+            currentRoom : currentRoom,
+            currentEvent : currentEvent,
+            skull : skull,
+            noRoom : noRoom,
+            foyer : foyer,
+            stairsDownToBasement : stairsDownToBasement,
+            stairsUpToFirst : stairsUpToFirst,
+            stairsUpToSecond : stairsUpToSecond,
+            stairsDownToFirst : stairsDownToFirst
+        )
+    }
+    
+    func encodeWithCoder(coder: NSCoder) {
+        coder.encodeObject(self.gameClock, forKey: "gameClock")
+        coder.encodeInteger(self.width, forKey: "width")
+        coder.encodeInteger(self.height, forKey: "height")
+        coder.encodeInteger(self.depth, forKey: "depth")
+        
+        coder.encodeObject(self.rooms, forKey: "rooms")
+        coder.encodeObject(self.events, forKey: "events")
+        
+        coder.encodeObject(self.player, forKey: "player")
+        coder.encodeObject(self.npcs, forKey: "npcs")
+        
+        coder.encodeObject(self.layout, forKey: "layout")
+        coder.encodeObject(self.map, forKey: "map")
+        
+        coder.encodeObject(self.currentFloor, forKey: "currentFloor")
+        coder.encodeObject(self.currentRoom, forKey: "currentRoom")
+        coder.encodeObject(self.currentEvent, forKey: "currentEvent")
+        
+        coder.encodeObject(self.noRoom, forKey: "noRoom")
+        coder.encodeObject(self.foyer, forKey: "foyer")
+        coder.encodeObject(self.stairsDownToBasement, forKey: "stairsDownToBasement")
+        coder.encodeObject(self.stairsUpToFirst, forKey: "stairsUpToFirst")
+        coder.encodeObject(self.stairsUpToSecond, forKey: "stairsUpToSecond")
+        coder.encodeObject(self.stairsDownToFirst, forKey: "stairsDownToFirst")
+        
+        coder.encodeObject(self.skull, forKey: "skull")
+
+    }
+    
+    init(
+        gameClock : GameClock,
+        width : Int,
+        height : Int,
+        depth : Int,
+        rooms : [Room],
+        events : [Event],
+        player : Character,
+        npcs : [Character],
+        layout : [[[Int]]],
+        map : [[[Room]]],
+        currentFloor : [[Room]],
+        currentRoom : Room,
+        currentEvent : Event,
+        skull : Skull,
+        noRoom : Room,
+        foyer : Room,
+        stairsDownToBasement : Room,
+        stairsUpToFirst : Room,
+        stairsUpToSecond : Room,
+        stairsDownToFirst : Room
+    ) {
+        self.gameClock = gameClock
+        self.width = width
+        self.height = height
+        self.depth = depth
+        self.rooms = rooms
+        self.events = events
+        self.player = player
+        self.npcs = npcs
+        self.layout = layout
+        self.map = map
+        self.currentFloor = currentFloor
+        self.currentRoom = currentRoom
+        self.currentEvent = currentEvent
+        self.skull = skull
+        self.noRoom = noRoom
+        self.foyer = foyer
+        self.stairsDownToBasement = stairsDownToBasement
+        self.stairsUpToFirst = stairsUpToFirst
+        self.stairsUpToSecond = stairsUpToSecond
+        self.stairsDownToFirst = stairsDownToFirst
+    }
     
 }

@@ -8,11 +8,11 @@
 
 import UIKit
 
-class Rule {
+class Rule: NSObject, NSCoding {
     
     // MARK: Properties
     
-    var name : String
+    var name = ""
     
     var type = ""
     
@@ -38,6 +38,8 @@ class Rule {
     // name becomes "glasses" and type becomes "hasItem"
     
     init(name:String) {
+        super.init()
+        
         self.name = name
         
         if self.name.rangeOfString("\\nopeHas") != nil {
@@ -83,6 +85,34 @@ class Rule {
             self.name = self.name.stringByReplacingOccurrencesOfString("\\inRoomWith", withString: "")
         }
         
+    }
+    
+    init(name: String, type: String) {
+        self.name = name
+        self.type = type
+    }
+    
+    override init() {
+        
+    }
+    
+    // MARK: ENCODING
+    
+    func encodeWithCoder(coder: NSCoder) {
+        coder.encodeObject(self.name, forKey: "name")
+        coder.encodeObject(self.type, forKey: "type")
+    }
+    
+    required convenience init?(coder decoder: NSCoder) {
+        
+        guard let name = decoder.decodeObjectForKey("name") as? String,
+            let type = decoder.decodeObjectForKey("type") as? String
+            else { return nil }
+        
+        self.init(
+            name: name,
+            type: type
+        )
     }
 
 }

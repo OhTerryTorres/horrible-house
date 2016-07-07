@@ -29,6 +29,7 @@ class TitleViewController: UIViewController {
     @IBAction func startGame(sender: AnyObject) {
         if let houseData = NSUserDefaults.standardUserDefaults().objectForKey("houseData") {
             self.house = NSKeyedUnarchiver.unarchiveObjectWithData(houseData as! NSData) as? House
+            print("TITLE – self.house.rooms.count is \(self.house!.rooms.count)")
         } else {
             self.restartGame(self)
         }

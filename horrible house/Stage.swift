@@ -8,7 +8,7 @@
 
 import UIKit
 
-class Stage: DictionaryBased, ItemBased, RuleBased, ActionPacked {
+class Stage: NSObject, NSCoding, DictionaryBased, ItemBased, RuleBased, ActionPacked {
 
     // MARK: Properties
     
@@ -20,6 +20,8 @@ class Stage: DictionaryBased, ItemBased, RuleBased, ActionPacked {
     
 
     required init(withDictionary: Dictionary<String, AnyObject>) {
+        super.init()
+        
         for (key, value) in withDictionary {
             if key == "name" { self.name = value as! String }
             if key == "explanation" { self.explanation = value as! String }
@@ -31,9 +33,48 @@ class Stage: DictionaryBased, ItemBased, RuleBased, ActionPacked {
         }
     }
     
-    init() {
+    init(name: String, explanation: String, actions: [Action], rules: [Rule], items: [Item]) {
+        self.name = name
+        self.explanation = explanation
+        self.actions = actions
+        self.rules = rules
+        self.items = items
+    }
+    
+    override init() {
         
     }
 
+    // MARK: ENCODING
+    
+    func encodeWithCoder(coder: NSCoder) {
+        coder.encodeObject(self.name, forKey: "name")
+        coder.encodeObject(self.explanation, forKey: "stages")
+        coder.encodeObject(self.actions, forKey: "actions")
+        coder.encodeObject(self.rules, forKey: "rules")
+        coder.encodeObject(self.items, forKey: "items")
+        
+    }
+    
+    
+    
+    required convenience init?(coder decoder: NSCoder) {
+        
+        guard let name = decoder.decodeObjectForKey("name") as? String,
+            let explanation = decoder.decodeObjectForKey("explanation") as? String,
+            let actions = decoder.decodeObjectForKey("actions") as? [Action],
+            let rules = decoder.decodeObjectForKey("rules") as? [Rule],
+            let items = decoder.decodeObjectForKey("items") as? [Item]
+            else { return nil }
+        
+        self.init(
+            name: name,
+            explanation: explanation,
+            actions: actions,
+            rules: rules,
+            items: items
+        )
+    }
+    
     
 }

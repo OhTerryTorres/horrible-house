@@ -8,7 +8,7 @@
 
 import UIKit
 
-class Room: DictionaryBased, ItemBased, ActionPacked, Detailed, Inhabitable {
+class Room: NSObject, DictionaryBased, ItemBased, ActionPacked, Detailed, Inhabitable, NSCoding {
     
     var name = ""
     var explanation = ""
@@ -23,6 +23,7 @@ class Room: DictionaryBased, ItemBased, ActionPacked, Detailed, Inhabitable {
     var isInHouse = false
     
     required init(withDictionary: Dictionary<String, AnyObject>) {
+        super.init()
         for (key, value) in withDictionary {
             if key == "name" { self.name = value as! String }
             if key == "explanation" { self.explanation = value as! String }
@@ -37,8 +38,72 @@ class Room: DictionaryBased, ItemBased, ActionPacked, Detailed, Inhabitable {
         }
     }
     
-    init() {
+    override init() {
         
+    }
+    
+    init(
+        name : String,
+        explanation : String,
+        details : [Detail],
+        actions: [Action],
+        position: (x: Int, y: Int, z: Int),
+        timesEntered: Int,
+        characters: [Character],
+        items: [Item]) {
+            super.init()
+        self.name = name
+        self.explanation = explanation
+        self.details = details
+        self.actions = actions
+        self.position = position
+        self.timesEntered = timesEntered
+        self.characters = characters
+        self.items = items
+    }
+    
+    
+    // MARK: ENCODING
+    
+    func encodeWithCoder(coder: NSCoder) {
+        coder.encodeObject(self.name, forKey: "name")
+        coder.encodeObject(self.explanation, forKey: "explanation")
+        
+        coder.encodeObject(self.details, forKey: "details")
+        coder.encodeObject(self.actions, forKey: "actions")
+        
+        coder.encodeInteger(self.position.x, forKey: "x")
+        coder.encodeInteger(self.position.y, forKey: "y")
+        coder.encodeInteger(self.position.z, forKey: "z")
+        
+        coder.encodeInteger(self.timesEntered, forKey: "timesEntered")
+        
+        coder.encodeObject(self.characters, forKey: "characters")
+        coder.encodeObject(self.items, forKey: "items")
+
+        
+    }
+    
+    required convenience init?(coder decoder: NSCoder) {
+        
+        guard let name = decoder.decodeObjectForKey("name") as? String,
+            let explanation = decoder.decodeObjectForKey("explanation") as? String,
+            let details = decoder.decodeObjectForKey("details") as? [Detail],
+            let actions = decoder.decodeObjectForKey("actions") as? [Action],
+            let characters = decoder.decodeObjectForKey("characters") as? [Character],
+            let items = decoder.decodeObjectForKey("items") as? [Item]
+            else { return nil }
+        
+        self.init(
+            name: name,
+            explanation: explanation,
+            details: details,
+            actions: actions,
+            position: (x: decoder.decodeIntegerForKey("x"), y: decoder.decodeIntegerForKey("y"), z: decoder.decodeIntegerForKey("z")),
+            timesEntered: decoder.decodeIntegerForKey("timesEntered"),
+            characters: characters,
+            items: items
+        )
     }
 
 }

@@ -20,7 +20,7 @@ class ExplorationController: UITableViewController {
     
     // self.house will allows access to self.house!.currentEvent and self.house.currntEvent.currentStage!
     // Then the house can be passed back to other viewcontrollers
-    var house = House(layout: House.LayoutOptions.a)
+    var house = House()
     var update = ""
     
 

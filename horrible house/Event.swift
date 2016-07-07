@@ -8,7 +8,7 @@
 
 import UIKit
 
-class Event: DictionaryBased, RuleBased {
+class Event: NSObject, NSCoding, DictionaryBased, RuleBased {
     
     var name = ""
     var stages : [Stage] = []
@@ -17,6 +17,8 @@ class Event: DictionaryBased, RuleBased {
     var completed = false
 
     required init(withDictionary: Dictionary<String, AnyObject>) {
+        super.init()
+        
         for (key, value) in withDictionary {
             if key == "name" { self.name = value as! String }
             if key == "stages" {
@@ -33,7 +35,15 @@ class Event: DictionaryBased, RuleBased {
         }
     }
     
-    init(name: String) {
+    init(name: String, stages: [Stage], currentStage: Stage?, rules: [Rule], completed: Bool) {
+        self.name = name
+        self.stages = stages
+        self.currentStage = currentStage
+        self.rules = rules
+        self.completed = completed
+    }
+    
+    override init() {
         
     }
     
@@ -47,7 +57,43 @@ class Event: DictionaryBased, RuleBased {
         print("EVENT – end setCurrentStage")
     }
     
-    init() {
+    // MARK: ENCODING
+    
+    func encodeWithCoder(coder: NSCoder) {
+        print("EVENT CODER – event name is \(self.name)")
+        for i in 0 ..< self.stages.count {
+            print("EVENT CODER – self.stages[\(i)] name is \(self.stages[i].name)")
+        }
+        
+        coder.encodeObject(self.name, forKey: "name")
+        coder.encodeObject(self.stages, forKey: "stages")
+        
+        
+        if let currentStage = self.currentStage {
+            coder.encodeObject(currentStage, forKey: "currentStage")
+        }
+        
+        coder.encodeObject(self.rules, forKey: "rules")
+        
+        coder.encodeBool(self.completed, forKey: "completed")
         
     }
+    
+    required convenience init?(coder decoder: NSCoder) {
+        
+        guard let name = decoder.decodeObjectForKey("name") as? String,
+            let stages = decoder.decodeObjectForKey("stages") as? [Stage],
+            let currentStage = decoder.decodeObjectForKey("currentStage") as? Stage?,
+            let rules = decoder.decodeObjectForKey("rules") as? [Rule]
+            else { return nil }
+        
+        self.init(
+            name: name,
+            stages: stages,
+            currentStage: currentStage,
+            rules: rules,
+            completed: decoder.decodeBoolForKey("completed")
+        )
+    }
+    
 }
