@@ -60,10 +60,6 @@ class Event: NSObject, NSCoding, DictionaryBased, RuleBased {
     // MARK: ENCODING
     
     func encodeWithCoder(coder: NSCoder) {
-        print("EVENT CODER – event name is \(self.name)")
-        for i in 0 ..< self.stages.count {
-            print("EVENT CODER – self.stages[\(i)] name is \(self.stages[i].name)")
-        }
         
         coder.encodeObject(self.name, forKey: "name")
         coder.encodeObject(self.stages, forKey: "stages")
@@ -80,20 +76,16 @@ class Event: NSObject, NSCoding, DictionaryBased, RuleBased {
     }
     
     required convenience init?(coder decoder: NSCoder) {
+        self.init()
         
-        guard let name = decoder.decodeObjectForKey("name") as? String,
-            let stages = decoder.decodeObjectForKey("stages") as? [Stage],
-            let currentStage = decoder.decodeObjectForKey("currentStage") as? Stage?,
-            let rules = decoder.decodeObjectForKey("rules") as? [Rule]
-            else { return nil }
-        
-        self.init(
-            name: name,
-            stages: stages,
-            currentStage: currentStage,
-            rules: rules,
-            completed: decoder.decodeBoolForKey("completed")
-        )
+        self.name = decoder.decodeObjectForKey("name") as! String
+        self.stages = decoder.decodeObjectForKey("stages") as! [Stage]
+        if let currentStage = decoder.decodeObjectForKey("currentStage") as? Stage? {
+            self.currentStage = currentStage
+        }
+        self.rules = decoder.decodeObjectForKey("rules") as! [Rule]
+        self.completed = decoder.decodeBoolForKey("completed")
+
     }
     
 }

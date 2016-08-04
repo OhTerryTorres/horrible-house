@@ -28,11 +28,12 @@ class ExplorationController: UITableViewController {
     // This can be changed so the starting room could potentially be a saved room from a previous session.
     //
     func setPlayerStartingRoom() {
-        if let _ = NSUserDefaults.standardUserDefaults().objectForKey("savedHouse") {
+        if let _ = NSUserDefaults.standardUserDefaults().objectForKey("houseData") {
         } else {
             var room = Room?()
             room = self.house.foyer
             room?.timesEntered += 1
+            self.house.player.addRoomNameToRoomHistory(room!.name)
             self.house.currentRoom = room!
         }
 
@@ -333,6 +334,7 @@ class ExplorationController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         // Make it so the player AUTOMATICALLY starts at the same position as the Foyer.
         setPlayerStartingRoom()
         if let tabBarController = self.tabBarController as? TabBarController {
@@ -372,8 +374,7 @@ class ExplorationController: UITableViewController {
     
     func getNumberOfTableSections() -> Int {
         var numberOfSections = 5
-        for item in self.house.currentRoom.items {
-            print("ExC – \(item.name) exists, and will have its own section in the tableview")
+        for _ in self.house.currentRoom.items {
             numberOfSections += 1
         }
         return numberOfSections
@@ -418,7 +419,6 @@ class ExplorationController: UITableViewController {
             for item in self.house.player.items {
                 for action in item.actions {
                     if action.isFollowingTheRules() {
-                        print("ExC – rows += 1")
                         rows += 1
                     }
                 }
@@ -440,6 +440,8 @@ class ExplorationController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath)
+        
+        cell.setStyle()
         
         cell.textLabel!.numberOfLines = 0
         
@@ -528,7 +530,6 @@ class ExplorationController: UITableViewController {
             for item in self.house.player.items {
                 for action in item.actions {
                     if action.isFollowingTheRules() {
-                        print("ExC – rows += 1 FUCK")
                         inventoryActions += [action]
                     }
                 }
@@ -551,7 +552,6 @@ class ExplorationController: UITableViewController {
     }
     
     func newTurn() {
-        print("ExC – in newTurn")
         self.house.skull.updateSkull()
         
         // *******
@@ -703,23 +703,14 @@ class ExplorationController: UITableViewController {
         default:
             // -3 to deal with the other table sections.
             let item = self.house.currentRoom.items[indexPath.section-3]
-            if item.name == "Huge Bat" {
-                print("ExC – Huge Bat canCarry is \(item.canCarry)")
-                for action in item.actions {
-                    print("ExC – Huge Bat action is \(action.name)")
-                }
-            }
             
             if item.hidden == true {
-                print("ExC – cell height for \(item.name) is 0 (hidden)")
                 height = 0
             }
             if item.actions[indexPath.row].name.rangeOfString("Take") != nil && item.canCarry == false {
-                print("ExC – cell height for \(item.actions[indexPath.row].name) is 0 (cannot carry)")
                 height = 0
             }
             if item.actions[indexPath.row].isFollowingTheRules() == false {
-                print("ExC – cell height for \(item.actions[indexPath.row].name) is 0 (against the rules)")
                 height = 0
             }
         }

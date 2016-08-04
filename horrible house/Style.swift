@@ -10,9 +10,16 @@ import Foundation
 import UIKit
 
 struct Color {
-    static let roomColor = UIColor.redColor()
-    static let itemColor = UIColor.greenColor()
-    static let specialColor = UIColor.blueColor()
+    
+    static let background = UIColor.redColor()
+    static let foreground = UIColor.blackColor()
+    
+    static let textRoom = UIColor.whiteColor()
+    static let textItem = UIColor.greenColor()
+    static let textSpecial = UIColor.blueColor()
+    
+    static let mapCurrent = UIColor.blueColor()
+    static let mapPrevious = UIColor.cyanColor()
 }
 
 struct Font {
@@ -22,3 +29,23 @@ struct Font {
     static let phoneFont = UIFont.systemFontOfSize(40)
 }
 
+extension UIView {
+    func setStyle() {
+        self.backgroundColor = Color.background
+        self.tintColor = Color.foreground
+    }
+}
+
+extension UITableView {
+    override func setStyle() {
+        self.backgroundColor = Color.background
+        self.tintColor = Color.foreground
+    }
+}
+
+extension UITableViewCell {
+    override func setStyle() {
+        self.backgroundColor = Color.background
+        self.tintColor = Color.foreground
+    }
+}

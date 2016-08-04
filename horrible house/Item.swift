@@ -166,34 +166,33 @@ class Item: NSObject, DictionaryBased, ActionPacked, Detailed, ItemBased, NSCodi
     }
     
     required convenience init?(coder decoder: NSCoder) {
+        self.init()
         
-        guard let name = decoder.decodeObjectForKey("name") as? String,
-            let explanation = decoder.decodeObjectForKey("explanation") as? String,
-            let inventoryDescription = decoder.decodeObjectForKey("inventoryDescription") as? String,
-            let details = decoder.decodeObjectForKey("details") as? [Detail],
-            let actions = decoder.decodeObjectForKey("actions") as? [Action],
-            let inventoryEvent = decoder.decodeObjectForKey("inventoryEvent") as? String,
-            let items = decoder.decodeObjectForKey("items") as? [Item],
-            let cookingTimeBegan = decoder.decodeObjectForKey("cookingTimeBegan") as? GameTime
-            else { return nil }
+        self.name = decoder.decodeObjectForKey("name") as! String
+        self.explanation = decoder.decodeObjectForKey("explanation") as! String
+        self.inventoryDescription = decoder.decodeObjectForKey("inventoryDescription") as! String
+        self.details = decoder.decodeObjectForKey("details") as! [Detail]
+        self.actions = decoder.decodeObjectForKey("actions") as! [Action]
         
-        self.init(
-            name: name,
-            explanation: explanation,
-            inventoryDescription: inventoryDescription,
-            details: details,
-            actions: actions,
-            canCarry: decoder.decodeBoolForKey("canCarry"),
-            hidden: decoder.decodeBoolForKey("hidden"),
-            inventoryEvent: inventoryEvent,
-            items: items,
-            maxCapacity: decoder.decodeIntegerForKey("maxCapacity"),
-            isContainer: decoder.decodeBoolForKey("isContainer"),
-            cookingTimeBegan: cookingTimeBegan
-        )
+        self.canCarry = decoder.decodeBoolForKey("canCarry")
+        self.hidden = decoder.decodeBoolForKey("hidden")
+        
+        if let inventoryEvent = decoder.decodeObjectForKey("inventoryEvent") as? String {
+            self.inventoryEvent = inventoryEvent
+        }
+        if let cookingTimeBegan = decoder.decodeObjectForKey("cookingTimeBegan") as? GameTime {
+            self.cookingTimeBegan = cookingTimeBegan
+        }
+        
+        self.items = decoder.decodeObjectForKey("items") as! [Item]
+        self.maxCapacity = decoder.decodeIntegerForKey("maxCapacity")
+        self.isContainer = decoder.decodeBoolForKey("isContainer")
+        
     }
     
 }
+
+//FIXME : Oven may need NSCOding methods
 
 class Oven : Item {
     

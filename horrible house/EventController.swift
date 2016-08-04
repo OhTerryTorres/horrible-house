@@ -274,6 +274,8 @@ class EventController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.tableView.setStyle()
+        
         if let tabBarController = self.tabBarController as? TabBarController {
             tabBarController.refreshViewControllers()
         }
@@ -358,6 +360,8 @@ class EventController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath)
+        
+        cell.setStyle()
         
         // Configure the cell...
         switch ( indexPath.section ) {

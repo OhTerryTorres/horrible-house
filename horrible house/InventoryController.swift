@@ -16,6 +16,9 @@ class InventoryController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.tableView.setStyle()
+        
         self.title = "Items"
         self.tabBarItem = UITabBarItem(title: "Items", image: nil, tag: 1)
         
@@ -38,6 +41,9 @@ class InventoryController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath)
+        
+        cell.setStyle()
+        
         cell.userInteractionEnabled = false
         
         let item = self.inventoryArray[indexPath.row]

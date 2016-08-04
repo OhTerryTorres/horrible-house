@@ -49,7 +49,7 @@ class Stage: NSObject, NSCoding, DictionaryBased, ItemBased, RuleBased, ActionPa
     
     func encodeWithCoder(coder: NSCoder) {
         coder.encodeObject(self.name, forKey: "name")
-        coder.encodeObject(self.explanation, forKey: "stages")
+        coder.encodeObject(self.explanation, forKey: "explanation")
         coder.encodeObject(self.actions, forKey: "actions")
         coder.encodeObject(self.rules, forKey: "rules")
         coder.encodeObject(self.items, forKey: "items")
@@ -59,21 +59,14 @@ class Stage: NSObject, NSCoding, DictionaryBased, ItemBased, RuleBased, ActionPa
     
     
     required convenience init?(coder decoder: NSCoder) {
+        self.init()
         
-        guard let name = decoder.decodeObjectForKey("name") as? String,
-            let explanation = decoder.decodeObjectForKey("explanation") as? String,
-            let actions = decoder.decodeObjectForKey("actions") as? [Action],
-            let rules = decoder.decodeObjectForKey("rules") as? [Rule],
-            let items = decoder.decodeObjectForKey("items") as? [Item]
-            else { return nil }
-        
-        self.init(
-            name: name,
-            explanation: explanation,
-            actions: actions,
-            rules: rules,
-            items: items
-        )
+        self.name = decoder.decodeObjectForKey("name") as! String
+        self.explanation = decoder.decodeObjectForKey("explanation") as! String
+        self.actions = decoder.decodeObjectForKey("actions") as! [Action]
+        self.rules = decoder.decodeObjectForKey("rules") as! [Rule]
+        self.items = decoder.decodeObjectForKey("items") as! [Item]
+
     }
     
     

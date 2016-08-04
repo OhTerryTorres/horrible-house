@@ -19,6 +19,9 @@ class ContainerController: UIViewController {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = UITableViewCell()
+        
+        cell.setStyle()
+        
         var items : [Item] = []
         
         if tableView == self.tableViewContainer {
@@ -138,6 +141,10 @@ class ContainerController: UIViewController {
         let header:UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
         
         header.textLabel!.font = UIFont.boldSystemFontOfSize(10)
+    }
+    
+    override func viewDidLoad() {
+        self.view.setStyle()
     }
     
     

@@ -104,15 +104,11 @@ class Rule: NSObject, NSCoding {
     }
     
     required convenience init?(coder decoder: NSCoder) {
+        self.init()
         
-        guard let name = decoder.decodeObjectForKey("name") as? String,
-            let type = decoder.decodeObjectForKey("type") as? String
-            else { return nil }
-        
-        self.init(
-            name: name,
-            type: type
-        )
+        self.name = decoder.decodeObjectForKey("name") as! String
+        self.type = decoder.decodeObjectForKey("type") as! String
+
     }
 
 }

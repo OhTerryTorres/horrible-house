@@ -42,14 +42,9 @@ class Idea: NSObject, NSCoding {
     }
     
     required convenience init?(coder decoder: NSCoder) {
-        
-        guard let detail = decoder.decodeObjectForKey("detail") as? Detail
-            else { return nil }
-        
-        self.init(
-            detail: detail,
-            isHighPriority: decoder.decodeBoolForKey("isHighPriority")
-        )
+        self.init()
+        self.detail = decoder.decodeObjectForKey("detail") as! Detail
+        self.isHighPriority = decoder.decodeBoolForKey("isHighPriority")
     }
     
 }
@@ -61,6 +56,8 @@ class SkullController: UIViewController {
     @IBOutlet var ideaLabel: UILabel!
     
     override func viewDidLoad() {
+        self.view.setStyle()
+        
         for idea in self.skull.ideasToSayAloud {
             if idea.detail.isFollowingTheRules() == false {
                 print("SKULLCONTROLLER – It turns out \(idea.detail.explanation) is not following the rules")

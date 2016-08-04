@@ -199,7 +199,7 @@ class Action: NSObject, NSCoding, DictionaryBased, RuleBased {
         }
         
         if let changeFloor = self.changeFloor {
-            coder.encodeInteger(changeFloor, forKey: "changeFloor")
+            coder.encodeObject(changeFloor, forKey: "changeFloor")
         }
         
         if let segue = self.segue {
@@ -210,40 +210,41 @@ class Action: NSObject, NSCoding, DictionaryBased, RuleBased {
     }
     
     required convenience init?(coder decoder: NSCoder) {
+        self.init()
         
-        guard let name = decoder.decodeObjectForKey("name") as? String,
-            let result = decoder.decodeObjectForKey("result") as? String,
-            let roomChange = decoder.decodeObjectForKey("roomChange") as? String,
-            let rules = decoder.decodeObjectForKey("rules") as? [Rule],
-            let revealItems = decoder.decodeObjectForKey("revealItems") as? [String],
-            let liberateItems = decoder.decodeObjectForKey("liberateItems") as? [String],
-            let addItems = decoder.decodeObjectForKey("addItems") as? [Item],
-            let consumeItems = decoder.decodeObjectForKey("consumeItems") as? [String],
-            let spawnCharacters = decoder.decodeObjectForKey("spawnCharacters") as? [Character],
-            let revealCharacters = decoder.decodeObjectForKey("revealCharacters") as? [String],
-            let removeCharacters = decoder.decodeObjectForKey("removeCharacters") as? [String],
-            let replaceAction = decoder.decodeObjectForKey("replaceAction") as? Action,
-            let segue = decoder.decodeObjectForKey("segue") as? String
-            else { return nil }
+        self.name = decoder.decodeObjectForKey("name") as! String
+        if let result = decoder.decodeObjectForKey("result") as! String? {
+            self.result = result
+        }
+        if let roomChange = decoder.decodeObjectForKey("roomChange") as! String? {
+            self.roomChange = roomChange
+        }
+        self.rules = decoder.decodeObjectForKey("rules") as! [Rule]
         
-        self.init(
-            name: name,
-            result: result,
-            roomChange: roomChange,
-            rules: rules,
-            timesPerformed: decoder.decodeIntegerForKey("timesPerformed"),
-            onceOnly: decoder.decodeBoolForKey("onceOnly"),
-            revealItems: revealItems,
-            liberateItems: liberateItems,
-            addItems: addItems,
-            consumeItems: consumeItems,
-            spawnCharacters: spawnCharacters,
-            revealCharacters: revealCharacters,
-            removeCharacters: removeCharacters,
-            replaceAction: replaceAction,
-            changeFloor: decoder.decodeIntegerForKey("changeFloor"),
-            segue: segue
-        )
+        self.timesPerformed = decoder.decodeIntegerForKey("timesPerformed")
+        self.onceOnly = decoder.decodeBoolForKey("onceOnly")
+        
+        self.revealItems = decoder.decodeObjectForKey("revealItems") as! [String]
+        self.liberateItems = decoder.decodeObjectForKey("liberateItems") as! [String]
+        self.addItems = decoder.decodeObjectForKey("addItems") as! [Item]
+        self.consumeItems = decoder.decodeObjectForKey("consumeItems") as! [String]
+        self.spawnCharacters = decoder.decodeObjectForKey("spawnCharacters") as! [Character]
+        self.revealCharacters = decoder.decodeObjectForKey("revealCharacters") as! [String]
+        self.removeCharacters = decoder.decodeObjectForKey("removeCharacters") as! [String]
+        if let replaceAction = decoder.decodeObjectForKey("replaceAction") as? Action {
+            self.replaceAction = replaceAction
+        }
+        if let segue = decoder.decodeObjectForKey("segue") as? String {
+            self.segue = segue
+        }
+        if let changeFloor = decoder.decodeObjectForKey("changeFloor") as? Int {
+            self.changeFloor = changeFloor
+        }
+        
+        
+        //FIXME : this changeFloor line may be allowing actions to change floors that shouldn't
+
+        
     }
 
 }

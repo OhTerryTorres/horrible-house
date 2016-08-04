@@ -52,9 +52,12 @@ class PhoneController: UIViewController {
         
         var i = 1
         // 4 rows
-        for var y = CGFloat(0); y < 4; y++ {
+        var y = CGFloat(0)
+        var x = CGFloat(0)
+        while y < 4 {
             // 3 buttons per row
-            for var x = CGFloat(0); x < 3; x++ {
+            
+            while x < 3 {
                 let keyView = UIView()
                 keyPadView.addSubview(keyView)
                 
@@ -72,8 +75,8 @@ class PhoneController: UIViewController {
                 
                 print("adding \(string) button")
                 
-                keyButton.addTarget(self, action: "touchDown:", forControlEvents:.TouchDown)
-                keyButton.addTarget(self, action: "touchUp:", forControlEvents:[.TouchUpInside, .TouchUpOutside])
+                keyButton.addTarget(self, action: #selector(PhoneController.touchDown(_:)), forControlEvents:.TouchDown)
+                keyButton.addTarget(self, action: #selector(PhoneController.touchUp(_:)), forControlEvents:[.TouchUpInside, .TouchUpOutside])
                 
                 keyButton.titleLabel!.font = Font.phoneFont
                 keyButton.setTitle(string, forState: UIControlState.Normal)
@@ -90,7 +93,9 @@ class PhoneController: UIViewController {
                 )
                 
                 i += 1
+                x += 1
             }
+            y += 1
         }
     }
     
@@ -120,7 +125,7 @@ class PhoneController: UIViewController {
     }
     
     func touchDown(sender: SuperButton) {
-        timer = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: "dialNumber:", userInfo: sender.qualifier, repeats: true)
+        timer = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: #selector(PhoneController.dialNumber(_:)), userInfo: sender.qualifier, repeats: true)
         dialNumber(timer)
     }
     

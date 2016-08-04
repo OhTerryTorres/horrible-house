@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="jI2-Yt-DWI">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="jI2-Yt-DWI">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -230,7 +230,7 @@
         <!--House-->
         <scene sceneID="pD3-1K-ZKU">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="tXT-zL-Qyo" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="tXT-zL-Qyo" customClass="NavigationController" customModule="horrible_house" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="House" id="UMi-gQ-85E"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="9nL-TH-nnW">
@@ -370,7 +370,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Horrible House" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YgJ-bM-JQO">
                                 <rect key="frame" x="51" y="46" width="214" height="56"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="31"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xsf-A4-8x3">
@@ -435,28 +435,55 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2NY-Mb-h1E">
-                                <rect key="frame" x="0.0" y="64" width="600" height="487"/>
+                                <rect key="frame" x="0.0" y="108" width="600" height="443"/>
                                 <subviews>
-                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="roomNameLabel" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DOV-Fo-0tC">
-                                        <rect key="frame" x="226" y="204" width="148" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="roomNameLabel" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DOV-Fo-0tC">
+                                        <rect key="frame" x="8" y="8" width="156" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="textColor" red="0.82352941180000006" green="0.38823529410000002" blue="0.63921568630000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="DOV-Fo-0tC" firstAttribute="leading" secondItem="2NY-Mb-h1E" secondAttribute="leading" constant="8" id="U2h-d6-3qo"/>
+                                    <constraint firstItem="DOV-Fo-0tC" firstAttribute="leading" secondItem="2NY-Mb-h1E" secondAttribute="leading" id="cEw-Bp-Hgx"/>
+                                    <constraint firstAttribute="trailing" secondItem="DOV-Fo-0tC" secondAttribute="trailing" id="euN-pB-SMf"/>
+                                    <constraint firstAttribute="bottom" secondItem="DOV-Fo-0tC" secondAttribute="bottom" id="jM2-4Q-aM5"/>
+                                    <constraint firstItem="DOV-Fo-0tC" firstAttribute="top" secondItem="2NY-Mb-h1E" secondAttribute="top" id="umz-Zv-oW9"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="U2h-d6-3qo"/>
+                                        <exclude reference="cEw-Bp-Hgx"/>
+                                        <exclude reference="euN-pB-SMf"/>
+                                        <exclude reference="jM2-4Q-aM5"/>
+                                        <exclude reference="umz-Zv-oW9"/>
+                                    </mask>
+                                </variation>
                             </view>
+                            <toolbar hidden="YES" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x3Y-zU-Ovf">
+                                <rect key="frame" x="0.0" y="64" width="600" height="44"/>
+                                <items>
+                                    <barButtonItem title="Item" id="fuM-PV-Uza"/>
+                                </items>
+                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="x3Y-zU-Ovf" firstAttribute="trailing" secondItem="2NY-Mb-h1E" secondAttribute="trailing" id="2Nw-aL-Ujp"/>
                             <constraint firstAttribute="trailingMargin" secondItem="2NY-Mb-h1E" secondAttribute="trailing" constant="-20" id="632-Il-3b8"/>
                             <constraint firstItem="XWg-If-2q4" firstAttribute="top" secondItem="2NY-Mb-h1E" secondAttribute="bottom" id="671-rh-hLU"/>
                             <constraint firstItem="2NY-Mb-h1E" firstAttribute="leading" secondItem="FbG-GJ-vPD" secondAttribute="leadingMargin" constant="-20" id="DrQ-Od-anA"/>
+                            <constraint firstItem="2NY-Mb-h1E" firstAttribute="top" secondItem="x3Y-zU-Ovf" secondAttribute="bottom" id="GMM-66-ua5"/>
                             <constraint firstItem="XWg-If-2q4" firstAttribute="top" secondItem="2NY-Mb-h1E" secondAttribute="bottom" id="MxZ-Eu-KcD"/>
                             <constraint firstItem="2NY-Mb-h1E" firstAttribute="top" secondItem="7i8-YH-sEO" secondAttribute="bottom" id="h5Q-q8-v2e"/>
+                            <constraint firstItem="x3Y-zU-Ovf" firstAttribute="top" secondItem="7i8-YH-sEO" secondAttribute="bottom" id="z4w-ZI-Kmq"/>
+                            <constraint firstItem="x3Y-zU-Ovf" firstAttribute="leading" secondItem="2NY-Mb-h1E" secondAttribute="leading" id="zo6-xv-eru"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
+                                <exclude reference="h5Q-q8-v2e"/>
                                 <exclude reference="MxZ-Eu-KcD"/>
                             </mask>
                         </variation>
@@ -464,6 +491,7 @@
                     <navigationItem key="navigationItem" id="aog-n2-M4Z"/>
                     <connections>
                         <outlet property="mapDisplayView" destination="2NY-Mb-h1E" id="LTo-GP-rc2"/>
+                        <outlet property="roomNameBar" destination="x3Y-zU-Ovf" id="un7-h8-cUY"/>
                         <outlet property="roomNameLabel" destination="DOV-Fo-0tC" id="yBb-Wa-aGz"/>
                     </connections>
                 </viewController>
@@ -493,7 +521,7 @@
         <!--Map-->
         <scene sceneID="p6C-tK-e83">
             <objects>
-                <navigationController storyboardIdentifier="NavigationMapController" title="Map" automaticallyAdjustsScrollViewInsets="NO" id="tKt-pD-U06" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="NavigationMapController" title="Map" automaticallyAdjustsScrollViewInsets="NO" id="tKt-pD-U06" customClass="NavigationController" customModule="horrible_house" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Map" id="UE7-nZ-NnL"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="jhU-UJ-VIr">
@@ -512,7 +540,7 @@
         <!--Skull-->
         <scene sceneID="Q9Y-Ya-VWc">
             <objects>
-                <navigationController storyboardIdentifier="NavigationSkullController" title="Skull" automaticallyAdjustsScrollViewInsets="NO" id="P0u-PG-2iy" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="NavigationSkullController" title="Skull" automaticallyAdjustsScrollViewInsets="NO" id="P0u-PG-2iy" customClass="NavigationController" customModule="horrible_house" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Skull" id="FWp-iq-Oep"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="3Pk-sw-nYG">
@@ -531,7 +559,7 @@
         <!--Time-->
         <scene sceneID="byn-RU-Z4z">
             <objects>
-                <navigationController storyboardIdentifier="NavigationClockController" title="Time" automaticallyAdjustsScrollViewInsets="NO" id="IwQ-kK-wdg" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="NavigationClockController" title="Time" automaticallyAdjustsScrollViewInsets="NO" id="IwQ-kK-wdg" customClass="NavigationController" customModule="horrible_house" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Time" id="Omd-aH-MXo"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="CWW-kh-nMj">

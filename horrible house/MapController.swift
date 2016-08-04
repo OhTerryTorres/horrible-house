@@ -24,6 +24,7 @@ class MapController: UIViewController {
     
     @IBOutlet var mapDisplayView: UIView!
     @IBOutlet var roomNameLabel: UILabel!
+    @IBOutlet var roomNameBar: UIToolbar!
     
     override func viewDidLoad() {
         self.title = "Map"
@@ -34,9 +35,12 @@ class MapController: UIViewController {
         self.mapDisplayView.frame.size.width = self.view.frame.width + (self.view.frame.width * 0.02)
         self.mapDisplayView.frame.size.height = self.view.frame.height
         
-        let tabBarHeight = self.tabBarController!.tabBar.frame.height
-        self.mapDisplayView.frame.size.height -= tabBarHeight + (tabBarHeight * 0.3)
+        
+        // tabBarHeight might need adjusting often as the map screen is tweaked.
+        
+        let tabBarHeight = self.roomNameBar.frame.height + self.roomNameBar.frame.height
         self.mapDisplayView.frame.size.height -= tabBarHeight
+        self.mapDisplayView.frame.size.height -= tabBarHeight * 0.8
         
         self.setFloorButton()
         
@@ -64,7 +68,10 @@ class MapController: UIViewController {
         print("VIEWWILLAPPEAR")
         self.currentFloor = self.house.player.position.z
         self.displayMap()
-        
+    }
+    override func viewWillDisappear(animated: Bool) {
+        print("VIEWWILLDISAPPEAR")
+        self.roomNameBar.hidden = true
     }
     
     func displayMap() {
@@ -103,7 +110,41 @@ class MapController: UIViewController {
                     
                     if room?.timesEntered > 0 {
                         
-                        /*
+                        let roomDetailView = UIView()
+                        let detailX = CGFloat(roomWidth * 0.125)
+                        let detailY = CGFloat(roomHeight * 0.125)
+                        let detailWidth = CGFloat(roomWidth * 0.75)
+                        let detailHeight = CGFloat(roomHeight * 0.75)
+                        roomDetailView.frame = CGRectMake(
+                            detailX,
+                            detailY,
+                            detailWidth,
+                            detailHeight
+                        )
+                        
+                        if let index = self.house.player.roomHistory.indexOf({$0 == room?.name}) {
+                            if index == 0 {
+                                roomDetailView.backgroundColor = Color.mapCurrent
+                            }
+                            if index == 1 {
+                                roomDetailView.backgroundColor = Color.mapCurrent.colorWithAlphaComponent(0.6)
+                            }
+                            if index == 2 {
+                                roomDetailView.backgroundColor = Color.mapCurrent.colorWithAlphaComponent(0.3)
+                            }
+                        } else {
+                            roomDetailView.backgroundColor = UIColor.darkGrayColor()
+                        }
+                        
+                        
+                        roomView.addSubview(roomDetailView)
+                        
+                        roomView.transform = CGAffineTransformMakeScale(1, -1)
+                        
+                        
+                        // MARK: *** Map Button stuff??
+                        
+                        
                         let roomButton = SuperButton(type: UIButtonType.Custom) as SuperButton
                         roomButton.qualifier = room!.name
                         
@@ -120,29 +161,11 @@ class MapController: UIViewController {
                         
                         roomButton.titleLabel?.text = room!.name
                         
-                        roomButton.setBackgroundImage(UIImage(named: "white"), forState: UIControlState.Normal)
-                        roomButton.addTarget(self, action: Selector("displayRoomName:"), forControlEvents:.TouchDown)
-                        roomButton.setTitle(roomButton.room!.name, forState: UIControlState.Normal)
+                        roomButton.addTarget(self, action: #selector(MapController.displayRoomInfo(_:)), forControlEvents:.TouchDown)
+                        
+                        roomButton.showsTouchWhenHighlighted = true
                         
                         roomView.addSubview(roomButton)
-                        */
-                        
-                        let roomDetailView = UIView()
-                        let detailX = CGFloat(roomWidth * 0.125)
-                        let detailY = CGFloat(roomHeight * 0.125)
-                        let detailWidth = CGFloat(roomWidth * 0.75)
-                        let detailHeight = CGFloat(roomHeight * 0.75)
-                        roomDetailView.frame = CGRectMake(
-                            detailX,
-                            detailY,
-                            detailWidth,
-                            detailHeight
-                        )
-                        roomDetailView.backgroundColor = UIColor.lightGrayColor()
-                        
-                        roomView.addSubview(roomDetailView)
-                        
-                        roomView.transform = CGAffineTransformMakeScale(1, -1)
                     }
                     
                 } else { roomView.backgroundColor = UIColor.darkGrayColor() }
@@ -156,35 +179,38 @@ class MapController: UIViewController {
     }
 
     
-    func displayRoomName(sender: SuperButton) {
+    func displayRoomInfo(sender: SuperButton) {
         print("\(sender.qualifier)")
         
-        let label = self.roomNameLabel
+        //
         
-        label.text = sender.qualifier
+        // Set up room name display
         
-        label.font = label.font.fontWithSize(70)
+        self.roomNameBar.items = []
         
-        print("label.center was \(label.center)")
-        //label.center = sender.center
-        print("label.center is \(label.center)")
+        let nameItem = UIBarButtonItem()
+        nameItem.title = sender.qualifier
+        nameItem.tintColor = UIColor.blackColor()
+        self.roomNameBar.items! += [nameItem]
         
-        self.mapDisplayView.addSubview(label)
         
+        // Icon for PLAYER
+        if self.house.currentRoom.name == sender.qualifier {
+            let iconItem = UIBarButtonItem()
+            iconItem.title = "🙋"
+            self.roomNameBar.items! += [iconItem]
+        }
         
-        /*
-        UIView.animateWithDuration(0.5, delay: 0.0, options: [], animations: {
-            label.hidden = false
-            }, completion:{(Bool)  in
-                UIView.animateWithDuration(0.5, delay: 0.0, options: [], animations: {
-                    // Hold frame
-                    }, completion:{(Bool)  in
-                        UIView.animateWithDuration(0.5, delay: 0.0, options: [], animations: {
-                            label.hidden = true
-                            }, completion:nil)
-                })
-        })
-        */
+        // Icon for NPC
+        if self.house.roomForName(sender.qualifier)?.characters.count > 0 {
+            let iconItem = UIBarButtonItem()
+            iconItem.title = "🐙"
+            self.roomNameBar.items! += [iconItem]
+        }
+
+        
+        self.roomNameBar.hidden = false
+        
     }
     
     func changeFloor() {

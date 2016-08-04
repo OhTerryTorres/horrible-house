@@ -13,7 +13,10 @@ class TabBarController : UITabBarController {
     var defaultViewControllers : [UIViewController] = []
     
     override func awakeFromNib() {
+        
         self.defaultViewControllers = self.viewControllers!
+        self.tabBar.setStyle()
+        self.tabBar.backgroundImage = UIImage()
     }
     
     // Change this so that the appropriate tabs aren't taken away from a saved game
@@ -98,9 +101,3 @@ class TabBarController : UITabBarController {
     
 }
 
-extension UITabBarController {
-    
-    
-    
-    
-}

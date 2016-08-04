@@ -45,7 +45,7 @@ extension ItemBased {
                 print("ITEMBASED – removing \(itemName) from items")
                 self.items.removeAtIndex(i)
                 break // This keeps items with the same name from collapsing on each other.
-            } else { i++ }
+            } else { i += 1 }
         }
         
     }

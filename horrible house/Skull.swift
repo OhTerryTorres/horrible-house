@@ -20,15 +20,22 @@ class Skull: NSObject, NSCoding {
     }
     
     override init() {
-        let path = NSBundle.mainBundle().pathForResource("Skull", ofType: "plist")
-        let dict = NSDictionary(contentsOfFile: path!) as! Dictionary<String,AnyObject>
         
-        // add a caveat for when reloading from a saved game
-        
-        for (_, value) in dict {
-            let idea = Idea(withDictionary: value as! Dictionary<String,AnyObject>)
-            self.ideas += [idea]
+    }
+    
+    init(reloadingFromSave: Bool) {
+        if reloadingFromSave == false {
+            let path = NSBundle.mainBundle().pathForResource("Skull", ofType: "plist")
+            let dict = NSDictionary(contentsOfFile: path!) as! Dictionary<String,AnyObject>
+            
+            // add a caveat for when reloading from a saved game
+            
+            for (_, value) in dict {
+                let idea = Idea(withDictionary: value as! Dictionary<String,AnyObject>)
+                self.ideas += [idea]
+            }
         }
+        
     }
     
     func updateSkull() {
@@ -63,15 +70,11 @@ class Skull: NSObject, NSCoding {
     }
     
     required convenience init?(coder decoder: NSCoder) {
+        self.init(reloadingFromSave: true)
         
-        guard let ideas = decoder.decodeObjectForKey("ideas") as? [Idea],
-            let ideasToSayAloud = decoder.decodeObjectForKey("ideasToSayAloud") as? [Idea]
-            else { return nil }
-        
-        self.init(
-            ideas: ideas,
-            ideasToSayAloud: ideasToSayAloud
-        )
+        self.ideas = decoder.decodeObjectForKey("ideas") as! [Idea]
+        self.ideasToSayAloud = decoder.decodeObjectForKey("ideasToSayAloud") as! [Idea]
+
     }
 
 }

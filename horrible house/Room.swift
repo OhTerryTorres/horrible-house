@@ -80,30 +80,30 @@ class Room: NSObject, DictionaryBased, ItemBased, ActionPacked, Detailed, Inhabi
         
         coder.encodeObject(self.characters, forKey: "characters")
         coder.encodeObject(self.items, forKey: "items")
+        
+        if let placementGuidelines = self.placementGuidelines {
+            coder.encodeObject(placementGuidelines, forKey: "placementGuidelines")
+        }
 
         
     }
     
     required convenience init?(coder decoder: NSCoder) {
+        self.init()
         
-        guard let name = decoder.decodeObjectForKey("name") as? String,
-            let explanation = decoder.decodeObjectForKey("explanation") as? String,
-            let details = decoder.decodeObjectForKey("details") as? [Detail],
-            let actions = decoder.decodeObjectForKey("actions") as? [Action],
-            let characters = decoder.decodeObjectForKey("characters") as? [Character],
-            let items = decoder.decodeObjectForKey("items") as? [Item]
-            else { return nil }
+        self.name = decoder.decodeObjectForKey("name") as! String
+        self.explanation = decoder.decodeObjectForKey("explanation") as! String
+        self.position = (x: decoder.decodeIntegerForKey("x"), y: decoder.decodeIntegerForKey("y"), z: decoder.decodeIntegerForKey("z"))
+        self.timesEntered = decoder.decodeIntegerForKey("timesEntered")
+        self.details = decoder.decodeObjectForKey("details") as! [Detail]
+        self.actions = decoder.decodeObjectForKey("actions") as! [Action]
+        self.characters = decoder.decodeObjectForKey("characters") as! [Character]
+        self.items = decoder.decodeObjectForKey("items") as! [Item]
+        if let placementGuidelines = decoder.decodeObjectForKey("placementGuidelines") as? Dictionary<String, AnyObject>? {
+            self.placementGuidelines = placementGuidelines
+        }
+
         
-        self.init(
-            name: name,
-            explanation: explanation,
-            details: details,
-            actions: actions,
-            position: (x: decoder.decodeIntegerForKey("x"), y: decoder.decodeIntegerForKey("y"), z: decoder.decodeIntegerForKey("z")),
-            timesEntered: decoder.decodeIntegerForKey("timesEntered"),
-            characters: characters,
-            items: items
-        )
     }
 
 }

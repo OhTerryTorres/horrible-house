@@ -20,6 +20,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.        
         
+        // Change status bar background color
+        (UIApplication.sharedApplication().valueForKey("statusBarWindow")?.valueForKey("statusBar") as! UIView).backgroundColor = Color.background
+        
         print("didfinishlaunching")
         return true
     }
@@ -35,6 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let houseData = NSKeyedArchiver.archivedDataWithRootObject(self.house)
         NSUserDefaults.standardUserDefaults().setObject(houseData, forKey: "houseData")
         NSUserDefaults.standardUserDefaults().synchronize()
+        print("data archived")
     }
 
     func applicationWillEnterForeground(application: UIApplication) {

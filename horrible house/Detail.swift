@@ -41,11 +41,10 @@ class Detail : NSObject, NSCoding, DictionaryBased, RuleBased {
     }
     
     required convenience init?(coder decoder: NSCoder) {
+        self.init()
         
-        guard let explanation = decoder.decodeObjectForKey("explanation") as? String,
-            let rules = decoder.decodeObjectForKey("rules") as? [Rule]
-            else { return nil }
-        
-        self.init(explanation: explanation, rules: rules)
+        self.explanation = decoder.decodeObjectForKey("explanation") as! String
+        self.rules = decoder.decodeObjectForKey("rules") as! [Rule]
+
     }
 }

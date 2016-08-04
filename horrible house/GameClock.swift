@@ -114,27 +114,19 @@ class GameClock: NSObject, NSCoding {
         coder.encodeInteger(self.secondsPerTurn, forKey: "secondsPerTurn")
         coder.encodeBool(self.isBroken, forKey: "isBroken")
         
-        // coder.encodeObject(self.timer, forKey: "timer")
-        coder.encodeBool(self.isPaused, forKey: "isPaused")
         
     }
     
     required convenience init?(coder decoder: NSCoder) {
+        self.init()
         
-        guard let startTime = decoder.decodeObjectForKey("startTime") as? GameTime,
-            let endTime = decoder.decodeObjectForKey("endTime") as? GameTime,
-            let currentTime = decoder.decodeObjectForKey("currentTime") as? GameTime
-            // let timer = decoder.decodeObjectForKey("timer") as? NSTimer
-            else { return nil }
-        
-        self.init(
-            startTime: startTime,
-            endTime: endTime,
-            currentTime: currentTime,
-            secondsPerTurn: decoder.decodeIntegerForKey("secondsPerTurn"),
-            isBroken: decoder.decodeBoolForKey("isBroken"),
-            isPaused: decoder.decodeBoolForKey("isPaused")
-        )
+        self.startTime = decoder.decodeObjectForKey("startTime") as! GameTime
+        self.endTime = decoder.decodeObjectForKey("endTime") as! GameTime
+        self.currentTime = decoder.decodeObjectForKey("currentTime") as! GameTime
+        self.secondsPerTurn = decoder.decodeIntegerForKey("secondsPerTurn")
+        self.isBroken = decoder.decodeBoolForKey("isBroken")
+
+
     }
     
 }

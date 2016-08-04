@@ -19,7 +19,9 @@ class TitleViewController: UIViewController {
     var house : House?
     
     override func viewDidLoad() {
-        if let _ = NSUserDefaults.standardUserDefaults().objectForKey("savedHouse") {
+        self.view.setStyle()
+        
+        if let _ = NSUserDefaults.standardUserDefaults().objectForKey("houseData") {
             self.startGameButton.titleLabel?.text = "RETURN TO THE HOUSE"
         } else {
             self.restartGameButton.hidden = true
@@ -29,15 +31,17 @@ class TitleViewController: UIViewController {
     @IBAction func startGame(sender: AnyObject) {
         if let houseData = NSUserDefaults.standardUserDefaults().objectForKey("houseData") {
             self.house = NSKeyedUnarchiver.unarchiveObjectWithData(houseData as! NSData) as? House
-            print("TITLE – self.house.rooms.count is \(self.house!.rooms.count)")
+            (UIApplication.sharedApplication().delegate as! AppDelegate).house = self.house!
+            performSegueWithIdentifier("segue", sender: self)
         } else {
             self.restartGame(self)
         }
-        performSegueWithIdentifier("segue", sender: self)
     }
 
     @IBAction func restartGame(sender: AnyObject) {
+        NSUserDefaults.standardUserDefaults().setObject(nil, forKey: "houseData")
         self.house = (UIApplication.sharedApplication().delegate as! AppDelegate).house
+        performSegueWithIdentifier("segue", sender: self)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

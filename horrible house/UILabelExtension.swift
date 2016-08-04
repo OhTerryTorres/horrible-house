@@ -119,13 +119,13 @@ extension UILabel {
         var textColor = UIColor.blackColor()
         
         if (tag.rangeOfString("room") != nil) {
-            textColor = Color.roomColor
+            textColor = Color.textRoom
         }
         if (tag.rangeOfString("item") != nil) {
-            textColor = Color.itemColor
+            textColor = Color.textItem
         }
         if (tag.rangeOfString("special") != nil) {
-            textColor = Color.specialColor
+            textColor = Color.textSpecial
         }
         
         return textColor
