@@ -550,35 +550,40 @@ class House : NSObject, NSCoding {
         print("HOUSE – in triggerNPCBehaviors")
         for npc in self.npcs {
             print("HOUSE – \(npc.name)")
-            switch npc.behavior {
-                
-                // Wander from room too room randomly
-            case .Roam:
-                var potentialRooms = getRoomsAroundCharacter(npc)
-                
-                if canCharacterGoUpstairs(npc) {
-                    let upstairsPosition = (npc.position.x, npc.position.y, npc.position.z+1)
-                    if let upstairsRoom = roomForPosition(upstairsPosition) {
-                        potentialRooms += [upstairsRoom]
+            for behavior in npc.behaviors {
+                if behavior.isFollowingTheRules() {
+                    switch behavior.type {
+                        
+                    // Wander from room too room randomly
+                    case .Roam:
+                        var potentialRooms = getRoomsAroundCharacter(npc)
+                        
+                        if canCharacterGoUpstairs(npc) {
+                            let upstairsPosition = (npc.position.x, npc.position.y, npc.position.z+1)
+                            if let upstairsRoom = roomForPosition(upstairsPosition) {
+                                potentialRooms += [upstairsRoom]
+                            }
+                        }
+                        if canCharacterGoDownstairs(npc) {
+                            let downstairsPosition = (npc.position.x, npc.position.y, npc.position.z-1)
+                            if let downstairsRoom = roomForPosition(downstairsPosition) {
+                                potentialRooms += [downstairsRoom]
+                            }
+                        }
+                        
+                        let index = Int(arc4random_uniform(UInt32(potentialRooms.count)))
+                        
+                        print("HOUSE – the number of potential rooms for \(npc.name)'s next move is \(potentialRooms.count)")
+                        print("HOUSE – the random index is \(index), so \(npc.name) will move to \(potentialRooms[index].name)")
+                        
+                        print("HOUSE – \(npc.name) was at \(roomForPosition(npc.position)?.name) (\(npc.position))")
+                        moveCharacter(withName: npc.name, toRoom: potentialRooms[index])
+                        print("HOUSE – \(npc.name) is now at \(roomForPosition(npc.position)?.name) (\(npc.position))")
+                    default:
+                        break
                     }
+                    break
                 }
-                if canCharacterGoDownstairs(npc) {
-                    let downstairsPosition = (npc.position.x, npc.position.y, npc.position.z-1)
-                    if let downstairsRoom = roomForPosition(downstairsPosition) {
-                        potentialRooms += [downstairsRoom]
-                    }
-                }
-                
-                let index = Int(arc4random_uniform(UInt32(potentialRooms.count)))
-                
-                print("HOUSE – the number of potential rooms for \(npc.name)'s next move is \(potentialRooms.count)")
-                print("HOUSE – the random index is \(index), so \(npc.name) will move to \(potentialRooms[index].name)")
-                
-                print("HOUSE – \(npc.name) was at \(roomForPosition(npc.position)?.name) (\(npc.position))")
-                moveCharacter(withName: npc.name, toRoom: potentialRooms[index])
-                print("HOUSE – \(npc.name) is now at \(roomForPosition(npc.position)?.name) (\(npc.position))")
-            default:
-                break
             }
         }
     }

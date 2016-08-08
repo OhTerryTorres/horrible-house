@@ -20,6 +20,9 @@ class TitleViewController: UIViewController {
     
     override func viewDidLoad() {
         self.view.setStyle()
+        self.titleLabel.font = Font.mainTitleFont
+        self.startGameButton.titleLabel?.font = Font.basicFont
+        self.restartGameButton.titleLabel?.font = Font.basicFont
         
         if let _ = NSUserDefaults.standardUserDefaults().objectForKey("houseData") {
             self.startGameButton.titleLabel?.text = "RETURN TO THE HOUSE"

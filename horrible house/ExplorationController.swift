@@ -334,6 +334,7 @@ class ExplorationController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.tableView.setStyle()
         
         // Make it so the player AUTOMATICALLY starts at the same position as the Foyer.
         setPlayerStartingRoom()
@@ -760,9 +761,13 @@ class ExplorationController: UITableViewController {
         frame.size.height = 10
         header.frame = frame
         
-        header.textLabel!.font = UIFont.boldSystemFontOfSize(10)
+        header.textLabel!.font = Font.headerFont
         header.textLabel!.frame = header.frame
+        
+        header.backgroundView?.backgroundColor = Color.foregroundColor
+        header.textLabel!.textColor = Color.backgroundColor
     }
+
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

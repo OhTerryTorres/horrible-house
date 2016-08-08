@@ -42,6 +42,8 @@ class MapController: UIViewController {
         self.mapDisplayView.frame.size.height -= tabBarHeight
         self.mapDisplayView.frame.size.height -= tabBarHeight * 0.8
         
+        self.roomNameBar.setStyle()
+        
         self.setFloorButton()
         
         
@@ -124,13 +126,13 @@ class MapController: UIViewController {
                         
                         if let index = self.house.player.roomHistory.indexOf({$0 == room?.name}) {
                             if index == 0 {
-                                roomDetailView.backgroundColor = Color.mapCurrent
+                                roomDetailView.backgroundColor = Color.mapCurrentColor
                             }
                             if index == 1 {
-                                roomDetailView.backgroundColor = Color.mapCurrent.colorWithAlphaComponent(0.6)
+                                roomDetailView.backgroundColor = Color.mapCurrentColor.colorWithAlphaComponent(0.6)
                             }
                             if index == 2 {
-                                roomDetailView.backgroundColor = Color.mapCurrent.colorWithAlphaComponent(0.3)
+                                roomDetailView.backgroundColor = Color.mapCurrentColor.colorWithAlphaComponent(0.3)
                             }
                         } else {
                             roomDetailView.backgroundColor = UIColor.darkGrayColor()

@@ -14,6 +14,7 @@ class ClockController: UIViewController {
     var house : House = (UIApplication.sharedApplication().delegate as! AppDelegate).house
     var fullView = UIView()
     var clockView = UIView()
+    var timer = NSTimer()
     
     func rotateLayer(currentLayer:CALayer,dur:CFTimeInterval){
         
@@ -46,25 +47,49 @@ class ClockController: UIViewController {
     override func viewWillDisappear(animated: Bool) {
         self.clockView.removeFromSuperview()
         self.fullView.removeFromSuperview()
+        self.timer.invalidate()
     }
     
     override func viewWillAppear(animated: Bool) {
         self.house = (UIApplication.sharedApplication().delegate as! AppDelegate).house
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(1, target:self, selector: #selector(drawClockFace), userInfo: nil, repeats: true)
         
-        let endAngle = CGFloat(2*M_PI)
+        self.drawClockBase()
+        self.drawClockFace()
         
-        fullView = UIView(frame: CGRect(x: self.view.frame.origin.x, y: self.view.frame.size.height * 0.2, width: self.view.frame.size.width, height: self.view.frame.size.height))
         
-        clockView = View(frame: CGRect(x: 0, y: 0, width: CGRectGetWidth(self.view.frame), height: CGRectGetWidth(self.view.frame)))
+        
+        
+        
+    }
+    
+    func drawClockBase() {
+        self.fullView = UIView(frame: CGRect(x: self.view.frame.origin.x, y: self.view.frame.size.height * 0.2, width: self.view.frame.size.width, height: self.view.frame.size.height))
+        
+        self.clockView = View(frame: CGRect(x: 0, y: 0, width: CGRectGetWidth(self.view.frame), height: CGRectGetWidth(self.view.frame)))
         
         fullView.addSubview(clockView)
         self.view.addSubview(fullView)
-        self.view.backgroundColor = UIColor.darkGrayColor()
-        self.fullView.backgroundColor = UIColor.darkGrayColor()
-        self.clockView.backgroundColor = UIColor.darkGrayColor()
-        
+        self.view.setStyleInverse()
+        self.fullView.setStyleInverse()
+        self.clockView.setStyleInverse()
+    }
+    
+    func drawClockFace() {
         let time = timeCoords(CGRectGetMidX(clockView.frame), y: CGRectGetMidY(clockView.frame), time: getTime(self.house.gameClock.currentTime), radius: 50)
-
+        
+        self.clockView.layer.sublayers = []
+        
+        self.drawHours(time)
+        self.drawMinutes(time)
+        self.drawSeconds(time)
+        
+        self.drawCenter()
+        
+        self.drawCrack()
+    }
+    
+    func drawHours( time: (h:CGPoint, m:CGPoint,s:CGPoint) ) {
         // Hours
         let hourLayer = CAShapeLayer()
         hourLayer.frame = clockView.frame
@@ -75,7 +100,7 @@ class ClockController: UIViewController {
         hourLayer.path = path
         hourLayer.lineWidth = 4
         hourLayer.lineCap = kCALineCapRound
-        hourLayer.strokeColor = UIColor.blackColor().CGColor
+        hourLayer.strokeColor = Color.specialColor.CGColor
         
         // see for rasterization advice http://stackoverflow.com/questions/24316705/how-to-draw-a-smooth-circle-with-cashapelayer-and-uibezierpath
         hourLayer.rasterizationScale = UIScreen.mainScreen().scale;
@@ -84,7 +109,9 @@ class ClockController: UIViewController {
         self.clockView.layer.addSublayer(hourLayer)
         // time it takes for hour hand to pass through 360 degress
         // rotateLayer(hourLayer,dur:43200)
-        
+    }
+    
+    func drawMinutes( time: (h:CGPoint, m:CGPoint,s:CGPoint) ) {
         // Minutes
         let minuteLayer = CAShapeLayer()
         minuteLayer.frame = clockView.frame
@@ -95,14 +122,16 @@ class ClockController: UIViewController {
         minuteLayer.path = minutePath
         minuteLayer.lineWidth = 3
         minuteLayer.lineCap = kCALineCapRound
-        minuteLayer.strokeColor = UIColor.whiteColor().CGColor
+        minuteLayer.strokeColor = Color.specialColor.CGColor
         
         minuteLayer.rasterizationScale = UIScreen.mainScreen().scale;
         minuteLayer.shouldRasterize = true
         
         self.clockView.layer.addSublayer(minuteLayer)
         // rotateLayer(minuteLayer,dur: 3600)
-        
+    }
+    
+    func drawSeconds( time: (h:CGPoint, m:CGPoint,s:CGPoint) ) {
         // Seconds
         let secondLayer = CAShapeLayer()
         secondLayer.frame = clockView.frame
@@ -115,21 +144,26 @@ class ClockController: UIViewController {
         secondLayer.path = secondPath
         secondLayer.lineWidth = 1
         secondLayer.lineCap = kCALineCapRound
-        secondLayer.strokeColor = UIColor.redColor().CGColor
+        secondLayer.strokeColor = Color.backgroundColor.CGColor
         
         secondLayer.rasterizationScale = UIScreen.mainScreen().scale;
         secondLayer.shouldRasterize = true
         
         self.clockView.layer.addSublayer(secondLayer)
         // rotateLayer(secondLayer,dur: 60)
+    }
+    
+    func drawCenter() {
         let centerPiece = CAShapeLayer()
-        
+        let endAngle = CGFloat(2*M_PI)
         let circle = UIBezierPath(arcCenter: CGPoint(x:CGRectGetMidX(clockView.frame),y:CGRectGetMidX(clockView.frame)), radius: 4.5, startAngle: 0, endAngle: endAngle, clockwise: true)
         // thanks to http://stackoverflow.com/a/19395006/1694526 for how to fill the color
         centerPiece.path = circle.CGPath
-        centerPiece.fillColor = UIColor.whiteColor().CGColor
+        centerPiece.fillColor = Color.specialColor.CGColor
         self.clockView.layer.addSublayer(centerPiece)
-        
+    }
+    
+    func drawCrack() {
         if self.house.gameClock.isBroken {
             // Make jagged line
             let crackLayer = CAShapeLayer()
@@ -146,7 +180,7 @@ class ClockController: UIViewController {
                 CGPoint(x: clockView.frame.width * 0.47, y: clockView.frame.height * 0.71),
                 CGPoint(x: clockView.frame.width * 0.42, y: clockView.frame.height * 0.75),
                 CGPoint(x: clockView.frame.width * 0.4, y: clockView.frame.height * 0.77),
-            ]
+                ]
             
             let crackPath = CGPathCreateMutable()
             CGPathMoveToPoint(crackPath, nil, points[0].x, points[0].y)
@@ -157,7 +191,7 @@ class ClockController: UIViewController {
             crackLayer.path = crackPath
             crackLayer.lineWidth = 2
             crackLayer.lineCap = kCALineCapRound
-            crackLayer.strokeColor = UIColor.whiteColor().CGColor
+            crackLayer.strokeColor = Color.specialColor.CGColor
             crackLayer.fillColor = nil
             
             crackLayer.rasterizationScale = UIScreen.mainScreen().scale;
@@ -166,7 +200,6 @@ class ClockController: UIViewController {
             self.clockView.layer.addSublayer(crackLayer)
             
         }
-        
     }
     
     
@@ -212,11 +245,15 @@ func  timeCoords(x:CGFloat,y:CGFloat,time:(h:Int,m:Int,s:Int),radius:CGFloat,adj
         let ypo = cy - r * sin(angle * CGFloat(t)+degree2radian(adjustment))
         points.append(CGPoint(x: xpo, y: ypo))
     }
+    
+    
+    
     // work out hours first
     var hours = time.h
     if hours > 12 {
         hours = hours-12
     }
+    r = radius * 0.85
     let hoursInSeconds = time.h*3600 + time.m*60 + time.s
     newPoint(hoursInSeconds*5/3600)
     
@@ -302,7 +339,7 @@ func drawText(rect: CGRect, ctx: CGContextRef, x: CGFloat, y: CGFloat, radius: C
             // Font name must be written exactly the same as the system stores it (some names are hyphenated, some aren't) and must exist on the user's device. Otherwise there will be a crash. (In real use checks and fallbacks would be created.) For a list of iOS 7 fonts see here: http://support.apple.com/en-us/ht5878
             let aFont = UIFont(name: "DamascusBold", size: radius/5)
             // create a dictionary of attributes to be applied to the string
-            let attr:CFDictionaryRef = [NSFontAttributeName:aFont!,NSForegroundColorAttributeName:UIColor.whiteColor()]
+            let attr:CFDictionaryRef = [NSFontAttributeName:aFont!,NSForegroundColorAttributeName:Color.specialColor]
             // create the attributed string
             
             var str = ""
@@ -379,10 +416,10 @@ class View: UIView {
         CGContextAddArc(ctx, CGRectGetMidX(rect), CGRectGetMidY(rect), rad, 0, endAngle, 1)
         
         // set fill color
-        CGContextSetFillColorWithColor(ctx,UIColor.grayColor().CGColor)
+        CGContextSetFillColorWithColor(ctx,Color.foregroundColor.CGColor)
         
         // set stroke color
-        CGContextSetStrokeColorWithColor(ctx,UIColor.whiteColor().CGColor)
+        CGContextSetStrokeColorWithColor(ctx,Color.specialColor.CGColor)
         
         // set line width
         CGContextSetLineWidth(ctx, 4.0)
@@ -391,9 +428,9 @@ class View: UIView {
         // draw the path
         CGContextDrawPath(ctx, CGPathDrawingMode.FillStroke);
         
-        secondMarkers(ctx!, x: CGRectGetMidX(rect), y: CGRectGetMidY(rect), radius: rad, sides: 60, color: UIColor.whiteColor())
+        secondMarkers(ctx!, x: CGRectGetMidX(rect), y: CGRectGetMidY(rect), radius: rad, sides: 60, color: Color.specialColor)
         
-        drawText(rect, ctx: ctx!, x: CGRectGetMidX(rect), y: CGRectGetMidY(rect), radius: rad, sides: .twelve, color: UIColor.whiteColor())
+        drawText(rect, ctx: ctx!, x: CGRectGetMidX(rect), y: CGRectGetMidY(rect), radius: rad, sides: .twelve, color: Color.specialColor)
         
         
         

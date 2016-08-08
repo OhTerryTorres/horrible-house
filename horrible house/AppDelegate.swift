@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.        
         
         // Change status bar background color
-        (UIApplication.sharedApplication().valueForKey("statusBarWindow")?.valueForKey("statusBar") as! UIView).backgroundColor = Color.background
+        (UIApplication.sharedApplication().valueForKey("statusBarWindow")?.valueForKey("statusBar") as! UIView).backgroundColor = Color.backgroundColor
         
         print("didfinishlaunching")
         return true

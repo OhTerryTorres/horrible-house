@@ -17,6 +17,7 @@
 		CE0478A91C6C145A008E23E1 /* Rooms.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE0478A81C6C145A008E23E1 /* Rooms.plist */; };
 		CE0478AB1C6C3452008E23E1 /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0478AA1C6C3452008E23E1 /* Room.swift */; };
 		CE0478AD1C6C3B4F008E23E1 /* House.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0478AC1C6C3B4F008E23E1 /* House.swift */; };
+		CE16A0B31D58D9F900AA744E /* Behavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE16A0B21D58D9F900AA744E /* Behavior.swift */; };
 		CE2AD7B51CCF950B00B1353C /* GameTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2AD7B41CCF950B00B1353C /* GameTime.swift */; };
 		CE2AD7B71CCF95B500B1353C /* GameClock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2AD7B61CCF95B500B1353C /* GameClock.swift */; };
 		CE2F7A971CA224C100A3025D /* DictionaryBased.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2F7A961CA224C100A3025D /* DictionaryBased.swift */; };
@@ -103,6 +104,7 @@
 		CE0478A81C6C145A008E23E1 /* Rooms.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Rooms.plist; sourceTree = "<group>"; };
 		CE0478AA1C6C3452008E23E1 /* Room.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
 		CE0478AC1C6C3B4F008E23E1 /* House.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = House.swift; sourceTree = "<group>"; };
+		CE16A0B21D58D9F900AA744E /* Behavior.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Behavior.swift; sourceTree = "<group>"; };
 		CE2AD7B41CCF950B00B1353C /* GameTime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameTime.swift; sourceTree = "<group>"; };
 		CE2AD7B61CCF95B500B1353C /* GameClock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameClock.swift; sourceTree = "<group>"; };
 		CE2F7A961CA224C100A3025D /* DictionaryBased.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryBased.swift; sourceTree = "<group>"; };
@@ -266,6 +268,7 @@
 				CE6F27BC1C9335C900B21818 /* Character.swift */,
 				CE6F27B61C9326DD00B21818 /* Action.swift */,
 				CE6F27B81C93279300B21818 /* Rule.swift */,
+				CE16A0B21D58D9F900AA744E /* Behavior.swift */,
 				CE6F27BA1C932A2600B21818 /* Item.swift */,
 				CE50D0C71C9D91AC007AF0E2 /* Event.swift */,
 				CE6F27BE1C933DE400B21818 /* Stage.swift */,
@@ -502,6 +505,7 @@
 				CE3B95331D22B86E00129984 /* TitleViewController.swift in Sources */,
 				CE0478AD1C6C3B4F008E23E1 /* House.swift in Sources */,
 				CE0478771C6C10FD008E23E1 /* AppDelegate.swift in Sources */,
+				CE16A0B31D58D9F900AA744E /* Behavior.swift in Sources */,
 				CE2F7A971CA224C100A3025D /* DictionaryBased.swift in Sources */,
 				CE2F7A9B1CA2351500A3025D /* ItemBased.swift in Sources */,
 				CE2AD7B71CCF95B500B1353C /* GameClock.swift in Sources */,

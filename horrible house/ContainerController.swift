@@ -140,11 +140,14 @@ class ContainerController: UIViewController {
         
         let header:UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
         
-        header.textLabel!.font = UIFont.boldSystemFontOfSize(10)
+        header.textLabel!.font = Font.headerFont
     }
     
     override func viewDidLoad() {
         self.view.setStyle()
+        self.tableViewContainer.setStyle()
+        self.tableViewInventory.setStyle()
+
     }
     
     

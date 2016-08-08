@@ -17,33 +17,41 @@ extension UILabel {
     // with the "Dining Room" text being the color Color.roomColor.
     
     
-    func setAttributedTextWithTags(var string: String) {
+    func setAttributedTextWithTags(string: String) {
+        var str = string
         
         var mutableStringArray = [NSMutableAttributedString]()
         var rangeAndTagArray = [(range : NSRange, tag : String)]()
         
-        while string.rangeOfString("}") != nil {
+        while str.rangeOfString("}") != nil {
+            print("\(str)")
             
-            let tagStartStartRange = string.rangeOfString("{[")
-            let tagStartEndRange = string.rangeOfString("]")
             
-            let tag = string.substringWithRange(Range<String.Index>(start: tagStartStartRange!.endIndex, end: tagStartEndRange!.startIndex))
+            let tagStartStartRange = str.rangeOfString("{[")
+            let tagStartEndRange = str.rangeOfString("]")
             
+            let tag = str.substringWithRange(Range<String.Index>(start: tagStartStartRange!.endIndex, end: tagStartEndRange!.startIndex))
+            print("tag is \(tag)")
             
             let tagStartRange = Range<String.Index>(start: tagStartStartRange!.startIndex, end: tagStartEndRange!.endIndex)
             
-            let tagEndRange = string.rangeOfString("}")
+            let tagEndRange = str.rangeOfString("}")
             
-            var newString = string.stringByReplacingCharactersInRange(tagEndRange!, withString: "")
+            var newString = str.stringByReplacingCharactersInRange(tagEndRange!, withString: "")
+            print("newString is \(newString)")
             newString = newString.stringByReplacingCharactersInRange(tagStartRange, withString: "")
+            print("newString is now \(newString)")
             
-            var b = string.stringByReplacingCharactersInRange(Range<String.Index>(start: tagEndRange!.startIndex, end: string.endIndex), withString: "")
+            var b = str.stringByReplacingCharactersInRange(Range<String.Index>(start: tagEndRange!.startIndex, end: str.endIndex), withString: "")
+            print("b is \(b)")
 
-            b = b.stringByReplacingCharactersInRange(Range<String.Index>(start: string.startIndex, end: tagStartRange.endIndex), withString: "")
+            b = b.stringByReplacingCharactersInRange(Range<String.Index>(start: str.startIndex, end: tagStartRange.endIndex), withString: "")
+            print("b is now \(b)")
             
             let a = newString.stringByReplacingCharactersInRange(Range<String.Index>(start: tagStartRange.startIndex, end: newString.endIndex), withString: "")
+            print("a is \(a)")
             
-            string = newString
+            str = newString
             
             let affectedNSRange = NSMakeRange(a.characters.count, b.characters.count)
             
@@ -64,11 +72,13 @@ extension UILabel {
         }
         
         
-        let newMutableString = NSMutableAttributedString(string: string)
+        let newMutableString = NSMutableAttributedString(string: str)
         
         for (range,tag) in rangeAndTagArray {
             newMutableString.addAttribute(NSForegroundColorAttributeName, value: textColorForTag(tag), range: range)
         }
+        
+        newMutableString.addAttributes([ NSFontAttributeName: Font.basicFont!], range: NSRange(location:0, length:newMutableString.length))
         
         self.attributedText = newMutableString
         
@@ -99,6 +109,7 @@ extension UILabel {
             }
         }
         */
+
         
     }
     
@@ -119,13 +130,13 @@ extension UILabel {
         var textColor = UIColor.blackColor()
         
         if (tag.rangeOfString("room") != nil) {
-            textColor = Color.textRoom
+            textColor = Color.textRoomColor
         }
         if (tag.rangeOfString("item") != nil) {
-            textColor = Color.textItem
+            textColor = Color.textItemColor
         }
         if (tag.rangeOfString("special") != nil) {
-            textColor = Color.textSpecial
+            textColor = Color.textSpecialColor
         }
         
         return textColor

@@ -56,7 +56,7 @@ class SkullController: UIViewController {
     @IBOutlet var ideaLabel: UILabel!
     
     override func viewDidLoad() {
-        self.view.setStyle()
+        self.view.setStyleInverse()
         
         for idea in self.skull.ideasToSayAloud {
             if idea.detail.isFollowingTheRules() == false {
@@ -83,6 +83,7 @@ class SkullController: UIViewController {
             
             let string = "\(self.skull.ideasToSayAloud[index].detail.explanation)"
             self.ideaLabel.setTextWithTypeAnimation(string)
+            self.ideaLabel.font = Font.basicFont
             
             print("removing from ideasToSayAloud: \(self.skull.ideasToSayAloud[index].detail.explanation)")
             

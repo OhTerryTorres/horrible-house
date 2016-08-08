@@ -63,6 +63,7 @@ class InventoryController: UITableViewController {
         }
         
         
+        
         return cell
     }
     

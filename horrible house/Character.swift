@@ -10,10 +10,6 @@ import UIKit
 
 class Character: NSObject, NSCoding, ItemBased {
     
-    enum Behavior: String {
-        case Default
-        case Roam // Character goes from room to room at random, but doesn't reenter the room it just left if it can help it.
-    }
 
     // MARK: Properties
     
@@ -22,7 +18,7 @@ class Character: NSObject, NSCoding, ItemBased {
     var items: [Item] = []
     var explanation = ""
     var hidden = false
-    var behavior = Behavior.Default
+    var behaviors : [Behavior] = []
     
     var startingRoom : String?
     
@@ -35,8 +31,11 @@ class Character: NSObject, NSCoding, ItemBased {
         for (key, value) in withDictionary {
             if key == "name" { self.name = value as! String }
             if key == "explanation" { self.explanation = value as! String }
-            if key == "behavior" {
-                if value as! String == "Roam" { self.behavior = Behavior.Roam }
+            if key == "behaviors" {
+                for dict in value as! [Dictionary<String, AnyObject>] {
+                    let behavior = Behavior(withDictionary: dict)
+                    self.behaviors += [behavior]
+                }
             }
             if key == "hidden" { self.hidden = true }
             if key == "items" { self.setItemsForDictionary(value as! [Dictionary<String, AnyObject>]) }
@@ -55,7 +54,7 @@ class Character: NSObject, NSCoding, ItemBased {
          items:[Item],
          explanation: String,
          hidden: Bool,
-         behavior: Behavior,
+         behaviors: [Behavior],
          startingRoom : String?)
     {
         self.name = name
@@ -63,7 +62,7 @@ class Character: NSObject, NSCoding, ItemBased {
         self.items = items
         self.explanation = explanation
         self.hidden = hidden
-        self.behavior = behavior
+        self.behaviors = behaviors
         self.startingRoom = startingRoom
     }
     
@@ -95,7 +94,7 @@ class Character: NSObject, NSCoding, ItemBased {
         
         coder.encodeObject(self.explanation, forKey: "explanation")
         coder.encodeBool(self.hidden, forKey: "hidden")
-        coder.encodeObject(self.behavior.rawValue, forKey: "behavior")
+        coder.encodeObject(self.behaviors, forKey: "behavior")
         
         if let startingRoom = self.startingRoom {
             coder.encodeObject(startingRoom, forKey: "startingRoom")
@@ -112,7 +111,7 @@ class Character: NSObject, NSCoding, ItemBased {
         self.items = decoder.decodeObjectForKey("items") as! [Item]
         self.explanation = decoder.decodeObjectForKey("explanation") as! String
         self.hidden = decoder.decodeBoolForKey("hidden")
-        self.behavior = Character.Behavior(rawValue: decoder.decodeObjectForKey("behavior") as! String)!
+        self.behaviors = decoder.decodeObjectForKey("behavior") as! [Behavior]
         
         if let startingRoom = decoder.decodeObjectForKey("startingRoom") as? String? {
             self.startingRoom = startingRoom

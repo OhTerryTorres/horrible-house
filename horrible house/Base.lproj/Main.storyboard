@@ -367,21 +367,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Horrible House" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YgJ-bM-JQO">
-                                <rect key="frame" x="51" y="46" width="214" height="56"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Horrible House" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YgJ-bM-JQO">
+                                <rect key="frame" x="0.0" y="46" width="214" height="100"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="31"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xsf-A4-8x3">
-                                <rect key="frame" x="90" y="156" width="136" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Xsf-A4-8x3">
+                                <rect key="frame" x="0.0" y="154" width="214" height="30"/>
                                 <state key="normal" title="ENTER THE HOUSE"/>
                                 <connections>
                                     <action selector="startGame:" destination="jI2-Yt-DWI" eventType="touchUpInside" id="lct-h7-sJU"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gmT-dh-VEv">
-                                <rect key="frame" x="93" y="259" width="131" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gmT-dh-VEv">
+                                <rect key="frame" x="0.0" y="259" width="214" height="30"/>
                                 <state key="normal" title="I want a new house"/>
                                 <connections>
                                     <action selector="restartGame:" destination="jI2-Yt-DWI" eventType="touchUpInside" id="opT-FK-zbt"/>
@@ -502,7 +502,7 @@
         <!--Items-->
         <scene sceneID="4bX-kX-FCE">
             <objects>
-                <navigationController storyboardIdentifier="NavigationInventoryController" title="Items" automaticallyAdjustsScrollViewInsets="NO" id="Xzw-eP-C8j" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="NavigationInventoryController" title="Items" automaticallyAdjustsScrollViewInsets="NO" id="Xzw-eP-C8j" customClass="NavigationController" customModule="horrible_house" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Items" id="BPw-bX-Nnj"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="tcA-Oe-Z0W">
@@ -577,6 +577,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="0f1-80-p8F"/>
+        <segue reference="ery-py-OPP"/>
     </inferredMetricsTieBreakers>
 </document>
