@@ -87,6 +87,38 @@
 				</array>
 			</dict>
 		</array>
+		<key>characters</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Living Armor</string>
+				<key>explanation</key>
+				<string>A full suit of medieval armor stands here holding a spiked mace.</string>
+				<key>behaviors</key>
+				<array>
+					<dict>
+						<key>qualifier</key>
+						<string></string>
+						<key>type</key>
+						<string>Random</string>
+						<key>rules</key>
+						<array>
+							<string>\timePassed11:32</string>
+						</array>
+					</dict>
+					<dict>
+						<key>qualifier</key>
+						<string></string>
+						<key>type</key>
+						<string>Default</string>
+						<key>rules</key>
+						<array>
+							<string>\nopeTimePassed11:32</string>
+						</array>
+					</dict>
+				</array>
+			</dict>
+		</array>
 		<key>items</key>
 		<array>
 			<dict>

@@ -34,14 +34,14 @@ extension RuleBased {
             case Rule.RuleType.hasItem:
                 rulesFollowed = false
                 if let _ = house.player.items.indexOf({$0.name == rule.name}) {
-                    print("RULEBASED – player does NOT have \(rule.name)")
+                    print("RULEBASED – player DOES have \(rule.name). Rule followed!")
                     rulesFollowed = true
                 }
                 
             case Rule.RuleType.nopeHasItem:
                 rulesFollowed = true
                 if let _ = house.player.items.indexOf({$0.name == rule.name}) {
-                    print("RULEBASED – player DOES have \(rule.name)")
+                    print("RULEBASED – player DOES have \(rule.name). Rule broken!")
                     rulesFollowed = false
                 }
                 
@@ -87,6 +87,31 @@ extension RuleBased {
                 print("RULEBASED – RuleType:  nopeInRoomWithCharacter")
                 if let _ = house.currentRoom.characters.indexOf({$0.name == rule.name}) {
                     print("RULEBASED – player IS in room with \(rule.name)")
+                    rulesFollowed = false
+                }
+                break
+            case Rule.RuleType.timePassed:
+                print("rule.name is \(rule.name)")
+                let hRange = rule.name.startIndex.advancedBy(2)..<rule.name.endIndex
+                print("hRange is \(hRange)")
+                let h = Int(rule.name.stringByReplacingCharactersInRange(hRange, withString: ""))
+                print("h is \(h)")
+                let mRange = rule.name.startIndex..<rule.name.startIndex.advancedBy(3)
+                print("mRange is \(mRange)")
+                let m = Int(rule.name.stringByReplacingCharactersInRange(mRange, withString: ""))
+                print("m is \(m)")
+                let time = GameTime(hours: h!, minutes: m!, seconds: 0)
+                if house.gameClock.currentTime.totalTimeInSeconds() < time.totalTimeInSeconds() {
+                    rulesFollowed = false
+                }
+                break
+            case Rule.RuleType.nopeTimePassed:
+                let hRange = rule.name.startIndex.advancedBy(2)..<rule.name.endIndex
+                let h = Int(rule.name.stringByReplacingCharactersInRange(hRange, withString: ""))
+                let mRange = rule.name.startIndex..<rule.name.startIndex.advancedBy(3)
+                let m = Int(rule.name.stringByReplacingCharactersInRange(mRange, withString: ""))
+                let time = GameTime(hours: h!, minutes: m!, seconds: 0)
+                if house.gameClock.currentTime.totalTimeInSeconds() > time.totalTimeInSeconds() {
                     rulesFollowed = false
                 }
                 break

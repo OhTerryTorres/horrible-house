@@ -9,7 +9,7 @@
 import UIKit
 
 enum BehaviorType: String {
-    case Default, Roam
+    case Default, Random
 }
 
 class Behavior: NSObject, NSCoding, RuleBased, DictionaryBased {
@@ -26,8 +26,11 @@ class Behavior: NSObject, NSCoding, RuleBased, DictionaryBased {
         for (key, value) in withDictionary {
             if key == "qualifier" { self.qualifier = value as! String }
             if key == "type" {
-                if value as! String == "Roam" {
-                    self.type = BehaviorType.Roam
+                if value as! String == "Random" {
+                    self.type = BehaviorType.Random
+                }
+                if value as! String == "Default" {
+                    self.type = BehaviorType.Default
                 }
             }
             if key == "rules" { self.setRulesForArray(value as! [String]) }

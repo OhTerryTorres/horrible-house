@@ -221,26 +221,31 @@ class House : NSObject, NSCoding {
                         self.foyer.position = (x:x, y:y, z:z)
                         floor[y][x] = self.foyer
                         print("HOUSE – \(self.foyer.name) is at position \(self.foyer.position)")
+                        self.addCharactersInRoomToNPCsArray(self.foyer)
                         
                     case RoomType.stairsDownToBasement:
                         self.stairsDownToBasement.position = (x:x, y:y, z:z)
                         floor[y][x] = self.stairsDownToBasement
                         print("HOUSE – \(self.stairsDownToBasement.name) is at position \(self.stairsDownToBasement.position)")
+                        self.addCharactersInRoomToNPCsArray(self.stairsDownToBasement)
                         
                     case RoomType.stairsUpToFirst:
                         self.stairsUpToFirst.position = (x:x, y:y, z:z)
                         floor[y][x] = self.stairsUpToFirst
                         print("HOUSE – \(self.stairsUpToFirst.name) is at position \(self.stairsUpToFirst.position)")
+                        self.addCharactersInRoomToNPCsArray(self.stairsUpToFirst)
                         
                     case RoomType.stairsUpToSecond:
                         self.stairsUpToSecond.position = (x:x, y:y, z:z)
                         floor[y][x] = self.stairsUpToSecond
                         print("HOUSE – \(self.stairsUpToSecond.name) is at position \(self.stairsUpToSecond.position)")
+                        self.addCharactersInRoomToNPCsArray(self.stairsUpToSecond)
                         
                     case RoomType.stairsDownToFirst:
                         self.stairsDownToFirst.position = (x:x, y:y, z:z)
                         floor[y][x] = self.stairsDownToFirst
                         print("HOUSE – \(self.stairsDownToFirst.name) is at position \(self.stairsDownToFirst.position)")
+                        self.addCharactersInRoomToNPCsArray(self.stairsDownToFirst)
                         
                     case RoomType.noRoom:
                         floor[y][x] = self.noRoom
@@ -296,6 +301,7 @@ class House : NSObject, NSCoding {
                         room.isInHouse = true // 
                         floor[y][x] = room
                         print("HOUSE – \(room.name) is at position \(room.position)")
+                        self.addCharactersInRoomToNPCsArray(room)
                         roomIndex += 1
                         
                     }
@@ -315,6 +321,13 @@ class House : NSObject, NSCoding {
             floor = prepopulatedFloor(withDimensions: width, height: height, depth: depth)
         } // end of z for loop
         
+    }
+    
+    func addCharactersInRoomToNPCsArray(room: Room) {
+        for character in room.characters {
+            self.npcs += [character]
+            character.position = room.position
+        }
     }
     
     
@@ -555,7 +568,7 @@ class House : NSObject, NSCoding {
                     switch behavior.type {
                         
                     // Wander from room too room randomly
-                    case .Roam:
+                    case .Random:
                         var potentialRooms = getRoomsAroundCharacter(npc)
                         
                         if canCharacterGoUpstairs(npc) {

@@ -23,6 +23,7 @@ class Rule: NSObject, NSCoding {
         static let enteredRoom = "enteredRoom"
         static let completedEvent = "completedEvent"
         static let inRoomWithCharacter = "inRoomWithCharacter"
+        static let timePassed = "timePassed" // \timePassed12:00
         
         // Checks to see if the player has NOT done something
         static let nopeHasItem = "nopeHasItem"
@@ -30,6 +31,7 @@ class Rule: NSObject, NSCoding {
         static let nopeEnteredRoom = "nopeEnteredRoom"
         static let nopeCompletedEvent = "nopeCompletedEvent"
         static let nopeInRoomWithCharacter = "nopeInRoomWithCharacter"
+        static let nopeTimePassed = "nopeTimePassed"
     }
     
 
@@ -62,6 +64,10 @@ class Rule: NSObject, NSCoding {
             type = RuleType.nopeInRoomWithCharacter
             self.name = self.name.stringByReplacingOccurrencesOfString("\\nopeInRoomWith", withString: "")
         }
+        if self.name.rangeOfString("\\nopeTimePassed") != nil {
+            type = RuleType.nopeTimePassed
+            self.name = self.name.stringByReplacingOccurrencesOfString("\\nopeTimePassed", withString: "")
+        }
 
         
         if self.name.rangeOfString("\\has") != nil {
@@ -83,6 +89,10 @@ class Rule: NSObject, NSCoding {
         if self.name.rangeOfString("\\inRoomWith") != nil {
             type = RuleType.inRoomWithCharacter
             self.name = self.name.stringByReplacingOccurrencesOfString("\\inRoomWith", withString: "")
+        }
+        if self.name.rangeOfString("\\timePassed") != nil {
+            type = RuleType.timePassed
+            self.name = self.name.stringByReplacingOccurrencesOfString("\\timePassed", withString: "")
         }
         
     }
