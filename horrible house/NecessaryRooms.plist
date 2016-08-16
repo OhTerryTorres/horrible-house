@@ -13,8 +13,17 @@
 			<dict>
 				<key>name</key>
 				<string>Go downstairs</string>
-				<key>changeFloor</key>
-				<integer>1</integer>
+				<key>moveCharacter</key>
+				<dict>
+					<key>character</key>
+					<string>player</string>
+					<key>x</key>
+					<integer>0</integer>
+					<key>y</key>
+					<integer>0</integer>
+					<key>z</key>
+					<integer>-1</integer>
+				</dict>
 			</dict>
 		</array>
 	</dict>
@@ -29,8 +38,17 @@
 			<dict>
 				<key>name</key>
 				<string>Go upstairs</string>
-				<key>changeFloor</key>
-				<integer>2</integer>
+				<key>moveCharacter</key>
+				<dict>
+					<key>character</key>
+					<string>player</string>
+					<key>x</key>
+					<integer>0</integer>
+					<key>y</key>
+					<integer>0</integer>
+					<key>z</key>
+					<integer>1</integer>
+				</dict>
 			</dict>
 		</array>
 	</dict>
@@ -45,8 +63,17 @@
 			<dict>
 				<key>name</key>
 				<string>Go upstairs</string>
-				<key>changeFloor</key>
-				<integer>1</integer>
+				<key>moveCharacter</key>
+				<dict>
+					<key>character</key>
+					<string>player</string>
+					<key>x</key>
+					<integer>0</integer>
+					<key>y</key>
+					<integer>0</integer>
+					<key>z</key>
+					<integer>1</integer>
+				</dict>
 			</dict>
 		</array>
 	</dict>
@@ -61,8 +88,17 @@
 			<dict>
 				<key>name</key>
 				<string>Go downstairs</string>
-				<key>changeFloor</key>
-				<integer>0</integer>
+				<key>moveCharacter</key>
+				<dict>
+					<key>character</key>
+					<string>player</string>
+					<key>x</key>
+					<integer>0</integer>
+					<key>y</key>
+					<integer>0</integer>
+					<key>z</key>
+					<integer>-1</integer>
+				</dict>
 			</dict>
 		</array>
 	</dict>
@@ -100,10 +136,10 @@
 						<key>qualifier</key>
 						<string></string>
 						<key>type</key>
-						<string>Random</string>
+						<string>PursuePlayer</string>
 						<key>rules</key>
 						<array>
-							<string>\timePassed11:32</string>
+							<string>\timePassed12:00</string>
 						</array>
 					</dict>
 					<dict>
@@ -113,7 +149,7 @@
 						<string>Default</string>
 						<key>rules</key>
 						<array>
-							<string>\nopeTimePassed11:32</string>
+							<string>\nopeTimePassed12:00</string>
 						</array>
 					</dict>
 				</array>
@@ -141,6 +177,8 @@
 				<string>Map</string>
 				<key>inventoryDescription</key>
 				<string>A map of the house.</string>
+				<key>explanation</key>
+				<string>There&apos;s a broad piece of parchment here with curled edges.</string>
 				<key>canCarry</key>
 				<string></string>
 			</dict>
@@ -149,6 +187,8 @@
 				<string>Skull</string>
 				<key>inventoryDescription</key>
 				<string>Someone&apos;s skull. It can talk?</string>
+				<key>explanation</key>
+				<string>There&apos;s a skull.</string>
 				<key>canCarry</key>
 				<string></string>
 			</dict>

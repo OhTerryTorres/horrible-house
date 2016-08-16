@@ -19,61 +19,56 @@
 				<array>
 					<dict>
 						<key>name</key>
+						<string>Check one of the letter holders</string>
+						<key>result</key>
+						<string>There is a tangled up rubber band inside.</string>
+						<key>revealItems</key>
+						<array>
+							<string>Rubber Band</string>
+						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>Rubber Band</string>
+						<key>inventoryDescription</key>
+						<string>Used, but still tensile.</string>
+						<key>hidden</key>
+						<string></string>
+						<key>canCarry</key>
+						<string></string>
+					</dict>
+					<dict>
+						<key>name</key>
 						<string>Check the top desk drawer</string>
 						<key>result</key>
-						<string>It is filled to the brim with paper clips.</string>
+						<string>It is filled to the brim with paper clips. They all seem at least somewhat used.</string>
 					</dict>
 					<dict>
 						<key>name</key>
 						<string>Check the bottom desk drawer</string>
-						<key>triggerEventName</key>
-						<string>Bottom Desk Drawer</string>
+						<key>triggerEvent</key>
+						<dict>
+							<key>eventName</key>
+							<string>Bottom Desk Drawer</string>
+						</dict>
 					</dict>
 				</array>
 			</dict>
 			<dict>
 				<key>name</key>
-				<string>Knife Handle</string>
+				<string>Telephone</string>
 				<key>explanation</key>
-				<string>A knife handle protrudes from the block.</string>
-				<key>inventoryDescription</key>
-				<string>The handle of a kitchen knife.</string>
-				<key>hidden</key>
-				<string></string>
-				<key>canCarry</key>
-				<string></string>
+				<string>There is a telephpone on the desk.</string>
 				<key>actions</key>
 				<array>
 					<dict>
 						<key>name</key>
-						<string>Take {[item]Knife}</string>
-						<key>result</key>
-						<string>When the knife is separated from the knife block, it turns out there&apos;s no blade. It&apos;s just a handle.
-
-Got {[item]Knife Handle}.</string>
-						<key>onceOnly</key>
-						<string></string>
-					</dict>
-				</array>
-			</dict>
-			<dict>
-				<key>name</key>
-				<string>Refrigerator</string>
-				<key>explanation</key>
-				<string>The refrigerator is here, too.</string>
-				<key>maxCapacity</key>
-				<integer>99</integer>
-				<key>items</key>
-				<array>
-					<dict>
-						<key>name</key>
-						<string>Paper Bag</string>
-						<key>explanation</key>
-						<string>There&apos;s a paper bag. It looks like there&apos;s something in it.</string>
-						<key>inventoryDescription</key>
-						<string>A paper bag. There&apos;s something in it.</string>
-						<key>inventoryEvent</key>
-						<string></string>
+						<string>Pick up the telephone receiver</string>
+						<key>segue</key>
+						<dict>
+							<key>identifier</key>
+							<string>phone</string>
+						</dict>
 					</dict>
 				</array>
 			</dict>
@@ -99,8 +94,11 @@ Got {[item]Knife Handle}.</string>
 				<string>Look out the window</string>
 				<key>roomChange</key>
 				<string>A hallway with tall windows looking out onto foggy, moonlit landscape. Glass litters the floors below where one windows was broken.</string>
-				<key>triggerEventName</key>
-				<string>Looking Out the Window</string>
+				<key>triggerEvent</key>
+				<dict>
+					<key>eventName</key>
+					<string>Looking Out the Window</string>
+				</dict>
 				<key>rules</key>
 				<array>
 					<string>\nopeCompletedLooking Out the Window</string>
@@ -339,10 +337,13 @@ Got {[item]Knife Handle}.</string>
 				<key>actions</key>
 				<array>
 					<dict>
+						<key>segue</key>
+						<dict>
+							<key>identifier</key>
+							<string>piano</string>
+						</dict>
 						<key>name</key>
 						<string>Check the piano</string>
-						<key>segue</key>
-						<string>piano</string>
 					</dict>
 				</array>
 			</dict>
@@ -763,8 +764,11 @@ Well, of course, the jaw was literally chiseled when it was sculpted.</string>
 					<dict>
 						<key>name</key>
 						<string>Sit at the table</string>
-						<key>triggerEventName</key>
-						<string>The Dining Table</string>
+						<key>triggerEvent</key>
+						<dict>
+							<key>eventName</key>
+							<string>The Dining Table</string>
+						</dict>
 					</dict>
 				</array>
 			</dict>

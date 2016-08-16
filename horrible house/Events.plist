@@ -2,6 +2,187 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>4</key>
+	<dict>
+		<key>name</key>
+		<string>Living Armor</string>
+		<key>sudden</key>
+		<string></string>
+		<key>stages</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>!ENCOUNTER!</string>
+				<key>explanation</key>
+				<string>The full suit of medieval armor stomps toward you with a clank. It raises a spiked mace high.</string>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Run to the north</string>
+						<key>triggerEvent</key>
+						<dict/>
+						<key>moveCharacter</key>
+						<dict>
+							<key>character</key>
+							<string>player</string>
+							<key>x</key>
+							<integer>0</integer>
+							<key>y</key>
+							<integer>1</integer>
+							<key>z</key>
+							<integer>0</integer>
+						</dict>
+						<key>rules</key>
+						<array>
+							<string>\roomInDirectionNorth</string>
+						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>Run to the west</string>
+						<key>triggerEvent</key>
+						<dict/>
+						<key>moveCharacter</key>
+						<dict>
+							<key>character</key>
+							<string>player</string>
+							<key>x</key>
+							<integer>-1</integer>
+							<key>y</key>
+							<integer>0</integer>
+							<key>z</key>
+							<integer>0</integer>
+						</dict>
+						<key>rules</key>
+						<array>
+							<string>\roomInDirectionWest</string>
+						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>Run to the south</string>
+						<key>triggerEvent</key>
+						<dict/>
+						<key>moveCharacter</key>
+						<dict>
+							<key>character</key>
+							<string>player</string>
+							<key>x</key>
+							<integer>0</integer>
+							<key>y</key>
+							<integer>-1</integer>
+							<key>z</key>
+							<integer>0</integer>
+						</dict>
+						<key>rules</key>
+						<array>
+							<string>\roomInDirectionSouth</string>
+						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>Run to the east</string>
+						<key>triggerEvent</key>
+						<dict/>
+						<key>moveCharacter</key>
+						<dict>
+							<key>character</key>
+							<string>player</string>
+							<key>x</key>
+							<integer>1</integer>
+							<key>y</key>
+							<integer>0</integer>
+							<key>z</key>
+							<integer>0</integer>
+						</dict>
+						<key>rules</key>
+						<array>
+							<string>\roomInDirectionEast</string>
+						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>Run upstairs</string>
+						<key>triggerEvent</key>
+						<dict/>
+						<key>moveCharacter</key>
+						<dict>
+							<key>character</key>
+							<string>player</string>
+							<key>x</key>
+							<integer>0</integer>
+							<key>y</key>
+							<integer>0</integer>
+							<key>z</key>
+							<integer>1</integer>
+						</dict>
+						<key>rules</key>
+						<array>
+							<string>\roomInDirectionUpstairs</string>
+						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>Run downstairs</string>
+						<key>triggerEvent</key>
+						<dict/>
+						<key>moveCharacter</key>
+						<dict>
+							<key>character</key>
+							<string>player</string>
+							<key>x</key>
+							<integer>0</integer>
+							<key>y</key>
+							<integer>0</integer>
+							<key>z</key>
+							<integer>-1</integer>
+						</dict>
+						<key>rules</key>
+						<array>
+							<string>\roomInDirectionDownstairs</string>
+						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>Ask that it stop doing that</string>
+						<key>triggerEvent</key>
+						<dict>
+							<key>eventName</key>
+							<string>Living Armor</string>
+							<key>stageName</key>
+							<string>!FAILURE!</string>
+						</dict>
+					</dict>
+				</array>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>!FAILURE!</string>
+				<key>explanation</key>
+				<string>Your concerns don&apos;t seem to impede the living armor as its mace falls unceasingly onto your skull.</string>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>segue</key>
+						<dict>
+							<key>identifier</key>
+							<string>gameOver</string>
+							<key>qualifier</key>
+							<string>You should have run!</string>
+						</dict>
+						<key>name</key>
+						<string>Accept your fate</string>
+					</dict>
+				</array>
+			</dict>
+		</array>
+		<key>rules</key>
+		<array>
+			<string>\inRoomWithLiving Armor</string>
+			<string>\timePassed12:00</string>
+		</array>
+	</dict>
 	<key>3</key>
 	<dict>
 		<key>name</key>
@@ -18,8 +199,8 @@
 					<dict>
 						<key>name</key>
 						<string>Close the drawer</string>
-						<key>triggerEventName</key>
-						<string></string>
+						<key>triggerEvent</key>
+						<dict/>
 					</dict>
 				</array>
 				<key>items</key>
@@ -480,7 +661,7 @@ January 22, 1979
 		<string>Looking Out the Window</string>
 		<key>rules</key>
 		<array>
-			<string>\playerInRoomWithHuge Bat</string>
+			<string>\nopeInRoomWithHuge Bat</string>
 		</array>
 		<key>stages</key>
 		<array>
@@ -526,8 +707,8 @@ January 22, 1979
 								</array>
 							</dict>
 						</array>
-						<key>triggerEventName</key>
-						<string></string>
+						<key>triggerEvent</key>
+						<dict/>
 					</dict>
 				</array>
 			</dict>
@@ -561,8 +742,8 @@ January 22, 1979
 					<dict>
 						<key>name</key>
 						<string>Forget about it</string>
-						<key>triggerEventName</key>
-						<string></string>
+						<key>triggerEvent</key>
+						<dict/>
 					</dict>
 				</array>
 				<key>items</key>
@@ -581,8 +762,8 @@ January 22, 1979
 								</array>
 								<key>onceOnly</key>
 								<string></string>
-								<key>triggerEventName</key>
-								<string></string>
+								<key>triggerEvent</key>
+								<dict/>
 							</dict>
 						</array>
 						<key>hidden</key>
@@ -646,8 +827,8 @@ No, wait. That was just a shadow from a breeze that moved the curtain against th
 					<dict>
 						<key>name</key>
 						<string>Get up from table</string>
-						<key>triggerEventName</key>
-						<string></string>
+						<key>triggerEvent</key>
+						<dict/>
 					</dict>
 				</array>
 			</dict>

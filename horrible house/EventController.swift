@@ -1,4 +1,4 @@
-//
+    //
 //  EventController.swift
 //  horrible house
 //
@@ -153,16 +153,13 @@ class EventController: UITableViewController {
             }
         } else { // Room Actions
             print("EvC – isRoomAction")
-            for i in 0 ..< self.house.currentEvent.currentStage!.actions.count {
-                if self.house.currentEvent.currentStage!.actions[i].name == action.name {
-                    action.timesPerformed += 1
-                    if let replaceAction = action.replaceAction {
-                        self.house.currentEvent.currentStage!.actions[i] = replaceAction
-                    }
-                    if action.onceOnly == true {
-                        self.house.currentEvent.currentStage!.actions.removeAtIndex(i)
-                    }
-                    break
+            if let index = self.house.currentEvent.currentStage!.actions.indexOf({$0.name == action.name}) {
+                action.timesPerformed += 1
+                if let replaceAction = action.replaceAction {
+                    self.house.currentEvent.currentStage!.actions[index] = replaceAction
+                }
+                if action.onceOnly == true {
+                    self.house.currentEvent.currentStage!.actions.removeAtIndex(index)
                 }
             }
         }
@@ -170,23 +167,15 @@ class EventController: UITableViewController {
         // This should be done before any transitions occur
         self.handleContextSensitiveActions(action, isItemAction: isItemAction)
         
-        if let triggerEventName = action.triggerEventName { triggerEvent(forEventName: triggerEventName)}
+        if let triggerEvent = action.triggerEvent { self.triggerEvent(triggerEvent)}
         
-        if let segue = action.segue { performSegueWithIdentifier(segue, sender: nil)}
+        if let segue = action.segue { performSegueWithIdentifier(segue.identifier, sender: action)}
         
-        if let changeFloor = action.changeFloor {
-            switch changeFloor {
-            case 0:
-                self.house.moveCharacter(withName: "player", toRoom: self.house.roomForPosition((x:self.house.player.position.x, y:self.house.player.position.x, z:0))!)
-            case 1:
-                self.house.moveCharacter(withName: "player", toRoom: self.house.roomForPosition((x:self.house.player.position.x, y:self.house.player.position.x, z:1))!)
-            case 2:
-                self.house.moveCharacter(withName: "player", toRoom: self.house.roomForPosition((x:self.house.player.position.x, y:self.house.player.position.x, z:2))!)
-            default:
-                break
-            }
+        if let moveCharacter = action.moveCharacter {
+            
+            self.house.moveCharacter(withName: moveCharacter.characterName, toRoom: self.house.roomForPosition((x: (self.house.player.position.x + moveCharacter.positionChange.x), y: (self.house.player.position.y + moveCharacter.positionChange.y), z: (self.house.player.position.z + moveCharacter.positionChange.z   ) ))!)
+            
             self.update = ""
-            self.title = self.house.currentRoom.name
         }
         
     }
@@ -220,15 +209,20 @@ class EventController: UITableViewController {
     }
     
     
-    func triggerEvent(forEventName eventName: String) {
-        for event in self.house.events {
-            if event.name == eventName {
-                if event.isFollowingTheRules() {
-                    self.house.currentEvent = event
+    func triggerEvent( triggerEvent:(eventName: String, stageName: String?) ) {
+        if let index = self.house.events.indexOf({ $0.name == triggerEvent.eventName }) {
+            if self.house.events[index].isFollowingTheRules() {
+                self.house.currentEvent = self.house.events[index]
+                self.house.currentEvent.currentStage = self.house.currentEvent.stages[0]
+                if let stageName = triggerEvent.stageName {
+                    if let i = self.house.currentEvent.stages.indexOf({ $0.name == stageName }) {
+                        self.house.currentEvent.currentStage = self.house.currentEvent.stages[i]
+                    }
                 }
             }
         }
-        if eventName == "" {
+
+        if triggerEvent.eventName == "" {
             print("EvC – exiting event")
             if self.isInventoryEvent {
                 print("EvC – about to exit to Inventory")
@@ -267,6 +261,17 @@ class EventController: UITableViewController {
             let ic = segue.destinationViewController as! InventoryController
             ic.house = self.house
         }
+        
+        if segue.identifier == "gameOver" {
+            let goc = segue.destinationViewController as! GameOverController
+            let action = sender as! Action
+            if let segue = action.segue {
+                if let qualifier = segue.qualifier {
+                    goc.message = qualifier
+                }
+            }
+            
+        }
     
     }
     
@@ -280,8 +285,10 @@ class EventController: UITableViewController {
             tabBarController.refreshViewControllers()
         }
         
-        self.house.currentEvent.setCurrentStage()
+        //self.house.currentEvent.setCurrentStage()
         self.navigationItem.setHidesBackButton(true, animated:false);
+
+        
         self.title = self.house.currentEvent.currentStage!.name
         
         
@@ -466,31 +473,26 @@ class EventController: UITableViewController {
         
         // self.tableView.reloadData()
         
-        if let _ = action?.triggerEventName {
-            
-        } else {
-            
-            if let actionName = action?.name {
-                if actionName.rangeOfString("Take") != nil { // TAKE: In case of picking up an item, slide in UPDATE section saying so.
-                    
-                    let sections = NSMutableIndexSet(indexesInRange: NSMakeRange(0, 1))
-                    
-                    self.tableView.reloadData()
-                    self.tableView.reloadSections(sections, withRowAnimation: UITableViewRowAnimation.Left  )
-                    print("ExC – reloading table")
-                } else {
-                    print("EvC – animating table changes")
-                    let sections = NSIndexSet(indexesInRange: NSMakeRange(0, tableView.numberOfSections))
-                    self.tableView.reloadSections(sections, withRowAnimation: UITableViewRowAnimation.Automatic)
-                }
+        if let actionName = action?.name {
+            if actionName.rangeOfString("Take") != nil { // TAKE: In case of picking up an item, slide in UPDATE section saying so.
+                
+                let sections = NSMutableIndexSet(indexesInRange: NSMakeRange(0, 1))
+                
+                self.tableView.reloadData()
+                self.tableView.reloadSections(sections, withRowAnimation: UITableViewRowAnimation.Left  )
+                print("ExC – reloading table")
+            } else {
+                print("EvC – animating table changes")
+                let sections = NSIndexSet(indexesInRange: NSMakeRange(0, tableView.numberOfSections))
+                self.tableView.reloadSections(sections, withRowAnimation: UITableViewRowAnimation.Automatic)
             }
         }
-                
+        
         
         self.house.skull.updateSkull()
         
         
-        if let _ = action?.triggerEventName {
+        if let _ = action?.triggerEvent {
             
         } else if let _ = action?.segue{
             
@@ -505,7 +507,7 @@ class EventController: UITableViewController {
                     self.tableView.reloadSections(sections, withRowAnimation: UITableViewRowAnimation.Left  )
                 } else {
                     
-                    if let _ = action?.changeFloor {
+                    if let _ = action?.moveCharacter {
                         self.tableView.reloadData()
                     }
                     let sections = NSIndexSet(indexesInRange: NSMakeRange(0, tableView.numberOfSections))
@@ -557,22 +559,25 @@ class EventController: UITableViewController {
             // ITEM ACTIONS
         default:
             // -3 to deal with the other table sections.
-            let item = self.house.currentEvent.currentStage!.items[indexPath.section-4]
-    
-            if item.hidden == true {
-                print("EvC – \(item.name) IS HIDDEN!")
-                height = 0
-            }
-            if item.actions[indexPath.row].name.rangeOfString("Take") != nil && item.canCarry == false {
-                print("EvC – \(item.name) cannot be carried!")
-                height = 0
-            }
-            if item.actions[indexPath.row].isFollowingTheRules() == false {
-                print("EvC – \(item.actions[indexPath.row].name) is not following the rules!")
-                height = 0
+            if self.house.currentEvent.currentStage!.items.count > 0 {
+                let item = self.house.currentEvent.currentStage!.items[indexPath.section-4]
+                
+                if item.hidden == true {
+                    print("EvC – \(item.name) IS HIDDEN!")
+                    height = 0
+                }
+                if item.actions[indexPath.row].name.rangeOfString("Take") != nil && item.canCarry == false {
+                    print("EvC – \(item.name) cannot be carried!")
+                    height = 0
+                }
+                if item.actions[indexPath.row].isFollowingTheRules() == false {
+                    print("EvC – \(item.actions[indexPath.row].name) is not following the rules!")
+                    height = 0
+                }
+                
+                print("EvC – HEIGHT – item is \(item.name), height is \(height)")
             }
             
-            print("EvC – HEIGHT – item is \(item.name), height is \(height)")
             
         }
         

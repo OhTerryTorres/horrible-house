@@ -111,10 +111,42 @@ extension RuleBased {
                 let mRange = rule.name.startIndex..<rule.name.startIndex.advancedBy(3)
                 let m = Int(rule.name.stringByReplacingCharactersInRange(mRange, withString: ""))
                 let time = GameTime(hours: h!, minutes: m!, seconds: 0)
-                if house.gameClock.currentTime.totalTimeInSeconds() > time.totalTimeInSeconds() {
+                if house.gameClock.currentTime.totalTimeInSeconds() >= time.totalTimeInSeconds() {
                     rulesFollowed = false
                 }
                 break
+                
+            case Rule.RuleType.roomInDirection:
+                if rule.name.lowercaseString.rangeOfString("north") != nil {
+                    if house.doesRoomExistAtPosition((x: house.player.position.x, y: house.player.position.y + 1, z: house.player.position.z)) == false {
+                        rulesFollowed = false
+                    }
+                }
+                if rule.name.lowercaseString.rangeOfString("south") != nil {
+                    if house.doesRoomExistAtPosition((x: house.player.position.x, y: house.player.position.y - 1, z: house.player.position.z)) == false {
+                        rulesFollowed = false
+                    }
+                }
+                if rule.name.lowercaseString.rangeOfString("west") != nil {
+                    if house.doesRoomExistAtPosition((x: house.player.position.x - 1, y: house.player.position.y, z: house.player.position.z)) == false {
+                        rulesFollowed = false
+                    }
+                }
+                if rule.name.lowercaseString.rangeOfString("east") != nil {
+                    if house.doesRoomExistAtPosition((x: house.player.position.x + 1, y: house.player.position.y, z: house.player.position.z)) == false {
+                        rulesFollowed = false
+                    }
+                }
+                if rule.name.lowercaseString.rangeOfString("upstairs") != nil {
+                    if house.canCharacterGoUpstairs(house.player) == false {
+                        rulesFollowed = false
+                    }
+                }
+                if rule.name.lowercaseString.rangeOfString("downstairs") != nil {
+                    if house.canCharacterGoDownstairs(house.player) == false {
+                        rulesFollowed = false
+                    }
+                }
             default:
                 break;
             }

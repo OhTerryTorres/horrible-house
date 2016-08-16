@@ -32,6 +32,9 @@ class Rule: NSObject, NSCoding {
         static let nopeCompletedEvent = "nopeCompletedEvent"
         static let nopeInRoomWithCharacter = "nopeInRoomWithCharacter"
         static let nopeTimePassed = "nopeTimePassed"
+        
+        // These are rules that don't have a negative yet
+        static let roomInDirection = "roomInDirection"
     }
     
 
@@ -92,6 +95,11 @@ class Rule: NSObject, NSCoding {
         }
         if self.name.rangeOfString("\\timePassed") != nil {
             type = RuleType.timePassed
+            self.name = self.name.stringByReplacingOccurrencesOfString("\\timePassed", withString: "")
+        }
+        
+        if self.name.rangeOfString("\\roomInDirection") != nil {
+            type = RuleType.roomInDirection
             self.name = self.name.stringByReplacingOccurrencesOfString("\\timePassed", withString: "")
         }
         

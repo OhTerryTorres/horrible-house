@@ -76,7 +76,8 @@ class Item: NSObject, DictionaryBased, ActionPacked, Detailed, ItemBased, NSCodi
         
         // Add a LOOK IN action for any containers
         if self.isContainer == true {
-            let lookDict : Dictionary<String, AnyObject> = [ "name" : "Look in {[item]\(self.name)}", "segue" : "container"]
+            let segueDict = ["identifier" : "container"]
+            let lookDict : Dictionary<String, AnyObject> = [ "name" : "Look in {[item]\(self.name)}", "segue" : segueDict]
             let lookAction = Action(withDictionary: lookDict)
             actions += [lookAction]
         }

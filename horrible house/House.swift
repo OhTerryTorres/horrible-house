@@ -89,7 +89,14 @@ class House : NSObject, NSCoding {
     
     // The room that is being presented for exploration.
     // This will be set by the game controllers.
-    var currentRoom = Room()
+    var currentRoom : Room {
+        var room = self.noRoom
+        if let r = self.roomForPosition(player.position) {
+            room = r
+        }
+        return room
+    }
+    
     // The event that is being presented for interaction.
     // This will be set by the game controllers.
     var currentEvent = Event()
@@ -97,19 +104,15 @@ class House : NSObject, NSCoding {
     // The skull will be watching to update its ideas
     
     var skull = Skull()
-
     
-    init(layout:[[[Int]]]) {
+    override init(){
+        
+    }
+    
+    init(layout: [[[Int]]]) {
         super.init()
         
-        self.layout = layout.reverse()
-        
-        // Reverse each floor's layout so that north and south make sense
-        var i = 0
-        for _ in self.layout {
-            self.layout[i] = self.layout[i].reverse()
-            i += 1
-        }
+        self.layout = self.reverseLayout(layout)
         self.setNecessaryRooms()
         self.loadEvents()
         self.loadRooms()
@@ -118,45 +121,25 @@ class House : NSObject, NSCoding {
         
     }
     
-    override init(){
-        
-    }
-    
     // MARK: Setup Functions
     
-    func loadRooms() {
-        self.rooms = []
-        let path = NSBundle.mainBundle().pathForResource("Rooms", ofType: "plist")
-        let dict = NSDictionary(contentsOfFile: path!) as! Dictionary<String,AnyObject>
+    func reverseLayout(layout: [[[Int]]]) -> [[[Int]]] {
+        let layoutReversed = layout.reverse()
         
-        for (_, value) in dict {
-            let room = Room(withDictionary: value as! Dictionary<String,AnyObject>)
-            self.rooms += [room]
+        // Reverse each floor's layout so that north and south make sense
+        var i = 0
+        var l = Array(layoutReversed)
+        for _ in l {
+            l[i] = l[i].reverse()
+            i += 1
         }
-        
-        self.rooms.shuffleInPlace()
-        print("HOUSE – self.rooms[0] is \(self.rooms[0].name)")
-    }
-    
-    func loadEvents() {
-        let path = NSBundle.mainBundle().pathForResource("Events", ofType: "plist")
-        let dict = NSDictionary(contentsOfFile: path!) as! Dictionary<String,AnyObject>
-        
-        for (_, value) in dict {
-            let event = Event(withDictionary: value as! Dictionary<String,AnyObject>)
-            self.events += [event]
-        }
+        return l
     }
     
     func setNecessaryRooms() {
-        // Initialize from NecessaryRooms.plist
-        let path = NSBundle.mainBundle().pathForResource("NecessaryRooms", ofType: "plist")
-        let dict = NSDictionary(contentsOfFile: path!) as! Dictionary<String,AnyObject>
         
-        
-        // These needs to match the names are they are in the NecessaryRooms.plist
-        
-        for (_,value) in dict {
+        for (_,value) in self.dictForPlistFilename("NecessaryRooms") {
+            // These needs to match the names are they are in the NecessaryRooms.plist
             let room = Room(withDictionary: value as! Dictionary<String,AnyObject>)
             if room.name == "Foyer" { self.foyer = room }
             if room.name == "No Room" { self.noRoom = room }
@@ -165,14 +148,37 @@ class House : NSObject, NSCoding {
             if room.name == "Stairs Ascending" { self.stairsUpToSecond = room }
             if room.name == "Second Floor Landing" { self.stairsDownToFirst = room }
         }
-
+        
     }
     
+    func dictForPlistFilename(filename: String) -> Dictionary<String,AnyObject> {
+        let path = NSBundle.mainBundle().pathForResource(filename, ofType: "plist")
+        return NSDictionary(contentsOfFile: path!) as! Dictionary<String,AnyObject>
+    }
+    
+    func loadRooms() {
+        //self.rooms = []
+        for (_, value) in self.dictForPlistFilename("Rooms") {
+            let room = Room(withDictionary: value as! Dictionary<String,AnyObject>)
+            self.rooms += [room]
+        }
+        
+        self.rooms.shuffleInPlace()
+    }
+    
+    func loadEvents() {
+        for (_, value) in self.dictForPlistFilename("Events") {
+            let event = Event(withDictionary: value as! Dictionary<String,AnyObject>)
+            self.events += [event]
+        }
+    }
+    
+    
+    
     // Pre-fill the floor with noRooms to make it easier to change the rooms later.
-    func prepopulatedFloor(withDimensions width: Int, height: Int, depth: Int) -> [[Room]] {
+    func prepopulatedFloor(withDimensions: (width: Int, height: Int, depth: Int)) -> [[Room]] {
         print("HOUSE – Prepopulating map...\r")
         var floor = [[Room]]()
-        
             for _ in 0 ..< height {
                 var row = [Room]()
                 for _ in 0 ..< width {
@@ -192,19 +198,14 @@ class House : NSObject, NSCoding {
         let width = self.layout[0][0].count
         let height = self.layout[0].count
         let depth = self.layout.count
+        let dimensions = (width, height, depth)
         
         self.width = width
-        print("HOUSE – width is \(width)")
         self.height = height
-        print("HOUSE – height is \(height)")
         self.depth = depth
-        print("HOUSE – depth is \(depth)")
         
-        print("HOUSE – width is \(width)")
-        print("HOUSE – height is \(height)")
-        print("HOUSE – depth is \(depth)")
         
-        var floor = prepopulatedFloor(withDimensions: width, height: height, depth: depth)
+        var floor = prepopulatedFloor(dimensions)
         
         var roomIndex = 0
         
@@ -252,13 +253,9 @@ class House : NSObject, NSCoding {
                         
                     default:
                         
-                        // self.rooms[roomIndex].position.x != -1
-                        // All rooms are initialized with -1 in all of their position coordinates.
-                        // This condition checks of the room has been assigned a position in the house yet.
                     
                         var i = 0
                         while ( guidelinesAreMet(forRoom: self.rooms[roomIndex], atPosition: (x:x, y:y, z:z)) == false || self.rooms[roomIndex].isInHouse == true ) {
-                            
                             
                             if i > self.rooms.count * 3 {
                                 print("HOUSE – stuck in loop, attempting to break")
@@ -272,18 +269,12 @@ class House : NSObject, NSCoding {
                                 print("HOUSE – next room after shifting is \(self.rooms[roomIndex].name)")
                             }
                             
-                            
                             while ( self.rooms[roomIndex].isInHouse == true ) {
                                 print("HOUSE – \(self.rooms[roomIndex].name) has already been positioned in the house")
-                                
                                 
                                 self.rooms.shiftRightInPlace()
                                 
                             }
-                            
-                            print("HOUSE – \(self.rooms[roomIndex].name) has NOT been positioned in the house")
-                            
-                            print("HOUSE – is \(self.rooms[roomIndex].name) in the house? \(self.rooms[roomIndex].isInHouse)")
                             
                             i += 1
                             
@@ -318,7 +309,7 @@ class House : NSObject, NSCoding {
             } // end of y for loop
             
             self.map += [floor]
-            floor = prepopulatedFloor(withDimensions: width, height: height, depth: depth)
+            floor = prepopulatedFloor(dimensions)
         } // end of z for loop
         
     }
@@ -379,20 +370,16 @@ class House : NSObject, NSCoding {
     
     func roomForName(name: String) -> Room? {
         var room = self.noRoom
-        for r in self.rooms {
-            if r.name == name {
-                room = r
-            }
+        if let index = self.rooms.indexOf({$0.name == name}) {
+            room = self.rooms[index]
         }
         return room
     }
     
     func eventForName(name: String) -> Event? {
-        var event = Event()
-        for e in self.events {
-            if e.name == name {
-                event = e
-            }
+        var event = Event?()
+        if let index = self.events.indexOf({$0.name == name}) {
+            event = self.events[index]
         }
         return event
     }
@@ -505,6 +492,14 @@ class House : NSObject, NSCoding {
         return roomsAroundCharacter
     }
     
+    func characterForName(name: String) -> Character? {
+        var character = Character?()
+        if let index = self.npcs.indexOf({$0.name == name}) {
+            character = self.npcs[index]
+        }
+        return character
+    }
+    
     func canCharacterGoUpstairs(character: Character) -> Bool {
         var bool = false
         let upstairsPosition = (character.position.x, character.position.y, character.position.z+1)
@@ -536,27 +531,34 @@ class House : NSObject, NSCoding {
     
     func moveCharacter(withName name:String, toRoom room:Room) {
         print("HOUSE – in moveCharacter")
-        room.timesEntered += 1
+        
         if name == "player" {
+            room.timesEntered += 1
             self.player.position = room.position
-            self.currentRoom = room
             print("HOUSE – player is now at position \(room.position)")
             self.player.addRoomNameToRoomHistory(room.name)
         } else {
-            if let index = self.npcs.indexOf({$0.name == name}) {
-                
-                if let i = self.map[self.npcs[index].position.z][self.npcs[index].position.y][self.npcs[index].position.x].characters.indexOf({$0.name == name}) {
-                    self.map[self.npcs[index].position.z][self.npcs[index].position.y][self.npcs[index].position.x].characters.removeAtIndex(i)
+            if let npc = self.characterForName(name) {
+                if let index = room.characters.indexOf({$0.name == npc.name}) {
+                    room.characters.removeAtIndex(index)
                 }
-                self.npcs[index].position = room.position
-                self.map[room.position.z][room.position.y][room.position.x].characters += [self.npcs[index]]
-                
-                print("HOUSE – \(self.npcs[index].name) is in \(room.name) at \(room.position)")
-                
-                self.npcs[index].addRoomNameToRoomHistory(room.name)
+                room.characters += [npc]
+                npc.position = room.position
             }
         }
-        
+    }
+    
+    func getViableSuddenEventName() -> String? {
+        var string = ""
+        for event in self.events {
+            if event.sudden {
+                if event.isFollowingTheRules() {
+                    string = event.name
+                    break
+                }
+            }
+        }
+        return string
     }
     
     func triggerNPCBehaviors() {
@@ -592,6 +594,54 @@ class House : NSObject, NSCoding {
                         print("HOUSE – \(npc.name) was at \(roomForPosition(npc.position)?.name) (\(npc.position))")
                         moveCharacter(withName: npc.name, toRoom: potentialRooms[index])
                         print("HOUSE – \(npc.name) is now at \(roomForPosition(npc.position)?.name) (\(npc.position))")
+                    case .PursuePlayer:
+                        print("PURSUING PLAYER")
+                        let currentPosition = npc.position
+                        var targetPosition = self.player.position
+                        var potentialPosition = currentPosition
+                        
+                        
+                        if currentPosition.z > targetPosition.z {
+                            if currentPosition.z == 2 {
+                                targetPosition = self.stairsDownToFirst.position
+                            } else if currentPosition.z == 1 {
+                                targetPosition = self.stairsDownToBasement.position
+                            }
+                        } else if currentPosition.z < targetPosition.z {
+                            if currentPosition.z == 0 {
+                                targetPosition = self.stairsUpToFirst.position
+                            } else if currentPosition.z == 1 {
+                                targetPosition = self.stairsUpToSecond.position
+                            }
+                        }
+                        
+                        if currentPosition.x > targetPosition.x {
+                            if self.doesRoomExistAtPosition((x:currentPosition.x-1, y:currentPosition.y, z:currentPosition.z)) {
+                                potentialPosition.x -= 1
+                            }
+                        } else if currentPosition.x < targetPosition.x {
+                            if self.doesRoomExistAtPosition((x:currentPosition.x+1, y:currentPosition.y, z:currentPosition.z)) {
+                                potentialPosition.x += 1
+                            }
+                        } else if currentPosition.y > targetPosition.y {
+                            if self.doesRoomExistAtPosition((x:currentPosition.x, y:currentPosition.y-1, z:currentPosition.z)) {
+                                potentialPosition.y -= 1
+                            }
+                        } else if currentPosition.y < targetPosition.y {
+                            if self.doesRoomExistAtPosition((x:currentPosition.x, y:currentPosition.y+1, z:currentPosition.z)) {
+                                potentialPosition.y += 1
+                            }
+                        } else if potentialPosition == targetPosition {
+                            if canCharacterGoUpstairs(npc) {
+                                potentialPosition.z += 1
+                            }
+                            if canCharacterGoDownstairs(npc) {
+                                potentialPosition.z -= 1
+                            }
+                        }
+                        
+                        moveCharacter(withName: npc.name, toRoom: roomForPosition(potentialPosition)!)
+                        
                     default:
                         break
                     }
@@ -622,7 +672,7 @@ class House : NSObject, NSCoding {
         self.layout = decoder.decodeObjectForKey("layout") as! [[[Int]]]
         self.map = decoder.decodeObjectForKey("map") as! [[[Room]]]
         self.currentFloor = decoder.decodeObjectForKey("currentFloor") as! [[Room]]
-        self.currentRoom = decoder.decodeObjectForKey("currentRoom") as! Room
+        //self.currentRoom = decoder.decodeObjectForKey("currentRoom") as! Room
         
         print("HOUSE - loading currentRoom as \(self.currentRoom.name)")
         
@@ -684,7 +734,6 @@ class House : NSObject, NSCoding {
         layout : [[[Int]]],
         map : [[[Room]]],
         currentFloor : [[Room]],
-        currentRoom : Room,
         currentEvent : Event,
         skull : Skull,
         noRoom : Room,
@@ -705,7 +754,7 @@ class House : NSObject, NSCoding {
         self.layout = layout
         self.map = map
         self.currentFloor = currentFloor
-        self.currentRoom = currentRoom
+        //self.currentRoom = currentRoom
         self.currentEvent = currentEvent
         self.skull = skull
         self.noRoom = noRoom

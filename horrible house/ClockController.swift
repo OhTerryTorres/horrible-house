@@ -86,7 +86,10 @@ class ClockController: UIViewController {
         
         self.drawCenter()
         
-        self.drawCrack()
+        if self.house.gameClock.reachedEndTime {
+            self.drawCrack()
+        }
+        
     }
     
     func drawHours( time: (h:CGPoint, m:CGPoint,s:CGPoint) ) {
@@ -164,42 +167,42 @@ class ClockController: UIViewController {
     }
     
     func drawCrack() {
-        if self.house.gameClock.isBroken {
-            // Make jagged line
-            let crackLayer = CAShapeLayer()
-            crackLayer.frame = clockView.frame
-            
-            var points : [CGPoint] = [
-                CGPoint(x: clockView.frame.width * 0.3, y: clockView.frame.height * 0.29),
-                CGPoint(x: clockView.frame.width * 0.35, y: clockView.frame.height * 0.32),
-                CGPoint(x: clockView.frame.width * 0.34, y: clockView.frame.height * 0.35),
-                CGPoint(x: clockView.frame.width * 0.55, y: clockView.frame.height * 0.6),
-                CGPoint(x: clockView.frame.width * 0.71, y: clockView.frame.height * 0.70),
-                CGPoint(x: clockView.frame.width * 0.55, y: clockView.frame.height * 0.6),
-                CGPoint(x: clockView.frame.width * 0.46, y: clockView.frame.height * 0.68),
-                CGPoint(x: clockView.frame.width * 0.47, y: clockView.frame.height * 0.71),
-                CGPoint(x: clockView.frame.width * 0.42, y: clockView.frame.height * 0.75),
-                CGPoint(x: clockView.frame.width * 0.4, y: clockView.frame.height * 0.77),
-                ]
-            
-            let crackPath = CGPathCreateMutable()
-            CGPathMoveToPoint(crackPath, nil, points[0].x, points[0].y)
-            for i in 1 ..< points.count {
-                CGPathAddLineToPoint (crackPath, nil, points[i].x, points[i].y)
-            }
-            
-            crackLayer.path = crackPath
-            crackLayer.lineWidth = 2
-            crackLayer.lineCap = kCALineCapRound
-            crackLayer.strokeColor = Color.specialColor.CGColor
-            crackLayer.fillColor = nil
-            
-            crackLayer.rasterizationScale = UIScreen.mainScreen().scale;
-            crackLayer.shouldRasterize = true
-            
-            self.clockView.layer.addSublayer(crackLayer)
-            
+        // Make jagged line
+        let crackLayer = CAShapeLayer()
+        crackLayer.frame = clockView.frame
+        
+        var points : [CGPoint] = [
+            CGPoint(x: clockView.frame.width * 0.3, y: clockView.frame.height * 0.29),
+            CGPoint(x: clockView.frame.width * 0.35, y: clockView.frame.height * 0.32),
+            CGPoint(x: clockView.frame.width * 0.34, y: clockView.frame.height * 0.35),
+            CGPoint(x: clockView.frame.width * 0.55, y: clockView.frame.height * 0.5),
+            CGPoint(x: clockView.frame.width * 0.71, y: clockView.frame.height * 0.70),
+            CGPoint(x: clockView.frame.width * 0.55, y: clockView.frame.height * 0.5),
+            CGPoint(x: clockView.frame.width * 0.46, y: clockView.frame.height * 0.68),
+            CGPoint(x: clockView.frame.width * 0.47, y: clockView.frame.height * 0.71),
+            CGPoint(x: clockView.frame.width * 0.42, y: clockView.frame.height * 0.75),
+            CGPoint(x: clockView.frame.width * 0.4, y: clockView.frame.height * 0.77),
+            ]
+        
+        let crackPath = CGPathCreateMutable()
+        CGPathMoveToPoint(crackPath, nil, points[0].x, points[0].y)
+        for i in 1 ..< points.count {
+            CGPathAddLineToPoint (crackPath, nil, points[i].x, points[i].y)
         }
+        
+        crackLayer.path = crackPath
+        crackLayer.lineWidth = 2
+        crackLayer.lineCap = kCALineCapRound
+        crackLayer.strokeColor = Color.specialColor.CGColor
+        crackLayer.fillColor = nil
+        
+        crackLayer.rasterizationScale = UIScreen.mainScreen().scale;
+        crackLayer.shouldRasterize = true
+        
+        self.clockView.layer.addSublayer(crackLayer)
+        
+        self.timer.invalidate()
+        
     }
     
     

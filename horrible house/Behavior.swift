@@ -9,7 +9,9 @@
 import UIKit
 
 enum BehaviorType: String {
-    case Default, Random
+    case Default, // Just stay in place
+    Random, // Go randomly from room to room
+    PursuePlayer // Find the shortest route to the room the player is in.
 }
 
 class Behavior: NSObject, NSCoding, RuleBased, DictionaryBased {
@@ -31,6 +33,9 @@ class Behavior: NSObject, NSCoding, RuleBased, DictionaryBased {
                 }
                 if value as! String == "Default" {
                     self.type = BehaviorType.Default
+                }
+                if value as! String == "PursuePlayer" {
+                    self.type = BehaviorType.PursuePlayer
                 }
             }
             if key == "rules" { self.setRulesForArray(value as! [String]) }

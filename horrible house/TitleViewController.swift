@@ -19,11 +19,15 @@ class TitleViewController: UIViewController {
     var house : House?
     
     override func viewDidLoad() {
+        
         self.view.setStyle()
         self.titleLabel.font = Font.mainTitleFont
         self.startGameButton.titleLabel?.font = Font.basicFont
         self.restartGameButton.titleLabel?.font = Font.basicFont
         
+    }
+    
+    override func viewWillAppear(animated: Bool) {
         if let _ = NSUserDefaults.standardUserDefaults().objectForKey("houseData") {
             self.startGameButton.titleLabel?.text = "RETURN TO THE HOUSE"
         } else {
@@ -32,6 +36,7 @@ class TitleViewController: UIViewController {
     }
 
     @IBAction func startGame(sender: AnyObject) {
+        (UIApplication.sharedApplication().delegate as! AppDelegate).house.gameClock.pauseResume()
         if let houseData = NSUserDefaults.standardUserDefaults().objectForKey("houseData") {
             self.house = NSKeyedUnarchiver.unarchiveObjectWithData(houseData as! NSData) as? House
             (UIApplication.sharedApplication().delegate as! AppDelegate).house = self.house!
@@ -52,5 +57,9 @@ class TitleViewController: UIViewController {
         let nvc = tbc.viewControllers![0] as! UINavigationController
         let exc = nvc.viewControllers[0] as! ExplorationController
         exc.house = self.house!
+    }
+    
+    @IBAction func backToTitle(segue: UIStoryboardSegue) {
+       (UIApplication.sharedApplication().delegate as! AppDelegate).house = House(layout: House.LayoutOptions.b)
     }
 }

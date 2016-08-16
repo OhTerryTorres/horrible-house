@@ -15,6 +15,7 @@ class Event: NSObject, NSCoding, DictionaryBased, RuleBased {
     var currentStage : Stage?
     var rules: [Rule] = []
     var completed = false
+    var sudden = false
 
     required init(withDictionary: Dictionary<String, AnyObject>) {
         super.init()
@@ -29,18 +30,21 @@ class Event: NSObject, NSCoding, DictionaryBased, RuleBased {
                 }
             }
             
-            
+            if key == "sudden" {
+                self.sudden = true
+            }
             
             if key == "rules" { self.setRulesForArray(value as! [String]) }
         }
     }
     
-    init(name: String, stages: [Stage], currentStage: Stage?, rules: [Rule], completed: Bool) {
+    init(name: String, stages: [Stage], currentStage: Stage?, rules: [Rule], completed: Bool, sudden: Bool) {
         self.name = name
         self.stages = stages
         self.currentStage = currentStage
         self.rules = rules
         self.completed = completed
+        self.sudden = sudden
     }
     
     override init() {
@@ -73,6 +77,8 @@ class Event: NSObject, NSCoding, DictionaryBased, RuleBased {
         
         coder.encodeBool(self.completed, forKey: "completed")
         
+        coder.encodeBool(self.sudden, forKey: "sudden")
+        
     }
     
     required convenience init?(coder decoder: NSCoder) {
@@ -85,6 +91,7 @@ class Event: NSObject, NSCoding, DictionaryBased, RuleBased {
         }
         self.rules = decoder.decodeObjectForKey("rules") as! [Rule]
         self.completed = decoder.decodeBoolForKey("completed")
+        self.sudden = decoder.decodeBoolForKey("sudden")
 
     }
     

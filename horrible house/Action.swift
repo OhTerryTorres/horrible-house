@@ -69,21 +69,24 @@ class Action: NSObject, NSCoding, DictionaryBased, RuleBased {
     
     // If a triggerEvent name is listed, choosing this action will trigger that event.
     // If a triggerEvent name is listed, but it is BLANK, the event will end and go back to the house.
-    var triggerEventName : String?
+    var triggerEvent : (eventName: String, stageName: String?)?
     
     // The action can replace itself with another action
     // Ex: "Open Chest" replaced with "Look in Chest"
     var replaceAction : Action?
+
     
-    // 0 goes to basement, 1 goes to first floor, 2 goes to second floor.
-    var changeFloor : Int?
+    // This will be used to a move a character in a certain direction.
+    var moveCharacter : (characterName: String, positionChange: (x: Int, y: Int, z: Int))?
     
     // This is for special actions that trigger a segue to a viewcontroller
-    var segue : String?
+    var segue : (identifier: String, qualifier: String?)?
     
     required init(withDictionary: Dictionary<String, AnyObject>) {
         super.init()
+        print("withDictionary.keys.count is \(withDictionary.keys.count)")
         for (key, value) in withDictionary {
+            
             if key == "name" { self.name = value as! String }
             if key == "result" { self.result = value as? String }
             if key == "roomChange" { self.roomChange = value as? String }
@@ -115,13 +118,41 @@ class Action: NSObject, NSCoding, DictionaryBased, RuleBased {
             // Rather than storing the triggerEvent itself, we'll store a string we can use to
             // search house.events for the event name. This, as opposed to storing the event
             // from house.events before house.events even exists!
-            if key == "triggerEventName" { self.triggerEventName = value as? String }
+            if key == "triggerEvent" {
+                var eventName = ""
+                var stageName = String?()
+                for (k,v) in value as! Dictionary<String, AnyObject> {
+                    if k == "eventName" { eventName = v as! String }
+                    if k == "stageName" { stageName = v as? String }
+                }
+                self.triggerEvent = (eventName, stageName)
+            }
                 
             if key == "replaceAction" { self.replaceAction = Action(withDictionary: value as! Dictionary<String, AnyObject>) }
             
-            if key == "changeFloor" { self.changeFloor = value as? Int }
+            if key == "moveCharacter" {
+                var character = String?()
+                var x = Int?()
+                var y = Int?()
+                var z = Int?()
+                for (k,v) in value as! Dictionary<String, AnyObject> {
+                    if k == "character" { character = v as? String }
+                    if k == "x" { x = v as? Int }
+                    if k == "y" { y = v as? Int }
+                    if k == "z" { z = v as? Int }
+                }
+                self.moveCharacter = (character!, (x!, y!, z!))
+            }
             
-            if key == "segue" { self.segue = value as? String }
+            if key == "segue" {
+                var identifier = ""
+                var qualifier = String?()
+                for (k,v) in value as! Dictionary<String, AnyObject> {
+                    if k == "identifier" { identifier = v as! String }
+                    if k == "qualifier" { qualifier = v as? String }
+                }
+                self.segue = (identifier, qualifier)
+            }
             
         }
     }
@@ -140,9 +171,10 @@ class Action: NSObject, NSCoding, DictionaryBased, RuleBased {
         spawnCharacters: [Character],
         revealCharacters: [String],
         removeCharacters: [String],
+        triggerEvent: (eventName: String, stageName: String?)?,
         replaceAction: Action?,
-        changeFloor: Int?,
-        segue: String?
+        moveCharacter: (characterName: String, positionChange: (x: Int, y: Int, z: Int))?,
+        segue: (identifier: String, qualifier: String?)?
         ) {
         self.name = name
         if let rs = result { self.result = rs }
@@ -157,9 +189,10 @@ class Action: NSObject, NSCoding, DictionaryBased, RuleBased {
         self.spawnCharacters = spawnCharacters
         self.revealCharacters = revealCharacters
         self.removeCharacters = removeCharacters
+        if let te = triggerEvent { self.triggerEvent = te }
         if let ra = replaceAction { self.replaceAction = ra }
-        if let cf = changeFloor { self.changeFloor = cf }
         if let sg = segue { self.segue = sg }
+        if let mc = moveCharacter { self.moveCharacter = mc }
     }
     
     
@@ -198,14 +231,34 @@ class Action: NSObject, NSCoding, DictionaryBased, RuleBased {
             coder.encodeObject(replaceAction, forKey: "replaceAction")
         }
         
-        if let changeFloor = self.changeFloor {
-            coder.encodeObject(changeFloor, forKey: "changeFloor")
-        }
-        
         if let segue = self.segue {
-            coder.encodeObject(segue, forKey: "segue")
+            coder.encodeObject(segue.identifier, forKey: "identifier")
+            if let qualifier = segue.qualifier {
+                coder.encodeObject(qualifier, forKey: "qualifier")
+            }
         }
         
+        if let moveCharacter = self.moveCharacter {
+            print("moveCharacter.characterName is \(moveCharacter.characterName)")
+            print("moveCharacter.positionChange.x is \(moveCharacter.positionChange.x)")
+            print("moveCharacter.positionChange.y is \(moveCharacter.positionChange.y)")
+            print("moveCharacter.positionChange.z is \(moveCharacter.positionChange.z)")
+            coder.encodeObject(moveCharacter.characterName, forKey: "characterName")
+            coder.encodeInteger(moveCharacter.positionChange.x, forKey: "x")
+            coder.encodeInteger(moveCharacter.positionChange.y, forKey: "y")
+            coder.encodeInteger(moveCharacter.positionChange.z, forKey: "z")
+        }
+        
+        if let triggerEvent = self.triggerEvent {
+            print("triggerEvent is \(triggerEvent)")
+             print("triggerEvent.eventName is \(triggerEvent.eventName)")
+            coder.encodeObject(triggerEvent.eventName, forKey: "eventName")
+            if let stageName = triggerEvent.stageName {
+                print("triggerEvent.stageName is \(triggerEvent.stageName)\n")
+                coder.encodeObject(stageName, forKey: "stageName")
+            }
+            
+        }
         
     }
     
@@ -234,16 +287,50 @@ class Action: NSObject, NSCoding, DictionaryBased, RuleBased {
         if let replaceAction = decoder.decodeObjectForKey("replaceAction") as? Action {
             self.replaceAction = replaceAction
         }
-        if let segue = decoder.decodeObjectForKey("segue") as? String {
-            self.segue = segue
-        }
-        if let changeFloor = decoder.decodeObjectForKey("changeFloor") as? Int {
-            self.changeFloor = changeFloor
+        if let identifier = decoder.decodeObjectForKey("identifier") as? String {
+            if let qualifier = decoder.decodeObjectForKey("qualifier") as? String {
+                self.segue = (identifier, qualifier)
+            } else {
+                self.segue = (identifier, String?())
+            }
         }
         
+        print("name is \(self.name)")
         
-        //FIXME : this changeFloor line may be allowing actions to change floors that shouldn't
-
+        if let characterName = decoder.decodeObjectForKey("characterName") as? String {
+            self.moveCharacter?.characterName = characterName
+            print("characterName is \(characterName)")
+            print("self.moveCharacter?.characterName is \(self.moveCharacter?.characterName)")
+        }
+        if let x = decoder.decodeObjectForKey("x") as? Int {
+            self.moveCharacter?.positionChange.x = x
+            print("x is \(x)")
+            print("self.moveCharacter?.positionChange.x is \(self.moveCharacter?.positionChange.x)")
+        }
+        if let y = decoder.decodeObjectForKey("y") as? Int {
+            self.moveCharacter?.positionChange.y = y
+            print("y is \(y)")
+            print("self.moveCharacter?.positionChange.y is \(self.moveCharacter?.positionChange.y)")
+        }
+        if let z = decoder.decodeObjectForKey("z") as? Int {
+            self.moveCharacter?.positionChange.z = z
+            print("z is \(z)")
+            print("self.moveCharacter?.positionChange.z is \(self.moveCharacter?.positionChange.z)")
+        }
+        
+        if let eventName = decoder.decodeObjectForKey("eventName") as? String {
+            print("eventName is \(eventName)")
+            if let stageName = decoder.decodeObjectForKey("stageName") as? String {
+                print("stageName is \(stageName)")
+                self.triggerEvent = (eventName, stageName)
+            } else {
+                self.triggerEvent = (eventName, String?())
+            }
+        }
+        
+        print("triggerEvent is \(self.triggerEvent)\n")
+        
+        
         
     }
 

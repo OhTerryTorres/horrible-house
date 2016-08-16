@@ -42,7 +42,8 @@ class MapController: UIViewController {
         self.mapDisplayView.frame.size.height -= tabBarHeight
         self.mapDisplayView.frame.size.height -= tabBarHeight * 0.8
         
-        self.roomNameBar.setStyle()
+        self.roomNameBar.translucent = false
+        self.roomNameBar.barTintColor = Color.backgroundColor
         
         self.setFloorButton()
         

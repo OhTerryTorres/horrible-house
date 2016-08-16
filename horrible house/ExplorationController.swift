@@ -34,19 +34,12 @@ class ExplorationController: UITableViewController {
             room = self.house.foyer
             room?.timesEntered += 1
             self.house.player.addRoomNameToRoomHistory(room!.name)
-            self.house.currentRoom = room!
-        }
-
-        self.house.player.position = self.house.currentRoom.position
-        
+            self.house.player.position = room!.position
+        }        
     }
     
     
-    
-    
-    
     func resolveAction(action: Action, actionType: Action.ActionType) {
-        
         print("ExC – in resolveAction")
 
         
@@ -163,16 +156,14 @@ class ExplorationController: UITableViewController {
                 }
             }
         case .Room:
-            for i in 0 ..< self.house.currentRoom.actions.count {
-                if self.house.currentRoom.actions[i].name == action.name {
-                    action.timesPerformed += 1
-                    if let replaceAction = action.replaceAction {
-                        self.house.currentRoom.actions[i] = replaceAction
-                    }
-                    if action.onceOnly == true {
-                        self.house.currentRoom.actions.removeAtIndex(i)
-                    }
-                    break
+            
+            if let index = self.house.currentRoom.actions.indexOf({$0.name == action.name}) {
+                action.timesPerformed += 1
+                if let replaceAction = action.replaceAction {
+                    self.house.currentRoom.actions[index] = replaceAction
+                }
+                if action.onceOnly == true {
+                    self.house.currentRoom.actions.removeAtIndex(index)
                 }
             }
         case .Inventory:
@@ -203,13 +194,13 @@ class ExplorationController: UITableViewController {
         // This should be done before any transitions occur
         self.handleContextSensitiveActions(action, actionType: actionType)
         
-        if let triggerEventName = action.triggerEventName { triggerEvent(forEventName: triggerEventName)}
+        if let triggerEvent = action.triggerEvent { self.triggerEvent(triggerEvent)}
         
-        if let segue = action.segue { performSegueWithIdentifier(segue, sender: action)}
+        if let segue = action.segue { performSegueWithIdentifier(segue.identifier, sender: action)}
         
-        if let changeFloor = action.changeFloor {
+        if let moveCharacter = action.moveCharacter {
             
-            self.house.moveCharacter(withName: "player", toRoom: self.house.roomForPosition((x:self.house.player.position.x, y:self.house.player.position.y, z:changeFloor))!)
+            self.house.moveCharacter(withName: moveCharacter.characterName, toRoom: self.house.roomForPosition((x: (self.house.player.position.x + moveCharacter.positionChange.x), y: (self.house.player.position.y + moveCharacter.positionChange.y), z: (self.house.player.position.z + moveCharacter.positionChange.z   ) ))!)
             
             self.update = ""
             self.title = self.house.currentRoom.name
@@ -264,15 +255,55 @@ class ExplorationController: UITableViewController {
         }
     }
     
-    func triggerEvent(forEventName eventName: String) {
-        for event in self.house.events {
-            if event.name == eventName {
-                if event.isFollowingTheRules() {
-                    print("ExC – moving to event \(event.name)")
-                    performSegueWithIdentifier("event", sender: event)
+    func triggerEvent( triggerEvent:(eventName: String, stageName: String?) ) {
+        if let index = self.house.events.indexOf({ $0.name == triggerEvent.eventName }) {
+            if self.house.events[index].isFollowingTheRules() {
+                print("ExC – moving to event \(self.house.events[index].name)")
+                var dict = ["eventName" : triggerEvent.eventName]
+                if let stageName = triggerEvent.stageName {
+                    dict = ["eventName" : triggerEvent.eventName, "stageName" : stageName]
                 }
+                performSegueWithIdentifier("event", sender: dict as AnyObject)
             }
         }
+    }
+    
+    func suddenEventDoesOccur() -> Bool {
+        var bool = false
+        if let eventName = self.house.getViableSuddenEventName() {
+            if eventName != "" {
+                self.triggerEvent( (eventName: eventName, String?() ) )
+                bool = true
+            }
+        }
+        return bool
+    }
+    
+    func endTurn() {
+        self.house.skull.updateSkull()
+        
+        // *******
+        // Keep this commented out if we want time kept as REAL time
+        //self.house.gameClock.passTimeByTurn()
+        
+        
+        
+        self.house.triggerNPCBehaviors()
+        
+        if self.house.gameClock.reachedEndTime && self.house.gameClock.didClockChime == false {
+            self.clockChime()
+        }
+    }
+    
+    func clockChime() {
+        let string = "You can hear the grandfather clock chime from the house's entrance, marking the hour."
+        if self.update.characters.count > 0 {
+            self.update = string + "\r\r" + self.update
+        } else {
+            self.update = string
+        }
+        self.house.gameClock.didClockChime = true
+        
     }
     
     
@@ -306,7 +337,17 @@ class ExplorationController: UITableViewController {
         if segue.identifier == "event" {
             let ec = segue.destinationViewController as! EventController
             ec.house = self.house
-            ec.house.currentEvent = sender as! Event
+            if let triggerEventDict = sender as? Dictionary<String, String> {
+                ec.house.currentEvent = self.house.eventForName(triggerEventDict["eventName"]!)!
+                ec.house.currentEvent.currentStage = ec.house.currentEvent.stages[0]
+                if let stageName = triggerEventDict["stageName"] {
+                    if let index = ec.house.currentEvent.stages.indexOf({$0.name == stageName}) {
+                        ec.house.currentEvent.currentStage = ec.house.currentEvent.stages[index]
+                    }
+                }
+                
+            }
+            
         }
         if segue.identifier == "piano" {
             let pc = segue.destinationViewController as! PianoController
@@ -322,6 +363,13 @@ class ExplorationController: UITableViewController {
                 cc.container = self.house.currentRoom.items[index]
             }
             
+            
+        }
+        
+        if segue.identifier == "gameOver" {
+            let goc = segue.destinationViewController as! GameOverController
+            let action = sender as! Action
+            goc.messageLabel.text = action.segue?.qualifier
             
         }
         
@@ -353,6 +401,7 @@ class ExplorationController: UITableViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
+        self.title = self.house.currentRoom.name
         self.update = ""
         self.tableView.reloadData()
         print("ExC – reloading table")
@@ -552,108 +601,108 @@ class ExplorationController: UITableViewController {
         return cell
     }
     
-    func newTurn() {
-        self.house.skull.updateSkull()
-        
-        // *******
-        // Keep this commented out if we want time kept as REAL time
-        //self.house.gameClock.passTimeByTurn()
-        
-        self.house.triggerNPCBehaviors()
-    }
-    
-    
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
 
-        var action = Action?()
-        
-        switch ( indexPath.section ) {
+        if suddenEventDoesOccur() == false {
             
+            
+            var action = Action?()
+            
+            switch ( indexPath.section ) {
+                
             // ROOM ACTIONS
-        case 2:
-            print("ExC – selected Room Action \n")
-            action = self.house.currentRoom.actions[indexPath.row]
-            resolveAction(action!, actionType: Action.ActionType.Room)
-            
+            case 2:
+                print("ExC – selected Room Action \n")
+                action = self.house.currentRoom.actions[indexPath.row]
+                resolveAction(action!, actionType: Action.ActionType.Room)
+                
             // DIRECTIONS
-        case getNumberOfTableSections()-1:
-            print("ExC – selected Direction \n")
-            resolveDirection(forIndexPath: indexPath)
-            self.update = ""
-            self.title = self.house.currentRoom.name
-            
-            //self.tableView.reloadData()
-            //let sections = NSIndexSet(indexesInRange: NSMakeRange(0, tableView.numberOfSections))
-            //self.tableView.reloadSections(sections, withRowAnimation: UITableViewRowAnimation.Fade)
-            //print("ExC – reloading table")
-            
-        // INVENTORY ACTIONS
-        case getNumberOfTableSections()-2:
-            print("ExC – selected Inventory Action \n")
-            var inventoryActions : [Action] = []
-            for item in self.house.player.items {
-                print("ExC – OH")
-                for action in item.actions {
-                    print("ExC – MY")
-                    if action.isFollowingTheRules() {
-                        print("ExC – GOD")
-                        inventoryActions += [action]
+            case getNumberOfTableSections()-1:
+                print("ExC – selected Direction \n")
+                resolveDirection(forIndexPath: indexPath)
+                self.update = ""
+                self.title = self.house.currentRoom.name
+                
+                //self.tableView.reloadData()
+                //let sections = NSIndexSet(indexesInRange: NSMakeRange(0, tableView.numberOfSections))
+                //self.tableView.reloadSections(sections, withRowAnimation: UITableViewRowAnimation.Fade)
+                //print("ExC – reloading table")
+                
+            // INVENTORY ACTIONS
+            case getNumberOfTableSections()-2:
+                print("ExC – selected Inventory Action \n")
+                var inventoryActions : [Action] = []
+                for item in self.house.player.items {
+                    print("ExC – OH")
+                    for action in item.actions {
+                        print("ExC – MY")
+                        if action.isFollowingTheRules() {
+                            print("ExC – GOD")
+                            inventoryActions += [action]
+                        }
                     }
                 }
-            }
-            print("ExC – indexPath.row is \(indexPath.row)")
-            if inventoryActions.count > indexPath.row {
-                print("ExC – BOOP, resolving inventoryActions[\(indexPath.row)]: \(inventoryActions[indexPath.row].name)")
-                action = inventoryActions[indexPath.row]
-                resolveAction(inventoryActions[indexPath.row], actionType: Action.ActionType.Inventory)
-            }
-            
-            
-        
+                print("ExC – indexPath.row is \(indexPath.row)")
+                if inventoryActions.count > indexPath.row {
+                    print("ExC – BOOP, resolving inventoryActions[\(indexPath.row)]: \(inventoryActions[indexPath.row].name)")
+                    action = inventoryActions[indexPath.row]
+                    resolveAction(inventoryActions[indexPath.row], actionType: Action.ActionType.Inventory)
+                }
+                
+                
+                
             // ITEM ACTIONS
-        default:
-            print("ExC – selected Item Action \n")
-            action = self.house.currentRoom.items[indexPath.section-3].actions[indexPath.row]
-            resolveAction(action!, actionType: Action.ActionType.Item)
+            default:
+                print("ExC – selected Item Action \n")
+                action = self.house.currentRoom.items[indexPath.section-3].actions[indexPath.row]
+                resolveAction(action!, actionType: Action.ActionType.Item)
+                
+                break
+            }
             
-            break
-        }
-        
-        self.newTurn()
-        
-        if let _ = action?.triggerEventName {
             
-        } else if let _ = action?.segue {
-            
-        } else {
-            print("ExC – special table reload functions")
-            
-            if let actionName = action?.name {
-                if actionName.rangeOfString("Take") != nil { // TAKE: In case of picking up an item, slide in UPDATE section saying so.
-
-                    let sections = NSMutableIndexSet(indexesInRange: NSMakeRange(0, 1))
-                    
-                    self.tableView.reloadData()
-                    self.tableView.reloadSections(sections, withRowAnimation: UITableViewRowAnimation.Left  )
-                    print("ExC – reloading table")
-                } else { // In case of any other action, fade entire tableview
-                    
-                    if let _ = action?.changeFloor {
+            if let _ = action?.triggerEvent {
+                
+            } else if let _ = action?.segue {
+                self.endTurn()
+            } else {
+                
+                self.endTurn()
+                
+                print("ExC – special table reload functions")
+                
+                if let actionName = action?.name {
+                    if actionName.rangeOfString("Take") != nil { // TAKE: In case of picking up an item, slide in UPDATE section saying so.
+                        
+                        let sections = NSMutableIndexSet(indexesInRange: NSMakeRange(0, 1))
+                        
                         self.tableView.reloadData()
+                        self.tableView.reloadSections(sections, withRowAnimation: UITableViewRowAnimation.Left  )
+                        print("ExC – reloading table")
+                    } else { // In case of any other action, fade entire tableview
+                        
+                        if let _ = action?.moveCharacter {
+                            self.tableView.reloadData()
+                        }
+                        let sections = NSIndexSet(indexesInRange: NSMakeRange(0, tableView.numberOfSections))
+                        self.tableView.reloadSections(sections, withRowAnimation: UITableViewRowAnimation.Fade)
+                        print("ExC – reloading table")
                     }
+                } else { // DIRECTION: in case of moving from one room to another, fade entire tablevew.
+                    self.tableView.reloadData()
                     let sections = NSIndexSet(indexesInRange: NSMakeRange(0, tableView.numberOfSections))
                     self.tableView.reloadSections(sections, withRowAnimation: UITableViewRowAnimation.Fade)
-                    print("ExC – reloading table")
                 }
-            } else { // DIRECTION: in case of moving from one room to another, fade entire tablevew.
-                self.tableView.reloadData()
-                let sections = NSIndexSet(indexesInRange: NSMakeRange(0, tableView.numberOfSections))
-                self.tableView.reloadSections(sections, withRowAnimation: UITableViewRowAnimation.Fade)
+                
             }
+            
+            
+            
+            self.scrollToTop()
+            
             
         }
         
-        self.scrollToTop()
 
     }
     
