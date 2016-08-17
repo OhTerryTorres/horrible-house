@@ -18,7 +18,6 @@ class Stage: NSObject, NSCoding, DictionaryBased, ItemBased, RuleBased, ActionPa
     var rules: [Rule] = []
     var items: [Item] = []
     
-
     required init(withDictionary: Dictionary<String, AnyObject>) {
         super.init()
         

@@ -18,6 +18,18 @@ class House : NSObject, NSCoding {
         static let stairsUpToFirst = 4
         static let stairsUpToSecond = 5
         static let stairsDownToFirst = 6
+        static func roomName (id: Int) -> String {
+            let n = [
+                "No Room", // 0
+                "No Room", // This would correspond to the "normal" room state, so it shouldn't come up.
+                "Foyer", // 2
+                "Basement Stairs", // 3
+                "Basement Landing", // 4
+                "Stairs Ascending", // 5
+                "Second Floor Landing" // 6
+            ]
+            return n[id]
+        }
     }
     
     struct LayoutOptions {
@@ -80,6 +92,8 @@ class House : NSObject, NSCoding {
     
     // MARK: Room Templates
     
+    var necessaryRooms : [String : Room] = [:]
+    
     var noRoom = Room()
     var foyer = Room()
     var stairsDownToBasement = Room()
@@ -113,7 +127,8 @@ class House : NSObject, NSCoding {
         super.init()
         
         self.layout = self.reverseLayout(layout)
-        self.setNecessaryRooms()
+        (self.width, self.height, self.depth) = getDimensionsFromLayout(layout)
+        self.necessaryRooms = getNecessaryRoomsDictFromPlistName("NecessaryRooms")
         self.loadEvents()
         self.loadRooms()
         self.drawMap()
@@ -136,8 +151,22 @@ class House : NSObject, NSCoding {
         return l
     }
     
-    func setNecessaryRooms() {
+    func getDimensionsFromLayout( layout: [[[Int]]] ) -> (Int, Int, Int) {
+        let width = self.layout[0][0].count
+        let height = self.layout[0].count
+        let depth = self.layout.count
+        return (width, height, depth)
+    }
+    
+    func getNecessaryRoomsDictFromPlistName(filename: String) -> [String: Room] {
         
+        var dict : [String : Room] = [:]
+        for (_,value) in self.dictForPlistFilename(filename) {
+            let room = Room(withDictionary: value as! Dictionary<String,AnyObject>)
+            dict[room.name] = room
+        }
+        
+        /*
         for (_,value) in self.dictForPlistFilename("NecessaryRooms") {
             // These needs to match the names are they are in the NecessaryRooms.plist
             let room = Room(withDictionary: value as! Dictionary<String,AnyObject>)
@@ -148,6 +177,9 @@ class House : NSObject, NSCoding {
             if room.name == "Stairs Ascending" { self.stairsUpToSecond = room }
             if room.name == "Second Floor Landing" { self.stairsDownToFirst = room }
         }
+        */
+        
+        return dict
         
     }
     
@@ -194,22 +226,14 @@ class House : NSObject, NSCoding {
     func drawMap() {
         print("HOUSE – Drawing map of house...\r")
         
-        // Ideally, all of the rows should be the same count. We'll see.
-        let width = self.layout[0][0].count
-        let height = self.layout[0].count
-        let depth = self.layout.count
-        let dimensions = (width, height, depth)
-        
-        self.width = width
-        self.height = height
-        self.depth = depth
-        
-        
+        let dimensions = (self.width, self.height, self.depth)
         var floor = prepopulatedFloor(dimensions)
         
         var roomIndex = 0
         
         var mustBreakGuidelineLoop = false
+        
+        var room = Room()
         
         for z in 0 ..< depth {
             for y in 0 ..< height {
@@ -219,6 +243,7 @@ class House : NSObject, NSCoding {
                     switch ( self.layout[z][y][x] ) {
                         
                     case RoomType.foyer:
+                        room = self.necessaryRooms[RoomType.roomName(RoomType.foyer)]!
                         self.foyer.position = (x:x, y:y, z:z)
                         floor[y][x] = self.foyer
                         print("HOUSE – \(self.foyer.name) is at position \(self.foyer.position)")

@@ -28,9 +28,10 @@ class Event: NSObject, NSCoding, DictionaryBased, RuleBased {
                     let stage = Stage(withDictionary: dict)
                     self.stages += [stage]
                 }
+                self.currentStage = getStageThatFollowsRulesFromStagesArray(self.stages)
             }
             
-            if key == "sudden" {
+            if key == "sudden" { // Sudden events can be called during the player turn. Otherwise, they trigger on an action
                 self.sudden = true
             }
             
@@ -53,11 +54,13 @@ class Event: NSObject, NSCoding, DictionaryBased, RuleBased {
     
     // This will make the first stage in self.stages that follows the rules
     // into the default stage. This can be changed if a better method appears.
-    func setCurrentStage() {
+    func getStageThatFollowsRulesFromStagesArray(stages: [Stage]) -> Stage {
         print("EVENT – begin setCurrentStage")
-        for stage in self.stages {
-            if stage.isFollowingTheRules() { self.currentStage = stage ; break }
+        var s = Stage()
+        for stage in stages {
+            if stage.isFollowingTheRules() { s = stage ; break }
         }
+        return s
         print("EVENT – end setCurrentStage")
     }
     
