@@ -87,32 +87,17 @@ class House : NSObject, NSCoding {
     var layout = [[[Int]]]()
     var map = [[[Room]]]()
     
-    var currentFloor = [[Room]]()
-    
     
     // MARK: Room Templates
     
     var necessaryRooms : [String : Room] = [:]
     
-    var noRoom = Room()
-    var foyer = Room()
-    var stairsDownToBasement = Room()
-    var stairsUpToFirst = Room()
-    var stairsUpToSecond = Room()
-    var stairsDownToFirst = Room()
-    
     // The room that is being presented for exploration.
     // This will be set by the game controllers.
-    var currentRoom : Room {
-        var room = self.noRoom
-        if let r = self.roomForPosition(player.position) {
-            room = r
-        }
-        return room
-    }
+    var currentRoom = Room()
     
     // The event that is being presented for interaction.
-    // This will be set by the game controllers.
+    // This will be set by the game contserollers.
     var currentEvent = Event()
     
     // The skull will be watching to update its ideas
@@ -129,10 +114,17 @@ class House : NSObject, NSCoding {
         self.layout = self.reverseLayout(layout)
         (self.width, self.height, self.depth) = getDimensionsFromLayout(layout)
         self.necessaryRooms = getNecessaryRoomsDictFromPlistName("NecessaryRooms")
-        self.loadEvents()
-        self.loadRooms()
+        self.events = getEventsFromPlist(withFilename: "Events")
+        self.rooms = getRoomsFromPlist(withFilename: "Rooms")
         self.drawMap()
         
+        // Player starts in foyer on initilization
+        if let foyer = self.necessaryRooms["Foyer"] {
+            foyer.timesEntered += 1
+            self.currentRoom = foyer
+            self.player.position = self.currentRoom.position
+            self.player.addRoomNameToRoomHistory(self.currentRoom.name)
+        }
         
     }
     
@@ -159,28 +151,12 @@ class House : NSObject, NSCoding {
     }
     
     func getNecessaryRoomsDictFromPlistName(filename: String) -> [String: Room] {
-        
         var dict : [String : Room] = [:]
         for (_,value) in self.dictForPlistFilename(filename) {
             let room = Room(withDictionary: value as! Dictionary<String,AnyObject>)
             dict[room.name] = room
         }
-        
-        /*
-        for (_,value) in self.dictForPlistFilename("NecessaryRooms") {
-            // These needs to match the names are they are in the NecessaryRooms.plist
-            let room = Room(withDictionary: value as! Dictionary<String,AnyObject>)
-            if room.name == "Foyer" { self.foyer = room }
-            if room.name == "No Room" { self.noRoom = room }
-            if room.name == "Basement Stairs" { self.stairsDownToBasement = room }
-            if room.name == "Basement Landing" { self.stairsUpToFirst = room }
-            if room.name == "Stairs Ascending" { self.stairsUpToSecond = room }
-            if room.name == "Second Floor Landing" { self.stairsDownToFirst = room }
-        }
-        */
-        
         return dict
-        
     }
     
     func dictForPlistFilename(filename: String) -> Dictionary<String,AnyObject> {
@@ -188,21 +164,24 @@ class House : NSObject, NSCoding {
         return NSDictionary(contentsOfFile: path!) as! Dictionary<String,AnyObject>
     }
     
-    func loadRooms() {
-        //self.rooms = []
+    func getRoomsFromPlist(withFilename filename: String) -> [Room] {
+        var rooms : [Room] = []
         for (_, value) in self.dictForPlistFilename("Rooms") {
             let room = Room(withDictionary: value as! Dictionary<String,AnyObject>)
-            self.rooms += [room]
+            rooms += [room]
         }
         
-        self.rooms.shuffleInPlace()
+        rooms.shuffleInPlace()
+        return rooms
     }
     
-    func loadEvents() {
+    func getEventsFromPlist(withFilename filename: String) -> [Event] {
+        var events : [Event] = []
         for (_, value) in self.dictForPlistFilename("Events") {
             let event = Event(withDictionary: value as! Dictionary<String,AnyObject>)
-            self.events += [event]
+            events += [event]
         }
+        return events
     }
     
     
@@ -214,7 +193,9 @@ class House : NSObject, NSCoding {
             for _ in 0 ..< height {
                 var row = [Room]()
                 for _ in 0 ..< width {
-                    row.append(self.noRoom)
+                    if let noRoom = self.necessaryRooms["No Room"] {
+                        row.append(noRoom)
+                    }
                 } // end of x for loop
                 floor.append(row)
             } // end of y for loop
@@ -230,109 +211,51 @@ class House : NSObject, NSCoding {
         var floor = prepopulatedFloor(dimensions)
         
         var roomIndex = 0
-        
         var mustBreakGuidelineLoop = false
-        
         var room = Room()
         
         for z in 0 ..< depth {
             for y in 0 ..< height {
                 for x in 0 ..< width {
-                    print("HOUSE – \(x) \(y) \(z)")
+
                     // Draw the room
                     switch ( self.layout[z][y][x] ) {
-                        
-                    case RoomType.foyer:
-                        room = self.necessaryRooms[RoomType.roomName(RoomType.foyer)]!
-                        self.foyer.position = (x:x, y:y, z:z)
-                        floor[y][x] = self.foyer
-                        print("HOUSE – \(self.foyer.name) is at position \(self.foyer.position)")
-                        self.addCharactersInRoomToNPCsArray(self.foyer)
-                        
-                    case RoomType.stairsDownToBasement:
-                        self.stairsDownToBasement.position = (x:x, y:y, z:z)
-                        floor[y][x] = self.stairsDownToBasement
-                        print("HOUSE – \(self.stairsDownToBasement.name) is at position \(self.stairsDownToBasement.position)")
-                        self.addCharactersInRoomToNPCsArray(self.stairsDownToBasement)
-                        
-                    case RoomType.stairsUpToFirst:
-                        self.stairsUpToFirst.position = (x:x, y:y, z:z)
-                        floor[y][x] = self.stairsUpToFirst
-                        print("HOUSE – \(self.stairsUpToFirst.name) is at position \(self.stairsUpToFirst.position)")
-                        self.addCharactersInRoomToNPCsArray(self.stairsUpToFirst)
-                        
-                    case RoomType.stairsUpToSecond:
-                        self.stairsUpToSecond.position = (x:x, y:y, z:z)
-                        floor[y][x] = self.stairsUpToSecond
-                        print("HOUSE – \(self.stairsUpToSecond.name) is at position \(self.stairsUpToSecond.position)")
-                        self.addCharactersInRoomToNPCsArray(self.stairsUpToSecond)
-                        
-                    case RoomType.stairsDownToFirst:
-                        self.stairsDownToFirst.position = (x:x, y:y, z:z)
-                        floor[y][x] = self.stairsDownToFirst
-                        print("HOUSE – \(self.stairsDownToFirst.name) is at position \(self.stairsDownToFirst.position)")
-                        self.addCharactersInRoomToNPCsArray(self.stairsDownToFirst)
-                        
-                    case RoomType.noRoom:
-                        floor[y][x] = self.noRoom
-                        
-                    default:
-                        
-                    
+                    case RoomType.normal:
                         var i = 0
                         while ( guidelinesAreMet(forRoom: self.rooms[roomIndex], atPosition: (x:x, y:y, z:z)) == false || self.rooms[roomIndex].isInHouse == true ) {
-                            
                             if i > self.rooms.count * 3 {
-                                print("HOUSE – stuck in loop, attempting to break")
                                 mustBreakGuidelineLoop = true
                                 //break
                             } else {
-                                print("HOUSE – guidelines for \(self.rooms[roomIndex].name) at (\(x), \(y), \(z)) are not met yet – shifting the rooms")
-                                
                                 self.rooms.shiftRightInPlace()
-                                
-                                print("HOUSE – next room after shifting is \(self.rooms[roomIndex].name)")
                             }
                             
                             while ( self.rooms[roomIndex].isInHouse == true ) {
-                                print("HOUSE – \(self.rooms[roomIndex].name) has already been positioned in the house")
-                                
                                 self.rooms.shiftRightInPlace()
-                                
                             }
                             
                             i += 1
                             
                             if mustBreakGuidelineLoop {
-                                print("HOUSE – mustBreakGuidelineLoop")
                                 if self.rooms[roomIndex].isInHouse == false {
-                                    print("HOUSE – \(self.rooms[roomIndex].name) is being placed into a position that does not adhere to guidelines")
                                     break
                                 }
                             }
                         }
-                        
-                        self.rooms[roomIndex].position = (x:x, y:y, z:z)
-                        let room = self.rooms[roomIndex]
-                        room.isInHouse = true // 
-                        floor[y][x] = room
-                        print("HOUSE – \(room.name) is at position \(room.position)")
-                        self.addCharactersInRoomToNPCsArray(room)
+                        room = self.rooms[roomIndex]
                         roomIndex += 1
-                        
+                    default:
+                        room = self.necessaryRooms[RoomType.roomName(self.layout[z][y][x])]!
+                        self.necessaryRooms[RoomType.roomName(self.layout[z][y][x])]!.position = (x:x, y:y, z:z)
                     }
                     
-                    floor[y][x].position = (x:x, y:y, z:z)
-                    print("HOUSE – End of x for loop.\r")
+                    room.position = (x:x, y:y, z:z)
+                    room.isInHouse = true //
+                    floor[y][x] = room
+                    self.addCharactersInRoomToNPCsArray(room)
+                    print("drawMap - room at \(room.position) is \(room.name)")
                 } // end of x for loop
-                
-                if roomIndex > self.rooms.count {
-                    print("HOUSE – roomIndex is \(roomIndex)")
-                    // break
-                }
-                print("HOUSE – End of y for loop.\r")
             } // end of y for loop
-            
             self.map += [floor]
             floor = prepopulatedFloor(dimensions)
         } // end of z for loop
@@ -343,6 +266,7 @@ class House : NSObject, NSCoding {
         for character in room.characters {
             self.npcs += [character]
             character.position = room.position
+            print("\(character.name) is in \(room.name)")
         }
     }
     
@@ -355,31 +279,21 @@ class House : NSObject, NSCoding {
         if let dict = room.placementGuidelines {
             for (key,value) in dict {
                 if ( key.rangeOfString("floor") != nil ) {
-                    print("HOUSE – guideline key for \(room.name) is FLOOR")
                     let floorNumber = value as! Int
-                    print("HOUSE – floorNumber for \(room.name) is \(value)")
                     
                     if floorNumber != position.z {
-                        print("HOUSE – \(room.name) needs to be on floor \(floorNumber)! This is floor \(position.z)")
                         bool = false
                     }
                 }
                 if ( key.rangeOfString("edge") != nil ) {
-                    print("HOUSE – guideline key is EDGE")
                     if ( position.x == 0 || position.x == self.width-1 || position.y == 0 || position.y == self.height-1 ) {
                         
                     } else {
-                        print("HOUSE – self.width is \(self.width)")
-                        print("HOUSE – self.width-1 is \(self.width-1)")
-                        print("HOUSE – self.height is \(self.height)")
-                        print("HOUSE – self.height-1 is \(self.height-1)")
-                        print("HOUSE – \(room.name) needs to be at a floor's edge, not in the middle")
                         bool = false
                     }
                 }
                 
                 if ( key.rangeOfString("middle") != nil ) {
-                    print("HOUSE – guideline key is MIDDLE")
                     if ( position.x == 0 || position.x == self.width-1 || position.y == 0 || position.y == self.height-1 ) {
                         print("HOUSE – \(room.name) needs to be in the middle of a floor, not at the edge")
                         bool = false
@@ -394,7 +308,7 @@ class House : NSObject, NSCoding {
     // MARK: Game Functions
     
     func roomForName(name: String) -> Room? {
-        var room = self.noRoom
+        var room = Room()
         if let index = self.rooms.indexOf({$0.name == name}) {
             room = self.rooms[index]
         }
@@ -412,7 +326,7 @@ class House : NSObject, NSCoding {
     
     // Get a room in the house for a set of x and y coordinates.
     func roomForPosition(position:(x: Int, y: Int, z: Int)) -> Room? {
-        var room = self.noRoom
+        var room = Room()
         if ( position.z >= 0 && position.z < self.layout.count) {
             let floor = self.layout[position.z]
             if ( position.y >= 0 && position.y < floor.count ) {
@@ -527,10 +441,8 @@ class House : NSObject, NSCoding {
     
     func canCharacterGoUpstairs(character: Character) -> Bool {
         var bool = false
-        let upstairsPosition = (character.position.x, character.position.y, character.position.z+1)
-        if let upstairsRoom = roomForPosition(upstairsPosition) {
-            if upstairsRoom.name == self.stairsDownToFirst.name || upstairsRoom.name == self.stairsDownToBasement.name {
-                print("HOUSE – \(character.name) is in a room that allows them to go upstairs")
+        if let room = roomForPosition(character.position) {
+            if room.name == self.necessaryRooms[RoomType.roomName(RoomType.stairsUpToFirst)]!.name || room.name == self.necessaryRooms[RoomType.roomName(RoomType.stairsUpToSecond)]!.name {
                 bool = true
             }
         }
@@ -540,14 +452,9 @@ class House : NSObject, NSCoding {
     
     
     func canCharacterGoDownstairs(character: Character) -> Bool {
-        print("HOUSE – in canCharacterGoDownstairs")
         var bool = false
-        let downstairsPosition = (character.position.x, character.position.y, character.position.z-1)
-        print("HOUSE – downstairsPosition is \(downstairsPosition)")
-        if let downstairsRoom = roomForPosition(downstairsPosition) {
-            print("HOUSE – downstairsRoom is \(downstairsRoom.name)")
-            if downstairsRoom.name == self.stairsUpToFirst.name || downstairsRoom.name == self.stairsUpToSecond.name {
-                print("HOUSE – \(character.name) is in a room that allows them to go downstairs")
+        if let room = roomForPosition(character.position) {
+            if room.name == self.necessaryRooms[RoomType.roomName(RoomType.stairsDownToFirst)]!.name || room.name == self.necessaryRooms[RoomType.roomName(RoomType.stairsDownToBasement)]!.name {
                 bool = true
             }
         }
@@ -557,20 +464,30 @@ class House : NSObject, NSCoding {
     func moveCharacter(withName name:String, toRoom room:Room) {
         print("HOUSE – in moveCharacter")
         
-        if name == "player" {
-            room.timesEntered += 1
+        // MOVE PLAYER
+        if name.lowercaseString.rangeOfString("player") != nil {
             self.player.position = room.position
-            print("HOUSE – player is now at position \(room.position)")
             self.player.addRoomNameToRoomHistory(room.name)
+            self.setCurrentRoomToPlayerRoom()
         } else {
+            
+        // MOVE NPC
             if let npc = self.characterForName(name) {
-                if let index = room.characters.indexOf({$0.name == npc.name}) {
-                    room.characters.removeAtIndex(index)
+                if let currentRoom = roomForPosition(npc.position) {
+                    if let index = currentRoom.characters.indexOf({$0.name == npc.name}) {
+                        currentRoom.characters.removeAtIndex(index)
+                    }
                 }
                 room.characters += [npc]
                 npc.position = room.position
+                npc.addRoomNameToRoomHistory(room.name)
             }
         }
+    }
+    
+    func setCurrentRoomToPlayerRoom() {
+        self.currentRoom = self.roomForPosition(self.player.position)!
+        self.currentRoom.timesEntered += 1
     }
     
     func getViableSuddenEventName() -> String? {
@@ -587,94 +504,299 @@ class House : NSObject, NSCoding {
     }
     
     func triggerNPCBehaviors() {
-        print("HOUSE – in triggerNPCBehaviors")
         for npc in self.npcs {
-            print("HOUSE – \(npc.name)")
+            print("HOUSE – \(npc.name) was at \(roomForPosition(npc.position)?.name) (\(npc.position))")
             for behavior in npc.behaviors {
                 if behavior.isFollowingTheRules() {
                     switch behavior.type {
                         
                     // Wander from room too room randomly
                     case .Random:
-                        var potentialRooms = getRoomsAroundCharacter(npc)
-                        
-                        if canCharacterGoUpstairs(npc) {
-                            let upstairsPosition = (npc.position.x, npc.position.y, npc.position.z+1)
-                            if let upstairsRoom = roomForPosition(upstairsPosition) {
-                                potentialRooms += [upstairsRoom]
-                            }
-                        }
-                        if canCharacterGoDownstairs(npc) {
-                            let downstairsPosition = (npc.position.x, npc.position.y, npc.position.z-1)
-                            if let downstairsRoom = roomForPosition(downstairsPosition) {
-                                potentialRooms += [downstairsRoom]
-                            }
-                        }
-                        
-                        let index = Int(arc4random_uniform(UInt32(potentialRooms.count)))
-                        
-                        print("HOUSE – the number of potential rooms for \(npc.name)'s next move is \(potentialRooms.count)")
-                        print("HOUSE – the random index is \(index), so \(npc.name) will move to \(potentialRooms[index].name)")
-                        
-                        print("HOUSE – \(npc.name) was at \(roomForPosition(npc.position)?.name) (\(npc.position))")
-                        moveCharacter(withName: npc.name, toRoom: potentialRooms[index])
-                        print("HOUSE – \(npc.name) is now at \(roomForPosition(npc.position)?.name) (\(npc.position))")
+                        self.npcBehaviorRandom(npc)
+
                     case .PursuePlayer:
-                        print("PURSUING PLAYER")
-                        let currentPosition = npc.position
-                        var targetPosition = self.player.position
-                        var potentialPosition = currentPosition
-                        
-                        
-                        if currentPosition.z > targetPosition.z {
-                            if currentPosition.z == 2 {
-                                targetPosition = self.stairsDownToFirst.position
-                            } else if currentPosition.z == 1 {
-                                targetPosition = self.stairsDownToBasement.position
-                            }
-                        } else if currentPosition.z < targetPosition.z {
-                            if currentPosition.z == 0 {
-                                targetPosition = self.stairsUpToFirst.position
-                            } else if currentPosition.z == 1 {
-                                targetPosition = self.stairsUpToSecond.position
-                            }
-                        }
-                        
-                        if currentPosition.x > targetPosition.x {
-                            if self.doesRoomExistAtPosition((x:currentPosition.x-1, y:currentPosition.y, z:currentPosition.z)) {
-                                potentialPosition.x -= 1
-                            }
-                        } else if currentPosition.x < targetPosition.x {
-                            if self.doesRoomExistAtPosition((x:currentPosition.x+1, y:currentPosition.y, z:currentPosition.z)) {
-                                potentialPosition.x += 1
-                            }
-                        } else if currentPosition.y > targetPosition.y {
-                            if self.doesRoomExistAtPosition((x:currentPosition.x, y:currentPosition.y-1, z:currentPosition.z)) {
-                                potentialPosition.y -= 1
-                            }
-                        } else if currentPosition.y < targetPosition.y {
-                            if self.doesRoomExistAtPosition((x:currentPosition.x, y:currentPosition.y+1, z:currentPosition.z)) {
-                                potentialPosition.y += 1
-                            }
-                        } else if potentialPosition == targetPosition {
-                            if canCharacterGoUpstairs(npc) {
-                                potentialPosition.z += 1
-                            }
-                            if canCharacterGoDownstairs(npc) {
-                                potentialPosition.z -= 1
-                            }
-                        }
-                        
-                        moveCharacter(withName: npc.name, toRoom: roomForPosition(potentialPosition)!)
+                        self.npcBehaviorPursuePlayer(npc)
                         
                     default:
                         break
                     }
+                    print("HOUSE – \(npc.name) is now at \(roomForPosition(npc.position)?.name) (\(npc.position))\r")
+                    
                     break
                 }
             }
         }
     }
+    
+    func npcBehaviorRandom(npc: Character) {
+        var potentialRooms = getRoomsAroundCharacter(npc)
+        
+        if canCharacterGoUpstairs(npc) {
+            let upstairsPosition = (npc.position.x, npc.position.y, npc.position.z+1)
+            if let upstairsRoom = roomForPosition(upstairsPosition) {
+                potentialRooms += [upstairsRoom]
+            }
+        }
+        if canCharacterGoDownstairs(npc) {
+            let downstairsPosition = (npc.position.x, npc.position.y, npc.position.z-1)
+            if let downstairsRoom = roomForPosition(downstairsPosition) {
+                potentialRooms += [downstairsRoom]
+            }
+        }
+        
+        let index = Int(arc4random_uniform(UInt32(potentialRooms.count)))
+        
+        moveCharacter(withName: npc.name, toRoom: potentialRooms[index])
+    }
+    
+    func npcBehaviorPursuePlayer(npc: Character) {
+        let currentPosition = npc.position
+        var targetPosition = self.player.position
+        var potentialPosition = currentPosition
+        
+        if currentPosition.z > targetPosition.z {
+            if currentPosition.z == 2 {
+                targetPosition = self.necessaryRooms[RoomType.roomName(RoomType.stairsDownToFirst)]!.position
+            } else if currentPosition.z == 1 {
+                targetPosition = self.necessaryRooms[RoomType.roomName(RoomType.stairsDownToBasement)]!.position
+            }
+        } else if currentPosition.z < targetPosition.z {
+            if currentPosition.z == 0 {
+                targetPosition = self.necessaryRooms[RoomType.roomName(RoomType.stairsUpToFirst)]!.position
+            } else if currentPosition.z == 1 {
+                targetPosition = self.necessaryRooms[RoomType.roomName(RoomType.stairsUpToSecond)]!.position
+            }
+        }
+        
+        if currentPosition.x > targetPosition.x {
+            if self.doesRoomExistAtPosition((x:currentPosition.x-1, y:currentPosition.y, z:currentPosition.z)) {
+                potentialPosition.x -= 1
+            }
+        } else if currentPosition.x < targetPosition.x {
+            if self.doesRoomExistAtPosition((x:currentPosition.x+1, y:currentPosition.y, z:currentPosition.z)) {
+                potentialPosition.x += 1
+            }
+        } else if currentPosition.y > targetPosition.y {
+            if self.doesRoomExistAtPosition((x:currentPosition.x, y:currentPosition.y-1, z:currentPosition.z)) {
+                potentialPosition.y -= 1
+            }
+        } else if currentPosition.y < targetPosition.y {
+            if self.doesRoomExistAtPosition((x:currentPosition.x, y:currentPosition.y+1, z:currentPosition.z)) {
+                potentialPosition.y += 1
+            }
+        } else if potentialPosition == targetPosition {
+            if canCharacterGoUpstairs(npc) {
+                potentialPosition.z += 1
+            }
+            if canCharacterGoDownstairs(npc) {
+                potentialPosition.z -= 1
+            }
+        }
+        
+        moveCharacter(withName: npc.name, toRoom: roomForPosition(potentialPosition)!)
+    }
+    
+    
+    
+    
+    
+    
+    // MARK: ACTION RESOLUTION
+    
+    
+    
+        
+    
+    
+    func resolveAction(action: Action, ofActionType actionType: Action.ActionType, forCharacter character: Character, inRoom room: Room?, orInStage stage: Stage?, withResolutionType resolutionType: Action.ResolutionType) {
+        print("ExC – in resolveAction")
+        
+        switch resolutionType {
+        case .Exploration:
+            room!.revealItemsWithNames(action.revealItems)
+            room!.liberateItemsWithNames(action.liberateItems)
+            switch actionType {
+            case .Item:
+                self.resolveItemTypeAction(action, forCharacter: character, inRoomOrStage: room!)
+            case .Room:
+                room!.resolveChangesToActionsForAction(action)
+            case .Inventory:
+                character.resolveChangesToItemsForAction(action)
+            }
+            self.handleContextSensitiveActions(action, ofActionType: actionType, forCharacter: character, inRoomOrStage: room!)
+            
+        case .Event:
+            stage!.revealItemsWithNames(action.revealItems)
+            stage!.liberateItemsWithNames(action.liberateItems)
+            switch actionType {
+            case .Item:
+                self.resolveItemTypeAction(action, forCharacter: character, inRoomOrStage: stage!)
+            case .Room:
+                stage!.resolveChangesToActionsForAction(action)
+            case .Inventory:
+                character.resolveChangesToItemsForAction(action)
+            }
+            self.handleContextSensitiveActions(action, ofActionType: actionType, forCharacter: character, inRoomOrStage: stage!)
+        default:
+            break
+        }
+        
+        
+        character.addItemsToInventory(action.addItems)
+        
+        // REMOVE AND DESTROY ITEMS IN PLAYER INVENTORY
+        character.consumeItemsWithNames(action.consumeItems)
+        
+        // MAKE A CHARACTER APPEAR
+        self.spawnCharacters(action.spawnCharacters)
+        
+        // MAKE AN INVISIBLE CHARACTER VISIBLE
+        self.revealCharactersWithNames(action.revealCharacters)
+        
+        // REMOVE A CHARACTER FROM PLAY
+        self.removeCharactersWithNames(action.removeCharacters)
+        
+        // MOVE CHARACTER TO A NEW ROOM
+        self.moveCharacterWithAction(action)
+        
+        
+    }
+    
+    
+    
+    
+    func moveCharacterWithAction(action: Action) {
+        if let moveCharacter = action.moveCharacter {
+            
+            self.moveCharacter(withName: moveCharacter.characterName, toRoom: self.roomForPosition((x: (self.player.position.x + moveCharacter.positionChange.x), y: (self.player.position.y + moveCharacter.positionChange.y), z: (self.player.position.z + moveCharacter.positionChange.z   ) ))!)
+            
+            
+        }
+    }
+    
+    
+    
+    
+    func spawnCharacters(characters: [Character]) {
+        // MAKE A CHARACTER APPEAR
+        for character in characters {
+            if let roomName = character.startingRoom { // Spawn character in room specified
+                if let room = self.roomForName(roomName) {
+                    room.characters += [character]
+                    character.position = room.position
+                }
+            } else { // Spawn character in currentRoom
+                print("ExC – spawning \(character.name) in current room")
+                self.currentRoom.characters += [character]
+                character.position = self.currentRoom.position
+            }
+            self.npcs += [character]
+            print("ExC – \(character.name) IS IN THE HOUSE!")
+        }
+    }
+    
+    func revealCharactersWithNames(characterNames: [String]) {
+        // MAKE AN INVISIBLE CHARACTER VISIBLE
+        for characterName in characterNames {
+            if let index = self.npcs.indexOf({$0.name == characterName}) {
+                self.npcs[index].hidden = false
+                print("ExC – \(self.npcs[index].name) IS REVEALED!")
+            }
+        }
+    }
+    
+    func removeCharactersWithNames(characterNames: [String]) {
+        // REMOVE A CHARACTER FROM PLAY
+        for characterName in characterNames {
+            print("ExC – characterName is \(characterName)")
+            var character = Character?()
+            
+            if let index = self.npcs.indexOf({$0.name == characterName}) {
+                print("ExC – \(characterName) is at self.house.npcs[\(index)]")
+                character = self.npcs[index]
+                print("ExC – self.house.npcs.count was \(self.npcs.count)")
+                self.npcs.removeAtIndex(index)
+                print("ExC – self.house.npcs.count is now \(self.npcs.count)")
+                if let room = self.roomForPosition((character?.position)!) {
+                    if let i = room.characters.indexOf({$0.name == characterName}) {
+                        room.characters.removeAtIndex(i)
+                    }
+                }
+            }
+            
+            if let index = self.currentRoom.characters.indexOf({$0.name == characterName}) {
+                self.currentRoom.characters.removeAtIndex(index)
+            }
+            
+        }
+    }
+    
+    func resolveItemTypeAction(action: Action, forCharacter character: Character, inRoomOrStage roomOrStage: ItemBased) {
+        for i in 0 ..< roomOrStage.items.count-1 {
+            if let index = roomOrStage.items[i].actions.indexOf({$0.name == action.name}) {
+                
+                roomOrStage.items[i].actions[index].timesPerformed += 1
+                
+                // If the action has a REPLACE action
+                if let replaceAction = action.replaceAction {
+                    roomOrStage.items[i].actions[index] = replaceAction
+                }
+                
+                // If the action can only be performed ONCE
+                if action.onceOnly == true {
+                    roomOrStage.items[i].actions.removeAtIndex(index)
+                }
+                
+                // If the action is a TAKE action
+                if action.name.rangeOfString("Take") != nil {
+                    character.items += [roomOrStage.items[i]]
+                    roomOrStage.items.removeAtIndex(i)
+                    
+                }
+                break // THIS keeps the loop from crashing as it examines an item that does not exist.
+                // It also makes sure multiple similar actions aren't renamed.
+                // this seems like a clumsy solution, but it currently works.
+            }
+        }
+    }
+
+    
+    
+    func handleContextSensitiveActions(action: Action, ofActionType actionType: Action.ActionType, forCharacter character: Character, inRoomOrStage roomOrStage: ItemBased) {
+        switch actionType {
+        case .Item:
+            for i in 0 ..< roomOrStage.items.count {
+                for o in 0 ..< roomOrStage.items[i].actions.count {
+                    if roomOrStage.items[i].actions[o].name == action.name {
+                        
+                        let item = roomOrStage.items[i]
+                        
+                        
+                        // OVEN ACTIONS
+                        
+                        if let oven = item as? Oven {
+                            
+                            print("ExC – Shit! an oven!")
+                            if action.name.lowercaseString.rangeOfString("on") != nil {
+                                oven.turnOn(atTime: self.gameClock.currentTime)
+                            }
+                            if action.name.lowercaseString.rangeOfString("off") != nil {
+                                oven.turnOff()
+                            }
+                            if action.name.lowercaseString.rangeOfString("look") != nil {
+                                oven.checkOven(atTime: self.gameClock.currentTime)
+                            }
+                        }
+                    }
+                }
+            }
+        default:
+            break
+        }
+        
+    }
+    
+    
     
     
     // MARK: ENCODING
@@ -687,28 +809,19 @@ class House : NSObject, NSCoding {
         self.height = decoder.decodeIntegerForKey("height")
         self.depth = decoder.decodeIntegerForKey("depth")
         
+        
+        self.necessaryRooms = decoder.decodeObjectForKey("necessaryRooms") as! [String : Room]
         self.rooms = decoder.decodeObjectForKey("rooms") as! [Room]
         self.events = decoder.decodeObjectForKey("events") as! [Event]
         self.player = decoder.decodeObjectForKey("player") as! Character
         
-        print("HOUSE - loading player.items.count as \(self.player.items.count)")
-        
         self.npcs = decoder.decodeObjectForKey("npcs") as! [Character]
         self.layout = decoder.decodeObjectForKey("layout") as! [[[Int]]]
         self.map = decoder.decodeObjectForKey("map") as! [[[Room]]]
-        self.currentFloor = decoder.decodeObjectForKey("currentFloor") as! [[Room]]
-        //self.currentRoom = decoder.decodeObjectForKey("currentRoom") as! Room
-        
-        print("HOUSE - loading currentRoom as \(self.currentRoom.name)")
+        self.currentRoom = decoder.decodeObjectForKey("currentRoom") as! Room
         
         self.currentEvent = decoder.decodeObjectForKey("currentEvent") as! Event
         self.skull = decoder.decodeObjectForKey("skull") as! Skull
-        self.noRoom = decoder.decodeObjectForKey("noRoom") as! Room
-        self.foyer = decoder.decodeObjectForKey("foyer") as! Room
-        self.stairsDownToBasement = decoder.decodeObjectForKey("stairsDownToBasement") as! Room
-        self.stairsUpToFirst = decoder.decodeObjectForKey("stairsUpToFirst") as! Room
-        self.stairsUpToSecond = decoder.decodeObjectForKey("stairsUpToSecond") as! Room
-        self.stairsDownToFirst = decoder.decodeObjectForKey("stairsDownToFirst") as! Room
     }
     
     func encodeWithCoder(coder: NSCoder) {
@@ -717,31 +830,21 @@ class House : NSObject, NSCoding {
         coder.encodeInteger(self.height, forKey: "height")
         coder.encodeInteger(self.depth, forKey: "depth")
         
+        coder.encodeObject(self.necessaryRooms, forKey: "necessaryRooms")
         coder.encodeObject(self.rooms, forKey: "rooms")
         coder.encodeObject(self.events, forKey: "events")
         
         coder.encodeObject(self.player, forKey: "player")
-        
-        print("HOUSE - saving player.items.count as \(self.player.items.count)")
-        
+    
         coder.encodeObject(self.npcs, forKey: "npcs")
         
         coder.encodeObject(self.layout, forKey: "layout")
         coder.encodeObject(self.map, forKey: "map")
         
-        coder.encodeObject(self.currentFloor, forKey: "currentFloor")
         coder.encodeObject(self.currentRoom, forKey: "currentRoom")
         
-        print("HOUSE - saving currentRoom as \(self.currentRoom.name)")
-        
         coder.encodeObject(self.currentEvent, forKey: "currentEvent")
-        
-        coder.encodeObject(self.noRoom, forKey: "noRoom")
-        coder.encodeObject(self.foyer, forKey: "foyer")
-        coder.encodeObject(self.stairsDownToBasement, forKey: "stairsDownToBasement")
-        coder.encodeObject(self.stairsUpToFirst, forKey: "stairsUpToFirst")
-        coder.encodeObject(self.stairsUpToSecond, forKey: "stairsUpToSecond")
-        coder.encodeObject(self.stairsDownToFirst, forKey: "stairsDownToFirst")
+
         
         coder.encodeObject(self.skull, forKey: "skull")
 
@@ -752,13 +855,14 @@ class House : NSObject, NSCoding {
         width : Int,
         height : Int,
         depth : Int,
+        necessaryRooms : [String : Room],
         rooms : [Room],
         events : [Event],
         player : Character,
         npcs : [Character],
         layout : [[[Int]]],
         map : [[[Room]]],
-        currentFloor : [[Room]],
+        currentRoom : Room,
         currentEvent : Event,
         skull : Skull,
         noRoom : Room,
@@ -772,22 +876,16 @@ class House : NSObject, NSCoding {
         self.width = width
         self.height = height
         self.depth = depth
+        self.necessaryRooms = necessaryRooms
         self.rooms = rooms
         self.events = events
         self.player = player
         self.npcs = npcs
         self.layout = layout
         self.map = map
-        self.currentFloor = currentFloor
-        //self.currentRoom = currentRoom
+        self.currentRoom = currentRoom
         self.currentEvent = currentEvent
         self.skull = skull
-        self.noRoom = noRoom
-        self.foyer = foyer
-        self.stairsDownToBasement = stairsDownToBasement
-        self.stairsUpToFirst = stairsUpToFirst
-        self.stairsUpToSecond = stairsUpToSecond
-        self.stairsDownToFirst = stairsDownToFirst
     }
     
 }

@@ -77,6 +77,27 @@ class Character: NSObject, NSCoding, ItemBased {
         }
     }
     
+    func addItemsToInventory(items: [Item]) {
+        // DEPOSIT ITEMS INTO PLAYER INVENTORY
+        for item in items {
+            print("ExC – adding \(item.name) to inventory")
+            self.items += [item]
+        }
+    }
+    
+    func consumeItemsWithNames(itemNames: [String]) {
+        // REMOVE AND DESTROY ITEMS IN PLAYER INVENTORY
+        for itemName in itemNames {
+            if let _ = self.items.indexOf({$0.name == itemName}) {
+                print("ExC – consuming item in inventory")
+                self.removeItemFromItems(withName: itemName)
+            }
+        }
+    }
+    
+    
+    
+    
     
     // Eventually put in a property that gives a character a general AI direction.
     // Like, Stands In Place, or Seek Item

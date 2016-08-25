@@ -25,13 +25,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "horrible house/Action.swift"
-            timestampString = "492970407.102306"
+            filePath = "horrible house/ItemBased.swift"
+            timestampString = "493488857.334889"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "256"
-            endingLineNumber = "256"
-            landmarkName = "encodeWithCoder(_:)"
+            startingLineNumber = "75"
+            endingLineNumber = "75"
+            landmarkName = "resolveChangesToItemsForAction(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "horrible house/ItemBased.swift"
+            timestampString = "493488980.970614"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "68"
+            endingLineNumber = "68"
+            landmarkName = "liberateItemsWithNames(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -41,13 +57,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "horrible house/House.swift"
-            timestampString = "493067447.79596"
+            filePath = "horrible house/GameController.swift"
+            timestampString = "493776458.154778"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "433"
-            endingLineNumber = "433"
-            landmarkName = "doesRoomExistAtPosition(_:)"
+            startingLineNumber = "633"
+            endingLineNumber = "633"
+            landmarkName = "numberOfSectionsInTableView(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -58,12 +74,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "horrible house/House.swift"
-            timestampString = "493067447.79596"
+            timestampString = "493776264.524594"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "652"
-            endingLineNumber = "652"
-            landmarkName = "triggerNPCBehaviors()"
+            startingLineNumber = "595"
+            endingLineNumber = "595"
+            landmarkName = "npcBehaviorPursuePlayer(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -74,28 +90,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "horrible house/House.swift"
-            timestampString = "493067447.79596"
+            timestampString = "493757145.959257"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "644"
-            endingLineNumber = "644"
-            landmarkName = "triggerNPCBehaviors()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "horrible house/House.swift"
-            timestampString = "493080277.987633"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "158"
-            endingLineNumber = "158"
-            landmarkName = "getNecessaryRoomsDictFromPlistName(_:)"
+            startingLineNumber = "556"
+            endingLineNumber = "556"
+            landmarkName = "npcBehaviorPursuePlayer(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

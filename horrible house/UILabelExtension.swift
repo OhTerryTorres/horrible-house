@@ -24,32 +24,25 @@ extension UILabel {
         var rangeAndTagArray = [(range : NSRange, tag : String)]()
         
         while str.rangeOfString("}") != nil {
-            print("\(str)")
             
             
             let tagStartStartRange = str.rangeOfString("{[")
             let tagStartEndRange = str.rangeOfString("]")
             
             let tag = str.substringWithRange(Range<String.Index>(start: tagStartStartRange!.endIndex, end: tagStartEndRange!.startIndex))
-            print("tag is \(tag)")
             
             let tagStartRange = Range<String.Index>(start: tagStartStartRange!.startIndex, end: tagStartEndRange!.endIndex)
             
             let tagEndRange = str.rangeOfString("}")
             
             var newString = str.stringByReplacingCharactersInRange(tagEndRange!, withString: "")
-            print("newString is \(newString)")
             newString = newString.stringByReplacingCharactersInRange(tagStartRange, withString: "")
-            print("newString is now \(newString)")
             
             var b = str.stringByReplacingCharactersInRange(Range<String.Index>(start: tagEndRange!.startIndex, end: str.endIndex), withString: "")
-            print("b is \(b)")
 
             b = b.stringByReplacingCharactersInRange(Range<String.Index>(start: str.startIndex, end: tagStartRange.endIndex), withString: "")
-            print("b is now \(b)")
             
             let a = newString.stringByReplacingCharactersInRange(Range<String.Index>(start: tagStartRange.startIndex, end: newString.endIndex), withString: "")
-            print("a is \(a)")
             
             str = newString
             

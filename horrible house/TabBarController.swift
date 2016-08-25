@@ -57,7 +57,7 @@ class TabBarController : UITabBarController {
         removeExcessViewControllersFromTabBarController()
     }
     
-    func addViewControllerToTabBarController(tabIndex : ExplorationController.TabIndex) {
+    func addViewControllerToTabBarController(tabIndex : TabIndex) {
         
         self.tabBar.hidden = false
         

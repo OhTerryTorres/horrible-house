@@ -54,6 +54,7 @@
 		CE50D0F71CA1C0D6007AF0E2 /* NecessaryRooms.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE50D0F61CA1C0D6007AF0E2 /* NecessaryRooms.plist */; };
 		CE510C671D514041001DDCD8 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE510C661D514041001DDCD8 /* NavigationController.swift */; };
 		CE59B8311CB69A6B00D9A8BB /* InventoryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE59B8301CB69A6B00D9A8BB /* InventoryController.swift */; };
+		CE5FBEB91D66699F00D94B1D /* GameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5FBEB81D66699F00D94B1D /* GameController.swift */; };
 		CE6F27B51C90B42500B21818 /* ExplorationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6F27B41C90B42500B21818 /* ExplorationController.swift */; };
 		CE6F27B71C9326DD00B21818 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6F27B61C9326DD00B21818 /* Action.swift */; };
 		CE6F27B91C93279300B21818 /* Rule.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6F27B81C93279300B21818 /* Rule.swift */; };
@@ -142,6 +143,7 @@
 		CE50D0F61CA1C0D6007AF0E2 /* NecessaryRooms.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = NecessaryRooms.plist; sourceTree = "<group>"; };
 		CE510C661D514041001DDCD8 /* NavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		CE59B8301CB69A6B00D9A8BB /* InventoryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InventoryController.swift; sourceTree = "<group>"; };
+		CE5FBEB81D66699F00D94B1D /* GameController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameController.swift; sourceTree = "<group>"; };
 		CE6F27B41C90B42500B21818 /* ExplorationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExplorationController.swift; sourceTree = "<group>"; };
 		CE6F27B61C9326DD00B21818 /* Action.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
 		CE6F27B81C93279300B21818 /* Rule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rule.swift; sourceTree = "<group>"; };
@@ -285,6 +287,7 @@
 		CE2F7A9E1CA2DF6F00A3025D /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				CE5FBEB81D66699F00D94B1D /* GameController.swift */,
 				CE6F27B41C90B42500B21818 /* ExplorationController.swift */,
 				CE50D0CB1CA03A75007AF0E2 /* EventController.swift */,
 				CE59B8301CB69A6B00D9A8BB /* InventoryController.swift */,
@@ -503,6 +506,7 @@
 				CE6F27B91C93279300B21818 /* Rule.swift in Sources */,
 				CEF40DD51CAE9F1100F1B08B /* UILabelExtension.swift in Sources */,
 				CE2AD7B51CCF950B00B1353C /* GameTime.swift in Sources */,
+				CE5FBEB91D66699F00D94B1D /* GameController.swift in Sources */,
 				CE6F27BD1C9335C900B21818 /* Character.swift in Sources */,
 				CE3780CD1CF63D0900345457 /* Inhabitable.swift in Sources */,
 				CE3B95331D22B86E00129984 /* TitleViewController.swift in Sources */,

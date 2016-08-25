@@ -28,7 +28,6 @@ class Event: NSObject, NSCoding, DictionaryBased, RuleBased {
                     let stage = Stage(withDictionary: dict)
                     self.stages += [stage]
                 }
-                self.currentStage = getStageThatFollowsRulesFromStagesArray(self.stages)
             }
             
             if key == "sudden" { // Sudden events can be called during the player turn. Otherwise, they trigger on an action

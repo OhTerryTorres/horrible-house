@@ -38,9 +38,15 @@ class Room: NSObject, DictionaryBased, ItemBased, ActionPacked, Detailed, Inhabi
         }
     }
     
+    // Default
     override init() {
-        
+        self.name = "No Room"
+        self.explanation = "This is the absence of a room"
+        self.actions = [Action()]
     }
+    
+    
+    
     
     init(
         name : String,

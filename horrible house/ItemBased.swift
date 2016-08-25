@@ -50,4 +50,40 @@ extension ItemBased {
         
     }
     
+    // MARK: Resolve Action Functions
+    
+    func revealItemsWithNames(itemNames: [String]) {
+        // REVEAL HIDDEN ITEMS
+        for itemName in itemNames {
+            if let index = self.items.indexOf({$0.name == itemName}) {
+                self.items[index].hidden = false
+            }
+        }
+    }
+    
+    func liberateItemsWithNames(itemNames: [String]) {
+        // ALLOW STUCK/LOCKED ITEMS TO BE CARRIED
+        for itemName in itemNames {
+            if let index = self.items.indexOf({$0.name == itemName}) {
+                self.items[index].enableCarrying()
+            }
+        }
+    }
+    
+    func resolveChangesToItemsForAction(action: Action) {
+        for item in self.items {
+            item.resolveChangesToActionsForAction(action)
+        }
+    }
+    
+    func itemForActionName(actionName: String) -> Item {
+        var i = Item()
+        for item in self.items {
+            if let index = item.actions.indexOf({$0.name == actionName}) {
+                //i = item.actions[index]
+            }
+        }
+        return i
+    }
+    
 }

@@ -42,4 +42,16 @@ extension ActionPacked {
         return i
     }
     
+    func resolveChangesToActionsForAction(action: Action) {
+        if let index = self.actions.indexOf({$0.name == action.name}) {
+            self.actions[index].timesPerformed += 1
+            if let replaceAction = action.replaceAction {
+                self.actions[index] = replaceAction
+            }
+            if action.onceOnly == true {
+                self.actions.removeAtIndex(index)
+            }
+        }
+    }
+    
 }

@@ -87,6 +87,7 @@ class InventoryController: UITableViewController {
             let ec = segue.destinationViewController as! EventController
             ec.house = self.house
             ec.isInventoryEvent = true
+            ec.house.currentEvent.currentStage = ec.house.currentEvent.getStageThatFollowsRulesFromStagesArray(ec.house.currentEvent.stages)
         }
     }
     

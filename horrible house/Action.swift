@@ -15,6 +15,9 @@ class Action: NSObject, NSCoding, DictionaryBased, RuleBased {
         case Room
         case Inventory
     }
+    enum ResolutionType: String {
+        case Exploration, Event, Default
+    }
     
     // MARK: Properties
     
@@ -84,7 +87,6 @@ class Action: NSObject, NSCoding, DictionaryBased, RuleBased {
     
     required init(withDictionary: Dictionary<String, AnyObject>) {
         super.init()
-        print("withDictionary.keys.count is \(withDictionary.keys.count)")
         for (key, value) in withDictionary {
             
             if key == "name" { self.name = value as! String }
@@ -157,6 +159,9 @@ class Action: NSObject, NSCoding, DictionaryBased, RuleBased {
         }
     }
     
+    
+    // MARK: RESOLVE ACTIONS
+    
     init(
         name: String,
         result: String?,
@@ -195,9 +200,10 @@ class Action: NSObject, NSCoding, DictionaryBased, RuleBased {
         if let mc = moveCharacter { self.moveCharacter = mc }
     }
     
-    
+    // Defaults
     override init() {
-        
+        self.name = "Nothing doing"
+        self.result = "I'd just restart"
     }
     
     // MARK: ENCODING
@@ -239,10 +245,6 @@ class Action: NSObject, NSCoding, DictionaryBased, RuleBased {
         }
         
         if let moveCharacter = self.moveCharacter {
-            print("moveCharacter.characterName is \(moveCharacter.characterName)")
-            print("moveCharacter.positionChange.x is \(moveCharacter.positionChange.x)")
-            print("moveCharacter.positionChange.y is \(moveCharacter.positionChange.y)")
-            print("moveCharacter.positionChange.z is \(moveCharacter.positionChange.z)")
             coder.encodeObject(moveCharacter.characterName, forKey: "characterName")
             coder.encodeInteger(moveCharacter.positionChange.x, forKey: "x")
             coder.encodeInteger(moveCharacter.positionChange.y, forKey: "y")
@@ -250,11 +252,8 @@ class Action: NSObject, NSCoding, DictionaryBased, RuleBased {
         }
         
         if let triggerEvent = self.triggerEvent {
-            print("triggerEvent is \(triggerEvent)")
-             print("triggerEvent.eventName is \(triggerEvent.eventName)")
             coder.encodeObject(triggerEvent.eventName, forKey: "eventName")
             if let stageName = triggerEvent.stageName {
-                print("triggerEvent.stageName is \(triggerEvent.stageName)\n")
                 coder.encodeObject(stageName, forKey: "stageName")
             }
             
@@ -295,43 +294,25 @@ class Action: NSObject, NSCoding, DictionaryBased, RuleBased {
             }
         }
         
-        print("name is \(self.name)")
-        
         if let characterName = decoder.decodeObjectForKey("characterName") as? String {
             self.moveCharacter?.characterName = characterName
-            print("characterName is \(characterName)")
-            print("self.moveCharacter?.characterName is \(self.moveCharacter?.characterName)")
         }
         if let x = decoder.decodeObjectForKey("x") as? Int {
             self.moveCharacter?.positionChange.x = x
-            print("x is \(x)")
-            print("self.moveCharacter?.positionChange.x is \(self.moveCharacter?.positionChange.x)")
         }
         if let y = decoder.decodeObjectForKey("y") as? Int {
             self.moveCharacter?.positionChange.y = y
-            print("y is \(y)")
-            print("self.moveCharacter?.positionChange.y is \(self.moveCharacter?.positionChange.y)")
         }
         if let z = decoder.decodeObjectForKey("z") as? Int {
             self.moveCharacter?.positionChange.z = z
-            print("z is \(z)")
-            print("self.moveCharacter?.positionChange.z is \(self.moveCharacter?.positionChange.z)")
         }
         
         if let eventName = decoder.decodeObjectForKey("eventName") as? String {
-            print("eventName is \(eventName)")
             if let stageName = decoder.decodeObjectForKey("stageName") as? String {
-                print("stageName is \(stageName)")
                 self.triggerEvent = (eventName, stageName)
             } else {
                 self.triggerEvent = (eventName, String?())
             }
         }
-        
-        print("triggerEvent is \(self.triggerEvent)\n")
-        
-        
-        
     }
-
 }

@@ -20,7 +20,7 @@ class MapController: UIViewController {
         return CGFloat(house.width)
     }
     
-    var currentFloor = 1
+    var currentFloor = 0
     
     @IBOutlet var mapDisplayView: UIView!
     @IBOutlet var roomNameLabel: UILabel!
@@ -29,9 +29,7 @@ class MapController: UIViewController {
     override func viewDidLoad() {
         self.title = "Map"
         self.tabBarItem = UITabBarItem(title: "Map", image: nil, tag: 2)
-        
-        self.currentFloor = self.house.player.position.z
-        
+                
         self.mapDisplayView.frame.size.width = self.view.frame.width + (self.view.frame.width * 0.02)
         self.mapDisplayView.frame.size.height = self.view.frame.height
         
@@ -45,6 +43,7 @@ class MapController: UIViewController {
         self.roomNameBar.translucent = false
         self.roomNameBar.barTintColor = Color.backgroundColor
         
+        self.currentFloor = self.house.player.position.z
         self.setFloorButton()
         
         
@@ -205,7 +204,7 @@ class MapController: UIViewController {
         }
         
         // Icon for NPC
-        if self.house.roomForName(sender.qualifier)?.characters.count > 0 {
+        if self.house.roomForName(sender.qualifier)?.characters.count > 0 || self.house.necessaryRooms[sender.qualifier]?.characters.count > 0 {
             let iconItem = UIBarButtonItem()
             iconItem.title = "🐙"
             self.roomNameBar.items! += [iconItem]

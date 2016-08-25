@@ -18,23 +18,25 @@ class ContainerController: UIViewController {
     @IBOutlet var tableViewInventory: UITableView!
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = UITableViewCell()
-        
-        cell.setStyle()
         
         var items : [Item] = []
+        var identifier = ""
         
         if tableView == self.tableViewContainer {
-            cell = tableView.dequeueReusableCellWithIdentifier("container", forIndexPath: indexPath)
+            identifier = "container"
             items = self.container.items
         }
         
         if tableView == self.tableViewInventory {
-            cell = tableView.dequeueReusableCellWithIdentifier("inventory", forIndexPath: indexPath)
+            identifier = "inventory"
             items = self.house.player.items
         }
+        
         let item = items[indexPath.row]
         
+        let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath)
+        cell.setStyle()
+        cell.textLabel!.numberOfLines = 0
         cell.textLabel?.text = item.name
         cell.detailTextLabel!.text = item.inventoryDescription
         
@@ -119,6 +121,7 @@ class ContainerController: UIViewController {
         return string
     }
     
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var rows = 0
         if tableView == self.tableViewContainer {
@@ -139,8 +142,15 @@ class ContainerController: UIViewController {
     func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         
         let header:UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
+        var frame = header.frame
+        frame.size.height = 10
+        header.frame = frame
         
         header.textLabel!.font = Font.headerFont
+        header.textLabel!.frame = header.frame
+        
+        header.backgroundView?.backgroundColor = Color.foregroundColor
+        header.textLabel!.textColor = Color.backgroundColor
     }
     
     override func viewDidLoad() {

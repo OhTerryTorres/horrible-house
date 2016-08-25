@@ -91,15 +91,10 @@ extension RuleBased {
                 }
                 break
             case Rule.RuleType.timePassed:
-                print("rule.name is \(rule.name)")
                 let hRange = rule.name.startIndex.advancedBy(2)..<rule.name.endIndex
-                print("hRange is \(hRange)")
                 let h = Int(rule.name.stringByReplacingCharactersInRange(hRange, withString: ""))
-                print("h is \(h)")
                 let mRange = rule.name.startIndex..<rule.name.startIndex.advancedBy(3)
-                print("mRange is \(mRange)")
                 let m = Int(rule.name.stringByReplacingCharactersInRange(mRange, withString: ""))
-                print("m is \(m)")
                 let time = GameTime(hours: h!, minutes: m!, seconds: 0)
                 if house.gameClock.currentTime.totalTimeInSeconds() < time.totalTimeInSeconds() {
                     rulesFollowed = false
