@@ -202,8 +202,7 @@ class Action: NSObject, NSCoding, DictionaryBased, RuleBased {
     
     // Defaults
     override init() {
-        self.name = "Nothing doing"
-        self.result = "I'd just restart"
+
     }
     
     // MARK: ENCODING
