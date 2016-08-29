@@ -58,12 +58,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "horrible house/GameController.swift"
-            timestampString = "493843669.63783"
+            timestampString = "494111225.905313"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "658"
-            endingLineNumber = "658"
-            landmarkName = "numberOfSectionsInTableView(_:)"
+            startingLineNumber = "653"
+            endingLineNumber = "653"
+            landmarkName = "tableView(_:heightForRowAtIndexPath:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "horrible house/House.swift"
-            timestampString = "494087629.613465"
+            timestampString = "494203672.332267"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "636"
-            endingLineNumber = "636"
+            startingLineNumber = "709"
+            endingLineNumber = "709"
             landmarkName = "npcBehaviorPursuePlayerActionSet(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -90,11 +90,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "horrible house/House.swift"
-            timestampString = "494079849.915936"
+            timestampString = "494205257.718472"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "574"
-            endingLineNumber = "574"
+            startingLineNumber = "769"
+            endingLineNumber = "769"
             landmarkName = "npcBehaviorPursuePlayerActionSet(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -106,28 +106,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "horrible house/House.swift"
-            timestampString = "494087629.613465"
+            timestampString = "494204863.604035"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "641"
-            endingLineNumber = "641"
-            landmarkName = "npcBehaviorPursuePlayerActionSet(_:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "horrible house/House.swift"
-            timestampString = "494093847.274224"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "556"
-            endingLineNumber = "556"
-            landmarkName = "npcBehaviorRandomActionSet(_:)"
+            startingLineNumber = "789"
+            endingLineNumber = "789"
+            landmarkName = "resolveActionsInPipeline()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

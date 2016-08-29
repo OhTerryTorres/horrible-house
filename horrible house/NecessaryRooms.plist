@@ -9,23 +9,7 @@
 		<key>explanation</key>
 		<string>The top of the staircase that leads down to the ground floor.</string>
 		<key>actions</key>
-		<array>
-			<dict>
-				<key>name</key>
-				<string>Go downstairs</string>
-				<key>moveCharacter</key>
-				<dict>
-					<key>character</key>
-					<string>player</string>
-					<key>x</key>
-					<integer>0</integer>
-					<key>y</key>
-					<integer>0</integer>
-					<key>z</key>
-					<integer>-1</integer>
-				</dict>
-			</dict>
-		</array>
+		<array/>
 	</dict>
 	<key>4</key>
 	<dict>
@@ -34,23 +18,7 @@
 		<key>explanation</key>
 		<string>Stairs leading up to the second floor are here.</string>
 		<key>actions</key>
-		<array>
-			<dict>
-				<key>name</key>
-				<string>Go upstairs</string>
-				<key>moveCharacter</key>
-				<dict>
-					<key>character</key>
-					<string>player</string>
-					<key>x</key>
-					<integer>0</integer>
-					<key>y</key>
-					<integer>0</integer>
-					<key>z</key>
-					<integer>1</integer>
-				</dict>
-			</dict>
-		</array>
+		<array/>
 	</dict>
 	<key>3</key>
 	<dict>
@@ -59,23 +27,7 @@
 		<key>explanation</key>
 		<string>The only thing illuminating the area is light from upstairs. You can barely see in front of you.</string>
 		<key>actions</key>
-		<array>
-			<dict>
-				<key>name</key>
-				<string>Go upstairs</string>
-				<key>moveCharacter</key>
-				<dict>
-					<key>character</key>
-					<string>player</string>
-					<key>x</key>
-					<integer>0</integer>
-					<key>y</key>
-					<integer>0</integer>
-					<key>z</key>
-					<integer>1</integer>
-				</dict>
-			</dict>
-		</array>
+		<array/>
 	</dict>
 	<key>2</key>
 	<dict>
@@ -84,23 +36,7 @@
 		<key>explanation</key>
 		<string>A hallway with a set of stairs leading down into darkness.</string>
 		<key>actions</key>
-		<array>
-			<dict>
-				<key>name</key>
-				<string>Go downstairs</string>
-				<key>moveCharacter</key>
-				<dict>
-					<key>character</key>
-					<string>player</string>
-					<key>x</key>
-					<integer>0</integer>
-					<key>y</key>
-					<integer>0</integer>
-					<key>z</key>
-					<integer>-1</integer>
-				</dict>
-			</dict>
-		</array>
+		<array/>
 	</dict>
 	<key>1</key>
 	<dict>

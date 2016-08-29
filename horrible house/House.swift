@@ -64,7 +64,7 @@ class House : NSObject, NSCoding {
     
     
     enum Direction: String {
-        case North, South, East, West
+        case North, South, West, East, Upstairs, Downstairs, Default
     }
     
     var gameClock = GameClock()
@@ -378,8 +378,8 @@ class House : NSObject, NSCoding {
     
     // Get get a room in a direction adjacent to the player
     // Used to find out what the room is before entering it.
-    func roomInDirection(direction:Direction) -> Room? {
-        var potentialPosition = (x: self.player.position.x, y: self.player.position.y, z: self.player.position.z)
+    func roomInDirection(direction:Direction, fromPosition: (x: Int, y: Int, z: Int)) -> Room? {
+        var potentialPosition = fromPosition
         switch direction {
         case .North:
             potentialPosition.y += 1
@@ -389,14 +389,34 @@ class House : NSObject, NSCoding {
             potentialPosition.x += 1
         case .West:
             potentialPosition.x -= 1
+        case .Upstairs:
+            potentialPosition.z += 1
+        case .Downstairs:
+            potentialPosition.z -= 1
+        case .Default:
+            break
         }
         
         // This makes sure that the new position is within the layout of the house
         // If it's not, the player's position stays as it is,
         // and the player's current room is returned.
         if ( doesRoomExistAtPosition(potentialPosition) == false ) {
-            potentialPosition = self.player.position
+            potentialPosition = fromPosition
         }
+        
+        let character = Character()
+        character.position = fromPosition
+        if direction == House.Direction.Upstairs {
+            if canCharacterGoUpstairs(character) == false {
+                potentialPosition = fromPosition
+            }
+        }
+        if direction == House.Direction.Downstairs {
+            if canCharacterGoDownstairs(character) == false {
+                potentialPosition = fromPosition
+            }
+        }
+        
         let potentialRoom = roomForPosition(potentialPosition)
         
         return potentialRoom
@@ -415,8 +435,28 @@ class House : NSObject, NSCoding {
             d = Direction.South
         } else if roomA.position.y > roomB.position.y {
             d = Direction.North
+        } else if roomA.position.z > roomB.position.z {
+            d = Direction.Upstairs
+        } else if roomA.position.z < roomB.position.z {
+            d = Direction.Downstairs
         }
         return d
+    }
+    
+    func directionForString(string: String) -> House.Direction {
+        if string.lowercaseString.rangeOfString("north") != nil {
+            return House.Direction.North
+        } else if string.lowercaseString.rangeOfString("west") != nil {
+            return House.Direction.West
+        } else if string.lowercaseString.rangeOfString("south") != nil {
+            return House.Direction.South
+        } else if string.lowercaseString.rangeOfString("east") != nil {
+            return House.Direction.East
+        } else if string.lowercaseString.rangeOfString("upstairs") != nil {
+            return House.Direction.Upstairs
+        } else if string.lowercaseString.rangeOfString("downstairs") != nil {
+            return House.Direction.Downstairs
+        } else { return House.Direction.Default }
     }
     
     // Checks for rooms around house.playerPosition
@@ -428,6 +468,8 @@ class House : NSObject, NSCoding {
         let roomPositionToWest = (character.position.x-1, character.position.y, character.position.z)
         let roomPositionToSouth = (character.position.x, character.position.y-1, character.position.z)
         let roomPositionToEast = (character.position.x+1, character.position.y, character.position.z)
+        let roomPositionUpstairs = (character.position.x, character.position.y, character.position.z+1)
+        let roomPositionDownstairs = (character.position.x, character.position.y, character.position.z-1)
         
         if ( doesRoomExistAtPosition(roomPositionToNorth) ) {
             roomsAroundCharacter.append(roomForPosition(roomPositionToNorth)!)
@@ -440,6 +482,12 @@ class House : NSObject, NSCoding {
         }
         if ( doesRoomExistAtPosition(roomPositionToEast) ) {
             roomsAroundCharacter.append(roomForPosition(roomPositionToEast)!)
+        }
+        if canCharacterGoUpstairs(character) {
+            roomsAroundCharacter.append(roomForPosition(roomPositionUpstairs)!)
+        }
+        if canCharacterGoDownstairs(character) {
+            roomsAroundCharacter.append(roomForPosition(roomPositionDownstairs)!)
         }
         
         return roomsAroundCharacter
@@ -562,12 +610,13 @@ class House : NSObject, NSCoding {
         
         let action = Action()
         let room = potentialRooms[index]
-        action.moveCharacter = (npc.name, (room.position.x, room.position.y, room.position.z))
+        action.moveCharacter = (npc.name, room.name, nil)
         
         return (action, Action.ActionType.Room, npc, room, self.currentEvent.currentStage, Action.ResolutionType.Exploration)
     }
     
-    func npcBehaviorPursuePlayerActionSet(npc: Character) -> (Action, Action.ActionType, Character, Room, Stage?, Action.ResolutionType) {
+    /*
+    func npcBehaviorPursuePlayerActionSetOLD(npc: Character) -> (Action, Action.ActionType, Character, Room, Stage?, Action.ResolutionType) {
         
         // Keep in mind where the character currently is
         let currentPosition = npc.position
@@ -640,16 +689,16 @@ class House : NSObject, NSCoding {
             }
         }
         
-        
+        let room = roomForPosition((x, y, z))
         let action = Action()
-        action.moveCharacter = (npc.name, (x, y, z))
+        action.moveCharacter = (npc.name, room!.name, nil)
         
         return (action, Action.ActionType.Room, npc, self.currentRoom, self.currentEvent.currentStage, Action.ResolutionType.Exploration)
         
     }
+    */
     
-    
-    func npcBehaviorPursuePlayerActionSetTWO(npc: Character) -> (Action, Action.ActionType, Character, Room, Stage?, Action.ResolutionType) {
+    func npcBehaviorPursuePlayerActionSet(npc: Character) -> (Action, Action.ActionType, Character, Room, Stage?, Action.ResolutionType) {
         
         // Keep in mind where the character currently is
         let currentPosition = npc.position
@@ -657,7 +706,6 @@ class House : NSObject, NSCoding {
         var targetPosition = self.player.position
         // The position to which the character will move
         // when calculations are complete.
-        var potentialPosition = currentPosition
         
         // First, in case the player is on another floor,
         // set the targetPosition to the staircase that
@@ -702,53 +750,31 @@ class House : NSObject, NSCoding {
             }
         }
         
-        if potentialPosition == targetPosition {
+        if currentPosition == targetPosition {
             if canCharacterGoUpstairs(npc) {
-                potentialRooms += [roomForPosition(npc.position)!]
+                potentialRooms += [roomInDirection(House.Direction.Upstairs, fromPosition: npc.position)!]
             }
             if canCharacterGoDownstairs(npc) {
-                potentialRooms += [roomForPosition(npc.position)!]
+                potentialRooms += [roomInDirection(House.Direction.Downstairs, fromPosition: npc.position)!]
             }
         }
         
-        let index = Int(arc4random_uniform(UInt32(potentialRooms.count)))
+        var index = 0
+        print("potentialRooms.count is \(potentialRooms.count)")
+        for _ in 0 ..< 100 {
+            index = Int(arc4random_uniform(UInt32(potentialRooms.count)))
+            print("\(index)")
+        }
         let room = potentialRooms[index]
         
         let action = Action()
-        action.moveCharacter = (npc.name, room.position)
+        action.moveCharacter = (npc.name, room.name, nil)
         
         return (action, Action.ActionType.Room, npc, self.currentRoom, self.currentEvent.currentStage, Action.ResolutionType.Exploration)
         
     }
     
-    func positionChangeForRoom(goingFromRoom roomA: Room, toRoom roomB: Room) -> (Int, Int, Int) {
-        var x = 0
-        var y = 0
-        var z = 0
-        var blankCharacter = Character()
-        blankCharacter.position = roomA.position
-        
-        let d = directionForRoom(roomB, fromRoom: roomA)
-        switch d {
-        case .North:
-            y = 1
-        case .West:
-            x = -1
-        case .South:
-            y = -1
-        case .East:
-            x = 1
-        }
-        
-        if roomA.position > roomB.position {
-            z = 1
-        }
-        if roomA.position < roomB.position {
-            z = -1
-        }
-        
-        return (x, y, z)
-    }
+    
     
     
     
@@ -861,7 +887,16 @@ class House : NSObject, NSCoding {
     func moveCharacter(character: Character, withAction action: Action) {
         if let moveCharacter = action.moveCharacter {
             
-            self.moveCharacter(withName: moveCharacter.characterName, toRoom: self.roomForPosition((x: (character.position.x + moveCharacter.positionChange.x), y: (character.position.y + moveCharacter.positionChange.y), z: (character.position.z + moveCharacter.positionChange.z   ) ))!)
+            if let roomName = moveCharacter.roomName {
+                self.moveCharacter(withName: moveCharacter.characterName, toRoom: roomForName(roomName)!)
+            }
+            // Moved based on direction
+            if let directionName = moveCharacter.directionName {
+                self.moveCharacter(withName: moveCharacter.characterName, toRoom: roomInDirection(self.directionForString(directionName), fromPosition: character.position)!)
+            } else {
+            // Move based on room name
+                self.moveCharacter(withName: moveCharacter.characterName, toRoom: roomForName(moveCharacter.roomName!)!)
+            }
             
             
         }

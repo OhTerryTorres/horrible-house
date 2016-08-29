@@ -80,7 +80,7 @@ class Action: NSObject, NSCoding, DictionaryBased, RuleBased {
 
     
     // This will be used to a move a character in a certain direction.
-    var moveCharacter : (characterName: String, positionChange: (x: Int, y: Int, z: Int))?
+    var moveCharacter : (characterName: String, roomName: String?, directionName: String?)?
     
     // This is for special actions that trigger a segue to a viewcontroller
     var segue : (identifier: String, qualifier: String?)?
@@ -133,17 +133,16 @@ class Action: NSObject, NSCoding, DictionaryBased, RuleBased {
             if key == "replaceAction" { self.replaceAction = Action(withDictionary: value as! Dictionary<String, AnyObject>) }
             
             if key == "moveCharacter" {
-                var character = String?()
-                var x = Int?()
-                var y = Int?()
-                var z = Int?()
+                var characterName = String?()
+                var roomName = String?()
+                var directionName = String?()
                 for (k,v) in value as! Dictionary<String, AnyObject> {
-                    if k == "character" { character = v as? String }
-                    if k == "x" { x = v as? Int }
-                    if k == "y" { y = v as? Int }
-                    if k == "z" { z = v as? Int }
+                    if k == "characterName" { characterName = v as? String }
+                    if k == "roomName" { roomName = v as? String }
+                    if k == "directionName" { directionName = v as? String }
+
                 }
-                self.moveCharacter = (character!, (x!, y!, z!))
+                self.moveCharacter = (characterName!, roomName, directionName)
             }
             
             if key == "segue" {
@@ -158,7 +157,7 @@ class Action: NSObject, NSCoding, DictionaryBased, RuleBased {
             
         }
     }
-    
+
     
     // MARK: RESOLVE ACTIONS
     
@@ -178,7 +177,7 @@ class Action: NSObject, NSCoding, DictionaryBased, RuleBased {
         removeCharacters: [String],
         triggerEvent: (eventName: String, stageName: String?)?,
         replaceAction: Action?,
-        moveCharacter: (characterName: String, positionChange: (x: Int, y: Int, z: Int))?,
+        moveCharacter: (characterName: String, roomName: String?, directionName: String?)?,
         segue: (identifier: String, qualifier: String?)?
         ) {
         self.name = name
@@ -245,9 +244,8 @@ class Action: NSObject, NSCoding, DictionaryBased, RuleBased {
         
         if let moveCharacter = self.moveCharacter {
             coder.encodeObject(moveCharacter.characterName, forKey: "characterName")
-            coder.encodeInteger(moveCharacter.positionChange.x, forKey: "x")
-            coder.encodeInteger(moveCharacter.positionChange.y, forKey: "y")
-            coder.encodeInteger(moveCharacter.positionChange.z, forKey: "z")
+            coder.encodeObject(moveCharacter.roomName, forKey: "roomName")
+            coder.encodeObject(moveCharacter.directionName, forKey: "directionName")
         }
         
         if let triggerEvent = self.triggerEvent {
@@ -296,15 +294,13 @@ class Action: NSObject, NSCoding, DictionaryBased, RuleBased {
         if let characterName = decoder.decodeObjectForKey("characterName") as? String {
             self.moveCharacter?.characterName = characterName
         }
-        if let x = decoder.decodeObjectForKey("x") as? Int {
-            self.moveCharacter?.positionChange.x = x
+        if let roomName = decoder.decodeObjectForKey("roomName") as? String {
+            self.moveCharacter?.roomName = roomName
         }
-        if let y = decoder.decodeObjectForKey("y") as? Int {
-            self.moveCharacter?.positionChange.y = y
+        if let directionName = decoder.decodeObjectForKey("directionName") as? String {
+            self.moveCharacter?.directionName = directionName
         }
-        if let z = decoder.decodeObjectForKey("z") as? Int {
-            self.moveCharacter?.positionChange.z = z
-        }
+
         
         if let eventName = decoder.decodeObjectForKey("eventName") as? String {
             if let stageName = decoder.decodeObjectForKey("stageName") as? String {

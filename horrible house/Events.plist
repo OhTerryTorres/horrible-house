@@ -24,14 +24,10 @@
 						<dict/>
 						<key>moveCharacter</key>
 						<dict>
-							<key>character</key>
+							<key>characterName</key>
 							<string>player</string>
-							<key>x</key>
-							<integer>0</integer>
-							<key>y</key>
-							<integer>1</integer>
-							<key>z</key>
-							<integer>0</integer>
+							<key>directionName</key>
+							<string>North</string>
 						</dict>
 						<key>rules</key>
 						<array>
@@ -45,14 +41,10 @@
 						<dict/>
 						<key>moveCharacter</key>
 						<dict>
-							<key>character</key>
+							<key>characterName</key>
 							<string>player</string>
-							<key>x</key>
-							<integer>-1</integer>
-							<key>y</key>
-							<integer>0</integer>
-							<key>z</key>
-							<integer>0</integer>
+							<key>directionName</key>
+							<string>West</string>
 						</dict>
 						<key>rules</key>
 						<array>
@@ -66,14 +58,10 @@
 						<dict/>
 						<key>moveCharacter</key>
 						<dict>
-							<key>character</key>
+							<key>characterName</key>
 							<string>player</string>
-							<key>x</key>
-							<integer>0</integer>
-							<key>y</key>
-							<integer>-1</integer>
-							<key>z</key>
-							<integer>0</integer>
+							<key>directionName</key>
+							<string>South</string>
 						</dict>
 						<key>rules</key>
 						<array>
@@ -87,14 +75,10 @@
 						<dict/>
 						<key>moveCharacter</key>
 						<dict>
-							<key>character</key>
+							<key>characterName</key>
 							<string>player</string>
-							<key>x</key>
-							<integer>1</integer>
-							<key>y</key>
-							<integer>0</integer>
-							<key>z</key>
-							<integer>0</integer>
+							<key>directionName</key>
+							<string>East</string>
 						</dict>
 						<key>rules</key>
 						<array>
@@ -108,14 +92,10 @@
 						<dict/>
 						<key>moveCharacter</key>
 						<dict>
-							<key>character</key>
+							<key>characterName</key>
 							<string>player</string>
-							<key>x</key>
-							<integer>0</integer>
-							<key>y</key>
-							<integer>0</integer>
-							<key>z</key>
-							<integer>1</integer>
+							<key>directionName</key>
+							<string>Upstairs</string>
 						</dict>
 						<key>rules</key>
 						<array>
@@ -129,14 +109,10 @@
 						<dict/>
 						<key>moveCharacter</key>
 						<dict>
-							<key>character</key>
+							<key>characterName</key>
 							<string>player</string>
-							<key>x</key>
-							<integer>0</integer>
-							<key>y</key>
-							<integer>0</integer>
-							<key>z</key>
-							<integer>-1</integer>
+							<key>directionName</key>
+							<string>Downstairs</string>
 						</dict>
 						<key>rules</key>
 						<array>
