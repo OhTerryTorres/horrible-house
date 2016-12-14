@@ -24,6 +24,14 @@ class Character: NSObject, NSCoding, ItemBased {
     
     var roomHistory : [String] = []
     
+    // Player statistics
+    // but maybe other characters can have them??
+    var stats : [String : [String]] = [:]
+    var gamesPlayed = 0
+    
+    
+    
+    
     
     
     init(withDictionary: Dictionary<String, AnyObject>) {
@@ -38,9 +46,29 @@ class Character: NSObject, NSCoding, ItemBased {
                 }
             }
             if key == "hidden" { self.hidden = true }
-            if key == "items" { self.setItemsForDictionary(value as! [Dictionary<String, AnyObject>]) }
+            if key == "items" { self.setItemsForDictionary(dictArray: value as! [Dictionary<String, AnyObject>]) }
             if key == "startingRoom" { self.startingRoom = value as? String }
         }
+        
+        if self.name == "player" {
+            if let statsData = UserDefaults.standard.object(forKey: "statsData") {
+                self.stats = NSKeyedUnarchiver.unarchiveObject(with: statsData as! Data) as! [String : [String]]
+            } else {
+                self.stats = ["roomsFound" : [""], "itemsFound" : [""]]
+            }
+            
+        }
+    }
+
+    func getMemories() -> Int {
+        var memories = 0
+        if let roomsFound = self.stats["roomsFound"] {
+            memories += roomsFound.count
+        }
+        if let itemsFound = self.stats["itemsFound"] {
+            memories += itemsFound.count
+        }
+        return memories
     }
     
     init(name:String, position:(x: Int, y: Int, z: Int)) {
@@ -55,7 +83,9 @@ class Character: NSObject, NSCoding, ItemBased {
          explanation: String,
          hidden: Bool,
          behaviors: [Behavior],
-         startingRoom : String?)
+         startingRoom : String?,
+         roomHistory : [String],
+         stats : [String : [String]])
     {
         self.name = name
         self.position = position
@@ -64,6 +94,8 @@ class Character: NSObject, NSCoding, ItemBased {
         self.hidden = hidden
         self.behaviors = behaviors
         self.startingRoom = startingRoom
+        self.roomHistory = roomHistory
+        self.stats = stats
     }
     
     override init() {
@@ -71,10 +103,13 @@ class Character: NSObject, NSCoding, ItemBased {
     }
     
     func addRoomNameToRoomHistory(roomName: String) {
-        self.roomHistory.insert(roomName, atIndex: 0)
+
+        self.roomHistory.insert(roomName, at: 0)
         if self.roomHistory.count > 3 {
             self.roomHistory.removeLast()
         }
+        
+
     }
     
     func addItemsToInventory(items: [Item]) {
@@ -88,7 +123,7 @@ class Character: NSObject, NSCoding, ItemBased {
     func consumeItemsWithNames(itemNames: [String]) {
         // REMOVE AND DESTROY ITEMS IN PLAYER INVENTORY
         for itemName in itemNames {
-            if let _ = self.items.indexOf({$0.name == itemName}) {
+            if let _ = self.items.index(where: {$0.name == itemName}) {
                 print("ExC – consuming item in inventory")
                 self.removeItemFromItems(withName: itemName)
             }
@@ -104,41 +139,45 @@ class Character: NSObject, NSCoding, ItemBased {
 
     // MARK: ENCODING
     
-    func encodeWithCoder(coder: NSCoder) {
+    public func encode(with coder: NSCoder) {
         
-        coder.encodeObject(self.name, forKey: "name")
-        coder.encodeInteger(self.position.x, forKey: "x")
-        coder.encodeInteger(self.position.y, forKey: "y")
-        coder.encodeInteger(self.position.z, forKey: "z")
+        coder.encode(self.name, forKey: "name")
+        coder.encode(self.position.x, forKey: "x")
+        coder.encode(self.position.y, forKey: "y")
+        coder.encode(self.position.z, forKey: "z")
         
-        coder.encodeObject(self.items, forKey: "items")
+        coder.encode(self.items, forKey: "items")
         
-        coder.encodeObject(self.explanation, forKey: "explanation")
-        coder.encodeBool(self.hidden, forKey: "hidden")
-        coder.encodeObject(self.behaviors, forKey: "behavior")
+        coder.encode(self.explanation, forKey: "explanation")
+        coder.encode(self.hidden, forKey: "hidden")
+        coder.encode(self.behaviors, forKey: "behavior")
         
         if let startingRoom = self.startingRoom {
-            coder.encodeObject(startingRoom, forKey: "startingRoom")
+            coder.encode(startingRoom, forKey: "startingRoom")
         }
         
-        coder.encodeObject(self.roomHistory, forKey: "roomHistory")
+        coder.encode(self.roomHistory, forKey: "roomHistory")
+        coder.encode(self.stats, forKey: "stats")
+        
     }
     
     required convenience init?(coder decoder: NSCoder) {
         self.init()
         
-        self.name = decoder.decodeObjectForKey("name") as! String
-        self.position = (x: decoder.decodeIntegerForKey("x"), y: decoder.decodeIntegerForKey("y"), z: decoder.decodeIntegerForKey("z"))
-        self.items = decoder.decodeObjectForKey("items") as! [Item]
-        self.explanation = decoder.decodeObjectForKey("explanation") as! String
-        self.hidden = decoder.decodeBoolForKey("hidden")
-        self.behaviors = decoder.decodeObjectForKey("behavior") as! [Behavior]
+        self.name = decoder.decodeObject(forKey: "name") as! String
+        self.position = (x: decoder.decodeInteger(forKey: "x"), y: decoder.decodeInteger(forKey: "y"), z: decoder.decodeInteger(forKey: "z"))
+        self.items = decoder.decodeObject(forKey: "items") as! [Item]
+        self.explanation = decoder.decodeObject(forKey: "explanation") as! String
+        self.hidden = decoder.decodeBool(forKey: "hidden")
+        self.behaviors = decoder.decodeObject(forKey: "behavior") as! [Behavior]
         
-        if let startingRoom = decoder.decodeObjectForKey("startingRoom") as? String? {
+        if let startingRoom = decoder.decodeObject(forKey: "startingRoom") as? String? {
             self.startingRoom = startingRoom
         }
         
-        self.roomHistory = decoder.decodeObjectForKey("roomHistory") as! [String]
+        self.roomHistory = decoder.decodeObject(forKey: "roomHistory") as! [String]
+        
+        self.stats = decoder.decodeObject(forKey: "stats") as! [String : [String]]
         
     }
 }

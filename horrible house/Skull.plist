@@ -2,6 +2,76 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>13</key>
+	<dict>
+		<key>name</key>
+		<string>Room: Kitchen</string>
+		<key>detail</key>
+		<dict>
+			<key>explanation</key>
+			<string>I remember doing a lot of work in this kitchen. I thought I was actually a pretty good cook when I was alive.</string>
+			<key>rules</key>
+			<array>
+				<string>\occupyingKitchen</string>
+			</array>
+		</dict>
+	</dict>
+	<key>12</key>
+	<dict>
+		<key>name</key>
+		<string>Item: Sitcky Thing</string>
+		<key>detail</key>
+		<dict>
+			<key>explanation</key>
+			<string>You took that thing out of the bag?? It was fine where it was!</string>
+			<key>rules</key>
+			<array>
+				<string>\hasSticky Thing</string>
+			</array>
+		</dict>
+	</dict>
+	<key>11</key>
+	<dict>
+		<key>name</key>
+		<string>Item: Paper Bag</string>
+		<key>detail</key>
+		<dict>
+			<key>explanation</key>
+			<string>Oh, no... That bag... Where did you find that?</string>
+			<key>rules</key>
+			<array>
+				<string>\hasPaper Bag</string>
+			</array>
+		</dict>
+	</dict>
+	<key>10</key>
+	<dict>
+		<key>name</key>
+		<string>Room: Foyer</string>
+		<key>detail</key>
+		<dict>
+			<key>explanation</key>
+			<string>They don&apos;t make grandfather clocks like this one anymore. You can hear its chime from the other side of the house. I can see how that could be annoying, though.</string>
+			<key>rules</key>
+			<array>
+				<string>\occupyingFoyer</string>
+			</array>
+		</dict>
+	</dict>
+	<key>9</key>
+	<dict>
+		<key>name</key>
+		<string>Item: Net</string>
+		<key>detail</key>
+		<dict>
+			<key>explanation</key>
+			<string>Is that a butterfly net? Do you have... big plans for it?</string>
+			<key>rules</key>
+			<array>
+				<string>\hasNet</string>
+			</array>
+		</dict>
+	</dict>
 	<key>8</key>
 	<dict>
 		<key>name</key>
@@ -39,7 +109,7 @@
 		<key>detail</key>
 		<dict>
 			<key>explanation</key>
-			<string>A wrench is useful for all sorts of things. Like guts!</string>
+			<string>A wrench is useful for all sorts of things. Like guts! Gut-wrenching. Right??</string>
 			<key>rules</key>
 			<array>
 				<string>\hasWrench</string>
@@ -53,7 +123,7 @@
 		<key>detail</key>
 		<dict>
 			<key>explanation</key>
-			<string>You&apos;re using a map? C&apos;mon, this place isn&apos;t so complicated.</string>
+			<string>You&apos;re using a map? Is this place really that complicated?</string>
 			<key>rules</key>
 			<array>
 				<string>\hasMap</string>
@@ -67,7 +137,7 @@
 		<key>detail</key>
 		<dict>
 			<key>explanation</key>
-			<string>Hey! Happy to be here, by the way.</string>
+			<string>Thank you for picking me up, by the way.</string>
 			<key>rules</key>
 			<array>
 				<string>\hasSkull</string>
@@ -97,7 +167,7 @@
 		<key>detail</key>
 		<dict>
 			<key>explanation</key>
-			<string>Oh. That was the master&apos;s.</string>
+			<string>That pocketwatch... I have a feeling it was special? Take care of it, would you?</string>
 			<key>rules</key>
 			<array>
 				<string>\hasPocketwatch</string>

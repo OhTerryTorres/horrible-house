@@ -21,6 +21,18 @@ extension ItemBased {
                 item = Item(withDictionary: dict)
             }
             self.items += [item!]
+            
+            // This takes the items back out if it already exists in the Foyer box
+            if let boxData = UserDefaults.standard.object(forKey: "boxData") {
+                if let box = NSKeyedUnarchiver.unarchiveObject(with: (boxData as! NSData) as Data) as? Item {
+                    if let _ = box.items.index(where: {$0.name == item!.name}) {
+                        print("ITEMBASED - item is already in the box")
+                        if let index = self.items.index(where: {$0.name == item!.name}) {
+                            self.items.remove(at: index)
+                        }
+                    }
+                }
+            }
         }
     }
     
@@ -43,7 +55,7 @@ extension ItemBased {
         for item in self.items {
             if item.name == itemName {
                 print("ITEMBASED – removing \(itemName) from items")
-                self.items.removeAtIndex(i)
+                self.items.remove(at: i)
                 break // This keeps items with the same name from collapsing on each other.
             } else { i += 1 }
         }
@@ -55,7 +67,7 @@ extension ItemBased {
     func revealItemsWithNames(itemNames: [String]) {
         // REVEAL HIDDEN ITEMS
         for itemName in itemNames {
-            if let index = self.items.indexOf({$0.name == itemName}) {
+            if let index = self.items.index(where: {$0.name == itemName}) {
                 self.items[index].hidden = false
             }
         }
@@ -64,7 +76,7 @@ extension ItemBased {
     func liberateItemsWithNames(itemNames: [String]) {
         // ALLOW STUCK/LOCKED ITEMS TO BE CARRIED
         for itemName in itemNames {
-            if let index = self.items.indexOf({$0.name == itemName}) {
+            if let index = self.items.index(where: {$0.name == itemName}) {
                 self.items[index].enableCarrying()
             }
         }
@@ -72,15 +84,15 @@ extension ItemBased {
     
     func resolveChangesToItemsForAction(action: Action) {
         for item in self.items {
-            item.resolveChangesToActionsForAction(action)
+            item.resolveChangesToActionsForAction(action: action)
         }
     }
     
-    func itemForActionName(actionName: String) -> Item {
-        var i = Item()
+    func itemForActionName(actionName: String) -> Item? {
+        var i : Item?
         for item in self.items {
-            if let index = item.actions.indexOf({$0.name == actionName}) {
-                //i = item.actions[index]
+            if (item.actions.index(where: {$0.name == actionName}) != nil) {
+                i = item
             }
         }
         return i

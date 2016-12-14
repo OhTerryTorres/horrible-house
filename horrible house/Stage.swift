@@ -10,6 +10,7 @@ import UIKit
 
 class Stage: NSObject, NSCoding, DictionaryBased, ItemBased, RuleBased, ActionPacked {
 
+
     // MARK: Properties
     
     var name = ""
@@ -25,10 +26,10 @@ class Stage: NSObject, NSCoding, DictionaryBased, ItemBased, RuleBased, ActionPa
             if key == "name" { self.name = value as! String }
             if key == "explanation" { self.explanation = value as! String }
             
-            if key == "actions" { self.setActionsForArrayOfDictionaries(value as! [Dictionary<String, AnyObject>]) }
+            if key == "actions" { self.setActionsForArrayOfDictionaries(dictArray: value as! [Dictionary<String, AnyObject>]) }
             
-            if key == "rules" { self.setRulesForArray(value as! [String]) }
-            if key == "items" { self.setItemsForDictionary(value as! [Dictionary<String, AnyObject>]) }
+            if key == "rules" { self.setRulesForArray(array: value as! [String]) }
+            if key == "items" { self.setItemsForDictionary(dictArray: value as! [Dictionary<String, AnyObject>]) }
         }
     }
     
@@ -46,13 +47,12 @@ class Stage: NSObject, NSCoding, DictionaryBased, ItemBased, RuleBased, ActionPa
 
     // MARK: ENCODING
     
-    func encodeWithCoder(coder: NSCoder) {
-        coder.encodeObject(self.name, forKey: "name")
-        coder.encodeObject(self.explanation, forKey: "explanation")
-        coder.encodeObject(self.actions, forKey: "actions")
-        coder.encodeObject(self.rules, forKey: "rules")
-        coder.encodeObject(self.items, forKey: "items")
-        
+    public func encode(with aCoder: NSCoder) {
+        aCoder.encode(self.name, forKey: "name")
+        aCoder.encode(self.explanation, forKey: "explanation")
+        aCoder.encode(self.actions, forKey: "actions")
+        aCoder.encode(self.rules, forKey: "rules")
+        aCoder.encode(self.items, forKey: "items")
     }
     
     
@@ -60,11 +60,11 @@ class Stage: NSObject, NSCoding, DictionaryBased, ItemBased, RuleBased, ActionPa
     required convenience init?(coder decoder: NSCoder) {
         self.init()
         
-        self.name = decoder.decodeObjectForKey("name") as! String
-        self.explanation = decoder.decodeObjectForKey("explanation") as! String
-        self.actions = decoder.decodeObjectForKey("actions") as! [Action]
-        self.rules = decoder.decodeObjectForKey("rules") as! [Rule]
-        self.items = decoder.decodeObjectForKey("items") as! [Item]
+        self.name = decoder.decodeObject(forKey: "name") as! String
+        self.explanation = decoder.decodeObject(forKey: "explanation") as! String
+        self.actions = decoder.decodeObject(forKey: "actions") as! [Action]
+        self.rules = decoder.decodeObject(forKey: "rules") as! [Rule]
+        self.items = decoder.decodeObject(forKey: "items") as! [Item]
 
     }
     

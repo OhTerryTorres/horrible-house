@@ -85,6 +85,9 @@ class Action: NSObject, NSCoding, DictionaryBased, RuleBased {
     // This is for special actions that trigger a segue to a viewcontroller
     var segue : (identifier: String, qualifier: String?)?
     
+    var textEntryTitle : String?
+    
+    
     required init(withDictionary: Dictionary<String, AnyObject>) {
         super.init()
         for (key, value) in withDictionary {
@@ -92,7 +95,7 @@ class Action: NSObject, NSCoding, DictionaryBased, RuleBased {
             if key == "name" { self.name = value as! String }
             if key == "result" { self.result = value as? String }
             if key == "roomChange" { self.roomChange = value as? String }
-            if key == "rules" { self.setRulesForArray(value as! [String]) }
+            if key == "rules" { self.setRulesForArray(array: value as! [String]) }
             
             if key == "revealItems" { self.revealItems = value as! [String] }
             if key == "liberateItems" { self.liberateItems = value as! [String] }
@@ -122,7 +125,7 @@ class Action: NSObject, NSCoding, DictionaryBased, RuleBased {
             // from house.events before house.events even exists!
             if key == "triggerEvent" {
                 var eventName = ""
-                var stageName = String?()
+                var stageName : String?
                 for (k,v) in value as! Dictionary<String, AnyObject> {
                     if k == "eventName" { eventName = v as! String }
                     if k == "stageName" { stageName = v as? String }
@@ -133,9 +136,9 @@ class Action: NSObject, NSCoding, DictionaryBased, RuleBased {
             if key == "replaceAction" { self.replaceAction = Action(withDictionary: value as! Dictionary<String, AnyObject>) }
             
             if key == "moveCharacter" {
-                var characterName = String?()
-                var roomName = String?()
-                var directionName = String?()
+                var characterName : String?
+                var roomName : String?
+                var directionName : String?
                 for (k,v) in value as! Dictionary<String, AnyObject> {
                     if k == "characterName" { characterName = v as? String }
                     if k == "roomName" { roomName = v as? String }
@@ -147,7 +150,7 @@ class Action: NSObject, NSCoding, DictionaryBased, RuleBased {
             
             if key == "segue" {
                 var identifier = ""
-                var qualifier = String?()
+                var qualifier : String?
                 for (k,v) in value as! Dictionary<String, AnyObject> {
                     if k == "identifier" { identifier = v as! String }
                     if k == "qualifier" { qualifier = v as? String }
@@ -155,6 +158,23 @@ class Action: NSObject, NSCoding, DictionaryBased, RuleBased {
                 self.segue = (identifier, qualifier)
             }
             
+            
+            if key == "textEntryTitle" {
+                self.textEntryTitle = value as? String
+            }
+            
+        }
+        
+        
+        // This checks boxData to see if an item revealed by the action might
+        // have already been find, and uses a rule to hide itself as a result
+        if let boxData = UserDefaults.standard.object(forKey: "boxData") {
+            if let _ = NSKeyedUnarchiver.unarchiveObject(with: boxData as! Data) as? Item {
+                for itemName in revealItems {
+                    let rule = Rule(name: itemName, type: Rule.RuleType.nopeDidStoreItem)
+                    self.rules += [rule]
+                }
+            }
         }
     }
 
@@ -206,52 +226,52 @@ class Action: NSObject, NSCoding, DictionaryBased, RuleBased {
     
     // MARK: ENCODING
     
-    func encodeWithCoder(coder: NSCoder) {
-        coder.encodeObject(self.name, forKey: "name")
+    public func encode(with coder: NSCoder) {
+        coder.encode(self.name, forKey: "name")
         
         if let result = self.result {
-            coder.encodeObject(result, forKey: "result")
+            coder.encode(result, forKey: "result")
         }
         
         if let roomChange = self.roomChange {
-            coder.encodeObject(roomChange, forKey: "roomChange")
+            coder.encode(roomChange, forKey: "roomChange")
         }
         
-        coder.encodeObject(self.rules, forKey: "rules")
-        coder.encodeInteger(self.timesPerformed, forKey: "timesPerformed")
+        coder.encode(self.rules, forKey: "rules")
+        coder.encode(self.timesPerformed, forKey: "timesPerformed")
         
-        coder.encodeBool(self.onceOnly, forKey: "onceOnly")
+        coder.encode(self.onceOnly, forKey: "onceOnly")
         
-        coder.encodeObject(self.revealItems, forKey: "revealItems")
-        coder.encodeObject(self.liberateItems, forKey: "liberateItems")
-        coder.encodeObject(self.addItems, forKey: "addItems")
-        coder.encodeObject(self.consumeItems, forKey: "consumeItems")
+        coder.encode(self.revealItems, forKey: "revealItems")
+        coder.encode(self.liberateItems, forKey: "liberateItems")
+        coder.encode(self.addItems, forKey: "addItems")
+        coder.encode(self.consumeItems, forKey: "consumeItems")
         
-        coder.encodeObject(self.spawnCharacters, forKey: "spawnCharacters")
-        coder.encodeObject(self.revealCharacters, forKey: "revealCharacters")
-        coder.encodeObject(self.removeCharacters, forKey: "removeCharacters")
+        coder.encode(self.spawnCharacters, forKey: "spawnCharacters")
+        coder.encode(self.revealCharacters, forKey: "revealCharacters")
+        coder.encode(self.removeCharacters, forKey: "removeCharacters")
         
         if let replaceAction = self.replaceAction {
-            coder.encodeObject(replaceAction, forKey: "replaceAction")
+            coder.encode(replaceAction, forKey: "replaceAction")
         }
         
         if let segue = self.segue {
-            coder.encodeObject(segue.identifier, forKey: "identifier")
+            coder.encode(segue.identifier, forKey: "identifier")
             if let qualifier = segue.qualifier {
-                coder.encodeObject(qualifier, forKey: "qualifier")
+                coder.encode(qualifier, forKey: "qualifier")
             }
         }
         
         if let moveCharacter = self.moveCharacter {
-            coder.encodeObject(moveCharacter.characterName, forKey: "characterName")
-            coder.encodeObject(moveCharacter.roomName, forKey: "roomName")
-            coder.encodeObject(moveCharacter.directionName, forKey: "directionName")
+            coder.encode(moveCharacter.characterName, forKey: "characterName")
+            coder.encode(moveCharacter.roomName, forKey: "roomName")
+            coder.encode(moveCharacter.directionName, forKey: "directionName")
         }
         
         if let triggerEvent = self.triggerEvent {
-            coder.encodeObject(triggerEvent.eventName, forKey: "eventName")
+            coder.encode(triggerEvent.eventName, forKey: "eventName")
             if let stageName = triggerEvent.stageName {
-                coder.encodeObject(stageName, forKey: "stageName")
+                coder.encode(stageName, forKey: "stageName")
             }
             
         }
@@ -261,52 +281,52 @@ class Action: NSObject, NSCoding, DictionaryBased, RuleBased {
     required convenience init?(coder decoder: NSCoder) {
         self.init()
         
-        self.name = decoder.decodeObjectForKey("name") as! String
-        if let result = decoder.decodeObjectForKey("result") as! String? {
+        self.name = decoder.decodeObject(forKey: "name") as! String
+        if let result = decoder.decodeObject(forKey: "result") as! String? {
             self.result = result
         }
-        if let roomChange = decoder.decodeObjectForKey("roomChange") as! String? {
+        if let roomChange = decoder.decodeObject(forKey: "roomChange") as! String? {
             self.roomChange = roomChange
         }
-        self.rules = decoder.decodeObjectForKey("rules") as! [Rule]
+        self.rules = decoder.decodeObject(forKey: "rules") as! [Rule]
         
-        self.timesPerformed = decoder.decodeIntegerForKey("timesPerformed")
-        self.onceOnly = decoder.decodeBoolForKey("onceOnly")
+        self.timesPerformed = decoder.decodeInteger(forKey: "timesPerformed")
+        self.onceOnly = decoder.decodeBool(forKey: "onceOnly")
         
-        self.revealItems = decoder.decodeObjectForKey("revealItems") as! [String]
-        self.liberateItems = decoder.decodeObjectForKey("liberateItems") as! [String]
-        self.addItems = decoder.decodeObjectForKey("addItems") as! [Item]
-        self.consumeItems = decoder.decodeObjectForKey("consumeItems") as! [String]
-        self.spawnCharacters = decoder.decodeObjectForKey("spawnCharacters") as! [Character]
-        self.revealCharacters = decoder.decodeObjectForKey("revealCharacters") as! [String]
-        self.removeCharacters = decoder.decodeObjectForKey("removeCharacters") as! [String]
-        if let replaceAction = decoder.decodeObjectForKey("replaceAction") as? Action {
+        self.revealItems = decoder.decodeObject(forKey: "revealItems") as! [String]
+        self.liberateItems = decoder.decodeObject(forKey: "liberateItems") as! [String]
+        self.addItems = decoder.decodeObject(forKey: "addItems") as! [Item]
+        self.consumeItems = decoder.decodeObject(forKey: "consumeItems") as! [String]
+        self.spawnCharacters = decoder.decodeObject(forKey: "spawnCharacters") as! [Character]
+        self.revealCharacters = decoder.decodeObject(forKey: "revealCharacters") as! [String]
+        self.removeCharacters = decoder.decodeObject(forKey: "removeCharacters") as! [String]
+        if let replaceAction = decoder.decodeObject(forKey: "replaceAction") as? Action {
             self.replaceAction = replaceAction
         }
-        if let identifier = decoder.decodeObjectForKey("identifier") as? String {
-            if let qualifier = decoder.decodeObjectForKey("qualifier") as? String {
+        if let identifier = decoder.decodeObject(forKey: "identifier") as? String {
+            if let qualifier = decoder.decodeObject(forKey: "qualifier") as? String {
                 self.segue = (identifier, qualifier)
             } else {
-                self.segue = (identifier, String?())
+                self.segue = (identifier, nil)
             }
         }
         
-        if let characterName = decoder.decodeObjectForKey("characterName") as? String {
+        if let characterName = decoder.decodeObject(forKey: "characterName") as? String {
             self.moveCharacter?.characterName = characterName
         }
-        if let roomName = decoder.decodeObjectForKey("roomName") as? String {
+        if let roomName = decoder.decodeObject(forKey: "roomName") as? String {
             self.moveCharacter?.roomName = roomName
         }
-        if let directionName = decoder.decodeObjectForKey("directionName") as? String {
+        if let directionName = decoder.decodeObject(forKey: "directionName") as? String {
             self.moveCharacter?.directionName = directionName
         }
 
         
-        if let eventName = decoder.decodeObjectForKey("eventName") as? String {
-            if let stageName = decoder.decodeObjectForKey("stageName") as? String {
+        if let eventName = decoder.decodeObject(forKey: "eventName") as? String {
+            if let stageName = decoder.decodeObject(forKey: "stageName") as? String {
                 self.triggerEvent = (eventName, stageName)
             } else {
-                self.triggerEvent = (eventName, String?())
+                self.triggerEvent = (eventName, nil)
             }
         }
     }

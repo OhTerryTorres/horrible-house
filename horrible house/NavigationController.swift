@@ -14,12 +14,10 @@ class NavigationController: UINavigationController {
         
         self.navigationBar.setStyle()
         self.navigationBar.titleTextAttributes = [ NSFontAttributeName: Font.titleFont! ]
-        self.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: .Default)
+        self.navigationBar.setBackgroundImage(UIImage(), for: .default)
         
         
-        if var frame = self.navigationItem.titleView?.frame {
-            //y724747
-            
+        if var frame = self.navigationItem.titleView?.frame {            
             
             frame.origin.x = 10
             self.navigationItem.titleView!.frame = frame

@@ -25,6 +25,27 @@ class ExplorationController: GameController {
         
     }
     
-    
+    @IBAction func backToGame(segue: UIStoryboardSegue) {
+        self.navigationController?.navigationBar.isHidden = false
+        
+        
+        // This toggles the flashback.
+        if self.house.inFlashback == true {
+            self.house = House(layout: House.LayoutOptions.b)
+            if let npcData = UserDefaults.standard.object(forKey: "npcData") {
+                self.house.npcs = (NSKeyedUnarchiver.unarchiveObject(with: npcData as! Data) as? [Character])!
+            }
+        } else {
+            self.house = House(layout: House.LayoutOptions.b)
+            self.house.inFlashback = true
+        }
+        
+        
+        
+        (UIApplication.shared.delegate as! AppDelegate).house = self.house
+        self.gameMode = GameMode.Exploration
+        self.viewDidLoad()
+        
+    }
 
 }

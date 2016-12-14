@@ -38,7 +38,7 @@ class Behavior: NSObject, NSCoding, RuleBased, DictionaryBased {
                     self.type = BehaviorType.PursuePlayer
                 }
             }
-            if key == "rules" { self.setRulesForArray(value as! [String]) }
+            if key == "rules" { self.setRulesForArray(array: value as! [String]) }
         }
     }
     
@@ -54,18 +54,18 @@ class Behavior: NSObject, NSCoding, RuleBased, DictionaryBased {
     
     // MARK: ENCODING
     
-    func encodeWithCoder(coder: NSCoder) {
-        coder.encodeObject(self.qualifier, forKey: "qualifier")
-        coder.encodeObject(self.type.rawValue, forKey: "type")
-        coder.encodeObject(self.rules, forKey: "rules")
+    public func encode(with coder: NSCoder) {
+        coder.encode(self.qualifier, forKey: "qualifier")
+        coder.encode(self.type.rawValue, forKey: "type")
+        coder.encode(self.rules, forKey: "rules")
     }
     
     required convenience init?(coder decoder: NSCoder) {
         self.init()
         
-        self.qualifier = decoder.decodeObjectForKey("qualifier") as! String
-        self.type = BehaviorType(rawValue: decoder.decodeObjectForKey("type") as! String)!
-        self.rules = decoder.decodeObjectForKey("rules") as! [Rule]
+        self.qualifier = decoder.decodeObject(forKey: "qualifier") as! String
+        self.type = BehaviorType(rawValue: decoder.decodeObject(forKey: "type") as! String)!
+        self.rules = decoder.decodeObject(forKey: "rules") as! [Rule]
         
     }
 

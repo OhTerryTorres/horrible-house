@@ -46,7 +46,6 @@
 		CE3C3D001CA9871F00BA551F /* black5.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = CE3C3CF41CA9871F00BA551F /* black5.mp3 */; };
 		CE3C3D011CA9871F00BA551F /* white7.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = CE3C3CF51CA9871F00BA551F /* white7.mp3 */; };
 		CE3C3D031CA98B9D00BA551F /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE3C3D021CA98B9D00BA551F /* AudioToolbox.framework */; };
-		CE3C3D051CA9C5FC00BA551F /* Characters.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE3C3D041CA9C5FC00BA551F /* Characters.plist */; };
 		CE49423D1CBD3F07009F42DF /* SuperButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE49423C1CBD3F07009F42DF /* SuperButton.swift */; };
 		CE50D0C81C9D91AC007AF0E2 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE50D0C71C9D91AC007AF0E2 /* Event.swift */; };
 		CE50D0CA1C9DA8B2007AF0E2 /* Events.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE50D0C91C9DA8B2007AF0E2 /* Events.plist */; };
@@ -135,7 +134,6 @@
 		CE3C3CF41CA9871F00BA551F /* black5.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = black5.mp3; path = sound/black5.mp3; sourceTree = SOURCE_ROOT; };
 		CE3C3CF51CA9871F00BA551F /* white7.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = white7.mp3; path = sound/white7.mp3; sourceTree = SOURCE_ROOT; };
 		CE3C3D021CA98B9D00BA551F /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
-		CE3C3D041CA9C5FC00BA551F /* Characters.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Characters.plist; sourceTree = "<group>"; };
 		CE49423C1CBD3F07009F42DF /* SuperButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuperButton.swift; sourceTree = "<group>"; };
 		CE50D0C71C9D91AC007AF0E2 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		CE50D0C91C9DA8B2007AF0E2 /* Events.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Events.plist; sourceTree = "<group>"; };
@@ -218,13 +216,12 @@
 				CE2F7A9C1CA2DF3800A3025D /* Protocols */,
 				CE2F7A9D1CA2DF5600A3025D /* GameObjects */,
 				CE2F7A9E1CA2DF6F00A3025D /* ViewControllers */,
-				CE04787A1C6C10FD008E23E1 /* Main.storyboard */,
 				CE3C3CE71CA9863900BA551F /* Media.xcassets */,
+				CE04787A1C6C10FD008E23E1 /* Main.storyboard */,
 				CE3C3CE91CA9865F00BA551F /* Sounds */,
 				CE0478821C6C10FD008E23E1 /* LaunchScreen.storyboard */,
 				CE0478A81C6C145A008E23E1 /* Rooms.plist */,
 				CE50D0F61CA1C0D6007AF0E2 /* NecessaryRooms.plist */,
-				CE3C3D041CA9C5FC00BA551F /* Characters.plist */,
 				CE50D0C91C9DA8B2007AF0E2 /* Events.plist */,
 				CEB91C421CD97A5200249297 /* Skull.plist */,
 				CE0478851C6C10FD008E23E1 /* Info.plist */,
@@ -403,13 +400,19 @@
 				TargetAttributes = {
 					CE0478721C6C10FC008E23E1 = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = 4Q996R58Y9;
+						LastSwiftMigration = 0800;
 					};
 					CE0478891C6C10FD008E23E1 = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = 4Q996R58Y9;
+						LastSwiftMigration = 0800;
 						TestTargetID = CE0478721C6C10FC008E23E1;
 					};
 					CE0478941C6C10FD008E23E1 = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = 4Q996R58Y9;
+						LastSwiftMigration = 0800;
 						TestTargetID = CE0478721C6C10FC008E23E1;
 					};
 				};
@@ -454,7 +457,6 @@
 				CE0478841C6C10FD008E23E1 /* LaunchScreen.storyboard in Resources */,
 				CE0478A91C6C145A008E23E1 /* Rooms.plist in Resources */,
 				CE3C3CFD1CA9871F00BA551F /* white5.mp3 in Resources */,
-				CE3C3D051CA9C5FC00BA551F /* Characters.plist in Resources */,
 				CE3C3CF71CA9871F00BA551F /* black1.mp3 in Resources */,
 				CE3C3CFB1CA9871F00BA551F /* white4.mp3 in Resources */,
 				CE3C3CE81CA9863900BA551F /* Media.xcassets in Resources */,
@@ -594,9 +596,11 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Terry Torres (98GP2FZ9DQ)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 4Q996R58Y9;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -639,9 +643,11 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Terry Torres (98GP2FZ9DQ)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 4Q996R58Y9;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -662,20 +668,25 @@
 		CE04789F1C6C10FD008E23E1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEVELOPMENT_TEAM = 4Q996R58Y9;
 				INFOPLIST_FILE = "horrible house/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.terry-torres.horrible-house";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
 		CE0478A01C6C10FD008E23E1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Terence Torres (4Q996R58Y9)";
+				DEVELOPMENT_TEAM = 4Q996R58Y9;
 				INFOPLIST_FILE = "horrible house/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.terry-torres.horrible-house";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -683,10 +694,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "horrible houseTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.terry-torres.horrible-houseTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/horrible house.app/horrible house";
 			};
 			name = Debug;
@@ -695,10 +708,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				INFOPLIST_FILE = "horrible houseTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.terry-torres.horrible-houseTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/horrible house.app/horrible house";
 			};
 			name = Release;
@@ -711,6 +726,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.terry-torres.horrible-houseUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = "horrible house";
 				USES_XCTRUNNER = YES;
 			};
@@ -724,6 +740,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.terry-torres.horrible-houseUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = "horrible house";
 				USES_XCTRUNNER = YES;
 			};

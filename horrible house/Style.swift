@@ -11,16 +11,16 @@ import UIKit
 
 struct Color {
     
-    static let backgroundColor = UIColor.redColor()
-    static let foregroundColor = UIColor.blackColor()
-    static let specialColor = UIColor.whiteColor()
+    static let backgroundColor = UIColor.red
+    static let foregroundColor = UIColor.black
+    static let specialColor = UIColor.white
     
-    static let textRoomColor = UIColor.whiteColor()
-    static let textItemColor = UIColor.whiteColor()
-    static let textSpecialColor = UIColor.blueColor()
+    static let textRoomColor = UIColor.white
+    static let textItemColor = UIColor.white
+    static let textSpecialColor = UIColor.white
     
-    static let mapCurrentColor = UIColor.blueColor()
-    static let mapPreviousColor = UIColor.cyanColor()
+    static let mapCurrentColor = UIColor.red
+    static let mapPreviousColor = UIColor.red
 }
 
 struct Font {
@@ -28,10 +28,10 @@ struct Font {
     static let detailFont = UIFont(name: "HelveticaNeue-Light", size: 12)
     static let titleFont = UIFont(name: "HelveticaNeue-Medium", size: 30)
     static let mainTitleFont = UIFont(name: "HelveticaNeue-Medium", size: 40)
-    static let headerFont = UIFont.boldSystemFontOfSize(17)
+    static let headerFont = UIFont.boldSystemFont(ofSize: 17)
     // static let basic = UIFont.systemFontOfSize(UIFont.systemFontSize())
     
-    static let phoneFont = UIFont.systemFontOfSize(40)
+    static let phoneFont = UIFont.systemFont(ofSize: 40)
 }
 
 extension UIView {
@@ -42,6 +42,17 @@ extension UIView {
     func setStyleInverse() {
         self.backgroundColor = Color.foregroundColor
         self.tintColor = Color.backgroundColor
+    }
+}
+
+extension UILabel {
+    override func setStyle() {
+        self.textColor = Color.foregroundColor
+        self.font = Font.basicFont
+    }
+    override func setStyleInverse() {
+        self.textColor = Color.backgroundColor
+        self.font = Font.basicFont
     }
 }
 

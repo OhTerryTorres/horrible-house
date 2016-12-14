@@ -22,44 +22,50 @@ class TitleViewController: UIViewController {
         
         self.view.setStyle()
         self.titleLabel.font = Font.mainTitleFont
-        self.startGameButton.titleLabel?.font = Font.basicFont
-        self.restartGameButton.titleLabel?.font = Font.basicFont
+        self.startGameButton.titleLabel!.font = Font.basicFont
+        self.restartGameButton.titleLabel!.font = Font.basicFont
         
+        
+        let s = String(translate: "Hello, $player")
+        print("\(s)")
     }
     
-    override func viewWillAppear(animated: Bool) {
-        if let _ = NSUserDefaults.standardUserDefaults().objectForKey("houseData") {
-            self.startGameButton.titleLabel?.text = "RETURN TO THE HOUSE"
+    override func viewWillAppear(_ animated: Bool) {
+        if let _ = UserDefaults.standard.object(forKey: "houseData") {
+            self.startGameButton.setTitle("RETURN TO THE HOUSE", for: UIControlState.normal)
         } else {
-            self.restartGameButton.hidden = true
+            self.restartGameButton.isHidden = true
         }
     }
 
     @IBAction func startGame(sender: AnyObject) {
-        (UIApplication.sharedApplication().delegate as! AppDelegate).house.gameClock.pauseResume()
-        if let houseData = NSUserDefaults.standardUserDefaults().objectForKey("houseData") {
-            self.house = NSKeyedUnarchiver.unarchiveObjectWithData(houseData as! NSData) as? House
-            (UIApplication.sharedApplication().delegate as! AppDelegate).house = self.house!
-            performSegueWithIdentifier("segue", sender: self)
+        if let houseData = UserDefaults.standard
+            .object(forKey: "houseData") {
+            self.house = NSKeyedUnarchiver.unarchiveObject(with: (houseData as! NSData) as Data) as? House
+            (UIApplication.shared.delegate as! AppDelegate).house = self.house!
+            performSegue(withIdentifier: "segue", sender: self)
         } else {
-            self.restartGame(self)
+            self.restartGame(sender: self)
         }
     }
 
     @IBAction func restartGame(sender: AnyObject) {
-        NSUserDefaults.standardUserDefaults().setObject(nil, forKey: "houseData")
-        self.house = (UIApplication.sharedApplication().delegate as! AppDelegate).house
-        performSegueWithIdentifier("segue", sender: self)
+        UserDefaults.standard.set(nil, forKey: "houseData")
+        self.house = (UIApplication.shared.delegate as! AppDelegate).house
+        performSegue(withIdentifier: "segue", sender: self)
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let tbc = segue.destinationViewController as! TabBarController
+    func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let tbc = segue.destination as! TabBarController
         let nvc = tbc.viewControllers![0] as! UINavigationController
         let exc = nvc.viewControllers[0] as! ExplorationController
         exc.house = self.house!
+
     }
     
+    /*
     @IBAction func backToTitle(segue: UIStoryboardSegue) {
        (UIApplication.sharedApplication().delegate as! AppDelegate).house = House(layout: House.LayoutOptions.b)
     }
+    */
 }

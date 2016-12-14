@@ -18,7 +18,7 @@ class Detail : NSObject, NSCoding, DictionaryBased, RuleBased {
         super.init()
         for (key, value) in withDictionary {
             if key == "explanation" { self.explanation = value as! String }
-            if key == "rules" { self.setRulesForArray(value as! [String]) }
+            if key == "rules" { self.setRulesForArray(array: value as! [String]) }
         }
     }
     
@@ -33,9 +33,9 @@ class Detail : NSObject, NSCoding, DictionaryBased, RuleBased {
     
     // MARK: ENCODING
     
-    func encodeWithCoder(coder: NSCoder) {
-        coder.encodeObject(self.explanation, forKey: "explanation")
-        coder.encodeObject(self.rules, forKey: "rules")
+    public func encode(with coder: NSCoder) {
+        coder.encode(self.explanation, forKey: "explanation")
+        coder.encode(self.rules, forKey: "rules")
         
         
     }
@@ -43,8 +43,8 @@ class Detail : NSObject, NSCoding, DictionaryBased, RuleBased {
     required convenience init?(coder decoder: NSCoder) {
         self.init()
         
-        self.explanation = decoder.decodeObjectForKey("explanation") as! String
-        self.rules = decoder.decodeObjectForKey("rules") as! [Rule]
+        self.explanation = decoder.decodeObject(forKey: "explanation") as! String
+        self.rules = decoder.decodeObject(forKey: "rules") as! [Rule]
 
     }
 }

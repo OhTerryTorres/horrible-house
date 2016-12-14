@@ -13,6 +13,8 @@ import UIKit
 // The skull has Ideas, which are basically Details but with more sass.
 
 class Idea: NSObject, NSCoding {
+    
+    
     var detail = Detail()
     var isHighPriority = false
     
@@ -34,36 +36,43 @@ class Idea: NSObject, NSCoding {
     
     // MARK: ENCODING
     
-    func encodeWithCoder(coder: NSCoder) {
+    public func encode(with coder: NSCoder) {
         
-        coder.encodeObject(self.detail, forKey: "detail")
-        coder.encodeBool(self.isHighPriority, forKey: "isHighPriority")
+        coder.encode(self.detail, forKey: "detail")
+        coder.encode(self.isHighPriority, forKey: "isHighPriority")
         
     }
     
     required convenience init?(coder decoder: NSCoder) {
         self.init()
-        self.detail = decoder.decodeObjectForKey("detail") as! Detail
-        self.isHighPriority = decoder.decodeBoolForKey("isHighPriority")
+        self.detail = decoder.decodeObject(forKey: "detail") as! Detail
+        self.isHighPriority = decoder.decodeBool(forKey: "isHighPriority")
     }
     
 }
 
 class SkullController: UIViewController {
     
-    var house : House = (UIApplication.sharedApplication().delegate as! AppDelegate).house
-    var skull : Skull = (UIApplication.sharedApplication().delegate as! AppDelegate).house.skull
+    var house : House = (UIApplication.shared.delegate as! AppDelegate).house
+    var skull : Skull = (UIApplication.shared.delegate as! AppDelegate).house.skull
     @IBOutlet var ideaLabel: UILabel!
+    @IBOutlet var button: UIButton!
+    @IBOutlet var skullView: UIImageView!
     
     override func viewDidLoad() {
         self.view.setStyleInverse()
+        self.ideaLabel.setStyleInverse()
+        self.button.titleLabel!.setStyleInverse()
+        self.button.tintColor = Color.specialColor
+        
+        self.ideaLabel.text = ""
         
         for idea in self.skull.ideasToSayAloud {
             if idea.detail.isFollowingTheRules() == false {
                 print("SKULLCONTROLLER – It turns out \(idea.detail.explanation) is not following the rules")
-                if let index = self.skull.ideasToSayAloud.indexOf({$0.detail.explanation == idea.detail.explanation}) {
+                if let index = self.skull.ideasToSayAloud.index(where: {$0.detail.explanation == idea.detail.explanation}) {
                     self.skull.ideas += [idea]
-                    self.skull.ideasToSayAloud.removeAtIndex(index)
+                    self.skull.ideasToSayAloud.remove(at: index)
                 }
             }
         }
@@ -79,32 +88,61 @@ class SkullController: UIViewController {
     
     @IBAction func displayIdea(sender: AnyObject) {
         if self.skull.ideasToSayAloud.count > 0 {
+            
             let index = self.skull.ideasToSayAloud.count - 1
+            let idea = self.skull.ideasToSayAloud[index]
             
-            let string = "\(self.skull.ideasToSayAloud[index].detail.explanation)"
-            self.ideaLabel.setTextWithTypeAnimation(string)
-            self.ideaLabel.font = Font.basicFont
-            
-            print("removing from ideasToSayAloud: \(self.skull.ideasToSayAloud[index].detail.explanation)")
-            
-            self.skull.ideasToSayAloud.removeAtIndex(index)
-        } else {
-            self.ideaLabel.text = ""
-        }
-        
+            if idea.detail.isFollowingTheRules() {
+                self.animateSkull(withIdea: idea)
+                
+                let string = "\(idea.detail.explanation)"
+                self.ideaLabel.setTextWithTypeAnimation(typedText: string)
+                
+                
+                print("removing from ideasToSayAloud: \(idea.detail.explanation)")
+                
+                self.skull.ideasToSayAloud.remove(at: index)
+            } else { self.ideaLabel.text = "" }
+        } else { self.ideaLabel.text = "" }
     }
     
     
-    override func viewWillAppear(animated: Bool) {
-        self.house = (UIApplication.sharedApplication().delegate as! AppDelegate).house
-        self.skull = (UIApplication.sharedApplication().delegate as! AppDelegate).house.skull
+    func animateSkull(withIdea idea:Idea) {
+        //add images to the array
+        let skullClose = UIImage(named:"skullClose")!
+        let skullOpen = UIImage(named:"skullOpen")!
+        let imagesListArray = [skullOpen, skullClose]
+        
+        self.skullView.animationImages = imagesListArray;
+        self.skullView.animationDuration = 0.5
+        self.skullView.startAnimating()
+        let interval = Double(Double(idea.detail.explanation.characters.count) * 0.04 - (Double(idea.detail.explanation.characters.count) * 0.01))
+
+        _ = Timer.scheduledTimer(timeInterval: interval, target:self, selector: #selector(self.animateSkullStop), userInfo: nil, repeats: false)
+        self.button.isUserInteractionEnabled = false
+    }
+    
+    func animateSkullStop() {
+        self.skullView.stopAnimating()
+        self.button.isUserInteractionEnabled = true
+    }
+    
+    func viewWillAppear(animated: Bool) {
+        if let nc = self.navigationController {
+            nc.navigationBar.isHidden = true
+        }
+        self.house = (UIApplication.shared.delegate as! AppDelegate).house
+        self.skull = (UIApplication.shared.delegate as! AppDelegate).house.skull
         
 
     }
     
-    override func viewWillDisappear(animated: Bool) {
-        (UIApplication.sharedApplication().delegate as! AppDelegate).house = self.house
-        (UIApplication.sharedApplication().delegate as! AppDelegate).house.skull = self.skull
+    func viewWillDisappear(animated: Bool) {
+        if let nc = self.navigationController {
+            nc.navigationBar.isHidden = false
+        }
+        (UIApplication.shared.delegate as! AppDelegate).house = self.house
+        (UIApplication.shared.delegate as! AppDelegate).house.skull = self.skull
     }
 
 }

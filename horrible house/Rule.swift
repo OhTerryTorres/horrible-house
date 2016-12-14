@@ -24,6 +24,9 @@ class Rule: NSObject, NSCoding {
         static let completedEvent = "completedEvent"
         static let inRoomWithCharacter = "inRoomWithCharacter"
         static let timePassed = "timePassed" // \timePassed12:00
+        static let turnsPassed = "turnsPassed"
+        static let didStoreItem = "didStoreItem"
+        static let occupyingRoom = "occupyingRoom"
         
         // Checks to see if the player has NOT done something
         static let nopeHasItem = "nopeHasItem"
@@ -32,6 +35,8 @@ class Rule: NSObject, NSCoding {
         static let nopeCompletedEvent = "nopeCompletedEvent"
         static let nopeInRoomWithCharacter = "nopeInRoomWithCharacter"
         static let nopeTimePassed = "nopeTimePassed"
+        static let nopeTurnsPassed = "nopeTurnsPassed"
+        static let nopeDidStoreItem = "nopeDidStoreItem"
         
         // These are rules that don't have a negative yet
         static let roomInDirection = "roomInDirection"
@@ -47,60 +52,81 @@ class Rule: NSObject, NSCoding {
         
         self.name = name
         
-        if self.name.rangeOfString("\\nopeHas") != nil {
-            type = RuleType.nopeHasItem
-            self.name = self.name.stringByReplacingOccurrencesOfString("\\nopeHas", withString: "")
+        if self.name.range(of: "\\nopeHas") != nil {
+            self.type = RuleType.nopeHasItem
+            self.name = self.name.replacingOccurrences(of: "\\nopeHas", with: "")
         }
-        if self.name.rangeOfString("\\nopeMet") != nil {
+        if self.name.range(of: "\\nopeMet") != nil {
             type = RuleType.nopeMetCharacter
-            self.name = self.name.stringByReplacingOccurrencesOfString("\\nopeMet", withString: "")
+            self.name = self.name.replacingOccurrences(of: "\\nopeMet", with: "")
         }
-        if self.name.rangeOfString("\\nopeEntered") != nil {
+        if self.name.range(of: "\\nopeEntered") != nil {
             type = RuleType.nopeEnteredRoom
-            self.name = self.name.stringByReplacingOccurrencesOfString("\\nopeEntered", withString: "")
+            self.name = self.name.replacingOccurrences(of: "\\nopeEntered", with: "")
         }
-        if self.name.rangeOfString("\\nopeCompleted") != nil {
+        if self.name.range(of: "\\nopeCompleted") != nil {
             type = RuleType.nopeCompletedEvent
-            self.name = self.name.stringByReplacingOccurrencesOfString("\\nopeCompleted", withString: "")
+            self.name = self.name.replacingOccurrences(of: "\\nopeCompleted", with: "")
         }
-        if self.name.rangeOfString("\\nopeInRoomWith") != nil {
+        if self.name.range(of: "\\nopeInRoomWith") != nil {
             type = RuleType.nopeInRoomWithCharacter
-            self.name = self.name.stringByReplacingOccurrencesOfString("\\nopeInRoomWith", withString: "")
+            self.name = self.name.replacingOccurrences(of: "\\nopeInRoomWith", with: "")
         }
-        if self.name.rangeOfString("\\nopeTimePassed") != nil {
+        if self.name.range(of: "\\nopeTimePassed") != nil {
             type = RuleType.nopeTimePassed
-            self.name = self.name.stringByReplacingOccurrencesOfString("\\nopeTimePassed", withString: "")
+            self.name = self.name.replacingOccurrences(of: "\\nopeTimePassed", with: "")
+        }
+        if self.name.range(of: "\\nopeTurnsPassed") != nil {
+            type = RuleType.nopeTurnsPassed
+            self.name = self.name.replacingOccurrences(of: "\\nopeTurnsPassed", with: "")
+        }
+        if self.name.range(of: "\\nopeDidStore") != nil {
+            type = RuleType.nopeDidStoreItem
+            self.name = self.name.replacingOccurrences(of: "\\nopeDidStore", with: "")
         }
 
         
-        if self.name.rangeOfString("\\has") != nil {
+        if self.name.range(of: "\\has") != nil {
             type = RuleType.hasItem
-            self.name = self.name.stringByReplacingOccurrencesOfString("\\has", withString: "")
+            self.name = self.name.replacingOccurrences(of: "\\has", with: "")
         }
-        if self.name.rangeOfString("\\met") != nil {
+        if self.name.range(of: "\\met") != nil {
             type = RuleType.metCharacter
-            self.name = self.name.stringByReplacingOccurrencesOfString("\\met", withString: "")
+            self.name = self.name.replacingOccurrences(of: "\\met", with: "")
         }
-        if self.name.rangeOfString("\\entered") != nil {
+        if self.name.range(of: "\\entered") != nil {
             type = RuleType.enteredRoom
-            self.name = self.name.stringByReplacingOccurrencesOfString("\\entered", withString: "")
+            self.name = self.name.replacingOccurrences(of: "\\entered", with: "")
         }
-        if self.name.rangeOfString("\\completed") != nil {
+        if self.name.range(of: "\\completed") != nil {
             type = RuleType.completedEvent
-            self.name = self.name.stringByReplacingOccurrencesOfString("\\completed", withString: "")
+            self.name = self.name.replacingOccurrences(of: "\\completed", with: "")
         }
-        if self.name.rangeOfString("\\inRoomWith") != nil {
+        if self.name.range(of: "\\inRoomWith") != nil {
             type = RuleType.inRoomWithCharacter
-            self.name = self.name.stringByReplacingOccurrencesOfString("\\inRoomWith", withString: "")
+            self.name = self.name.replacingOccurrences(of: "\\inRoomWith", with: "")
         }
-        if self.name.rangeOfString("\\timePassed") != nil {
+        if self.name.range(of: "\\timePassed") != nil {
             type = RuleType.timePassed
-            self.name = self.name.stringByReplacingOccurrencesOfString("\\timePassed", withString: "")
+            self.name = self.name.replacingOccurrences(of: "\\timePassed", with: "")
+        }
+        if self.name.range(of: "\\turnsPassed") != nil {
+            type = RuleType.turnsPassed
+            self.name = self.name.replacingOccurrences(of: "\\turnsPassed", with: "")
+        }
+        if self.name.range(of: "\\didStore") != nil {
+            type = RuleType.didStoreItem
+            self.name = self.name.replacingOccurrences(of: "\\didStore", with: "")
         }
         
-        if self.name.rangeOfString("\\roomInDirection") != nil {
+        if self.name.range(of: "\\occupying") != nil {
+            type = RuleType.occupyingRoom
+            self.name = self.name.replacingOccurrences(of: "\\occupying", with: "")
+        }
+        
+        if self.name.range(of: "\\roomInDirection") != nil {
             type = RuleType.roomInDirection
-            self.name = self.name.stringByReplacingOccurrencesOfString("\\timePassed", withString: "")
+            self.name = self.name.replacingOccurrences(of: "\\timePassed", with: "")
         }
         
     }
@@ -116,16 +142,16 @@ class Rule: NSObject, NSCoding {
     
     // MARK: ENCODING
     
-    func encodeWithCoder(coder: NSCoder) {
-        coder.encodeObject(self.name, forKey: "name")
-        coder.encodeObject(self.type, forKey: "type")
+    public func encode(with coder: NSCoder) {
+        coder.encode(self.name, forKey: "name")
+        coder.encode(self.type, forKey: "type")
     }
     
     required convenience init?(coder decoder: NSCoder) {
         self.init()
         
-        self.name = decoder.decodeObjectForKey("name") as! String
-        self.type = decoder.decodeObjectForKey("type") as! String
+        self.name = decoder.decodeObject(forKey: "name") as! String
+        self.type = decoder.decodeObject(forKey: "type") as! String
 
     }
 

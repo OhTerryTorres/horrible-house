@@ -23,26 +23,26 @@ extension UILabel {
         var mutableStringArray = [NSMutableAttributedString]()
         var rangeAndTagArray = [(range : NSRange, tag : String)]()
         
-        while str.rangeOfString("}") != nil {
+        while str.range(of: "}") != nil {
             
             
-            let tagStartStartRange = str.rangeOfString("{[")
-            let tagStartEndRange = str.rangeOfString("]")
+            let tagStartStartRange = str.range(of: "{[")
+            let tagStartEndRange = str.range(of: "]")
             
-            let tag = str.substringWithRange(Range<String.Index>(start: tagStartStartRange!.endIndex, end: tagStartEndRange!.startIndex))
+            let tag = str.substring(with: tagStartStartRange!.upperBound..<tagStartEndRange!.lowerBound)
             
-            let tagStartRange = Range<String.Index>(start: tagStartStartRange!.startIndex, end: tagStartEndRange!.endIndex)
+            let tagStartRange = tagStartStartRange!.lowerBound..<tagStartEndRange!.upperBound
             
-            let tagEndRange = str.rangeOfString("}")
+            let tagEndRange = str.range(of: "}")
             
-            var newString = str.stringByReplacingCharactersInRange(tagEndRange!, withString: "")
-            newString = newString.stringByReplacingCharactersInRange(tagStartRange, withString: "")
+            var newString = str.replacingCharacters(in: tagEndRange!, with: "")
+            newString = newString.replacingCharacters(in: tagStartRange, with: "")
             
-            var b = str.stringByReplacingCharactersInRange(Range<String.Index>(start: tagEndRange!.startIndex, end: str.endIndex), withString: "")
+            var b = str.replacingCharacters(in: tagEndRange!.lowerBound..<str.endIndex, with: "")
 
-            b = b.stringByReplacingCharactersInRange(Range<String.Index>(start: str.startIndex, end: tagStartRange.endIndex), withString: "")
+            b = b.replacingCharacters(in: str.startIndex..<tagStartRange.upperBound, with: "")
             
-            let a = newString.stringByReplacingCharactersInRange(Range<String.Index>(start: tagStartRange.startIndex, end: newString.endIndex), withString: "")
+            let a = newString.replacingCharacters(in: tagStartRange.lowerBound..<newString.endIndex, with: "")
             
             str = newString
             
@@ -56,7 +56,7 @@ extension UILabel {
             /// then apply new attributes using each of those ranges.
             
             let mutableString = NSMutableAttributedString(string: newString)
-            mutableString.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: affectedNSRange)
+            mutableString.addAttribute(NSForegroundColorAttributeName, value: UIColor.red, range: affectedNSRange)
             
             mutableStringArray += [mutableString]
             
@@ -68,7 +68,7 @@ extension UILabel {
         let newMutableString = NSMutableAttributedString(string: str)
         
         for (range,tag) in rangeAndTagArray {
-            newMutableString.addAttribute(NSForegroundColorAttributeName, value: textColorForTag(tag), range: range)
+            newMutableString.addAttribute(NSForegroundColorAttributeName, value: textColorForTag(tag: tag), range: range)
         }
         
         newMutableString.addAttributes([ NSFontAttributeName: Font.basicFont!], range: NSRange(location:0, length:newMutableString.length))
@@ -106,34 +106,81 @@ extension UILabel {
         
     }
     
-    
+    // ***
     func setTextWithTypeAnimation(typedText: String) {
         self.text = ""
-        dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0)) {
+        DispatchQueue.global(qos: .background).async {
             for character in typedText.characters {
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     self.text = self.text! + String(character)
                 }
-                NSThread.sleepForTimeInterval(0.02)
+                sleep(UInt32(0.02))
             }
         }
     }
     
     func textColorForTag(tag: String) -> UIColor {
-        var textColor = UIColor.blackColor()
+        var textColor = UIColor.black
         
-        if (tag.rangeOfString("room") != nil) {
+        if (tag.range(of: "room") != nil) {
             textColor = Color.textRoomColor
         }
-        if (tag.rangeOfString("item") != nil) {
+        if (tag.range(of: "item") != nil) {
             textColor = Color.textItemColor
         }
-        if (tag.rangeOfString("special") != nil) {
+        if (tag.range(of: "special") != nil) {
             textColor = Color.textSpecialColor
         }
         
         return textColor
     }
     
+    
+}
+
+extension String {
+    
+    func contains(s: String) -> Bool
+    {
+        return self.range(of: s) != nil ? true : false
+    }
+    
+    func replace(target: String, withString: String) -> String
+    {
+        return self.replacingOccurrences(of: target, with: withString, options: String.CompareOptions.literal, range: nil)
+    }
+    
+    
+    init?(translate: String) {
+        self = translate
+        var s = translate
+        for (key, value) in dictFromTextFile() {
+            s = s.replace(target: key, withString: value)
+        }
+        
+        self = s
+    }
+    
+    func dictFromTextFile() -> [String:String] {
+        var textFile = ""
+        let file = "file.txt"
+        if let dirs : [String] = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.allDomainsMask, true) {
+            let dir = dirs[0] //documents directory
+            let path = dir + file
+            
+            //writing
+            do { try textFile = String(contentsOfFile: path, encoding: String.Encoding.utf8) }
+            catch { }
+            
+        }
+        
+        var dict : [String:String] = [:]
+        let textLines = textFile.components(separatedBy: NSCharacterSet.newlines)
+        for textItem in textLines {
+            dict[textItem.components(separatedBy:":")[0]] = textItem.components(separatedBy:":")[1]
+        }
+        
+        return dict
+    }
     
 }

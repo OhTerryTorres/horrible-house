@@ -5,9 +5,9 @@
 	<key>5</key>
 	<dict>
 		<key>name</key>
-		<string>Second Floor Landing</string>
+		<string>2nd Floor Landing</string>
 		<key>explanation</key>
-		<string>The top of the staircase that leads down to the ground floor.</string>
+		<string>Stairs leading down to the first floor are here.</string>
 		<key>actions</key>
 		<array/>
 	</dict>
@@ -49,10 +49,13 @@
 			<dict>
 				<key>name</key>
 				<string>Leave</string>
-				<key>result</key>
-				<string>Okay, so long.</string>
-				<key>roomChange</key>
-				<string></string>
+				<key>segue</key>
+				<dict>
+					<key>identifier</key>
+					<string>gameOver</string>
+					<key>qualifier</key>
+					<string>You put a hole in the door and climbed through it. Goodbye!</string>
+				</dict>
 				<key>rules</key>
 				<array>
 					<string>\hasHole</string>
@@ -110,6 +113,24 @@
 			</dict>
 			<dict>
 				<key>name</key>
+				<string>Mirror</string>
+				<key>explanation</key>
+				<string>A portrait-sized mirror with a gilded frame hangs on the other wall.</string>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Look in the mirror</string>
+						<key>triggerEvent</key>
+						<dict>
+							<key>eventName</key>
+							<string>The Mirror</string>
+						</dict>
+					</dict>
+				</array>
+			</dict>
+			<dict>
+				<key>name</key>
 				<string>Map</string>
 				<key>inventoryDescription</key>
 				<string>A map of the house.</string>
@@ -142,7 +163,7 @@
 				<key>explanation</key>
 				<string>There&apos;s a butterfly net lying on the floor.</string>
 				<key>inventoryDescription</key>
-				<string>A butterfly net with a long handle</string>
+				<string>A butterfly net with a long handle.</string>
 				<key>actions</key>
 				<array>
 					<dict>
@@ -184,7 +205,16 @@ Got {[item]Huge Bat}.</string>
 				<key>inventoryDescription</key>
 				<string>It&apos;s just a box.</string>
 				<key>maxCapacity</key>
-				<integer>99</integer>
+				<integer>20</integer>
+				<key>items</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Handwritten Note</string>
+						<key>inventoryDescription</key>
+						<string>&quot;Put things in me for later.&quot;</string>
+					</dict>
+				</array>
 			</dict>
 		</array>
 	</dict>

@@ -1,3 +1,4 @@
+
 //
 //  ContainerController.swift
 //  horrible house
@@ -12,12 +13,13 @@ class ContainerController: UIViewController {
     
     var container = Item()
 
-    var house : House = (UIApplication.sharedApplication().delegate as! AppDelegate).house
+    var house : House = (UIApplication.shared.delegate as! AppDelegate).house
     
     @IBOutlet var tableViewContainer: UITableView!
     @IBOutlet var tableViewInventory: UITableView!
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath:
+        IndexPath) -> UITableViewCell {
         
         var items : [Item] = []
         var identifier = ""
@@ -34,7 +36,7 @@ class ContainerController: UIViewController {
         
         let item = items[indexPath.row]
         
-        let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
         cell.setStyle()
         cell.textLabel!.numberOfLines = 0
         cell.textLabel?.text = item.name
@@ -58,14 +60,14 @@ class ContainerController: UIViewController {
         let item = items[indexPath.row]
         
         if tableView == self.tableViewContainer {
-            self.house.player.addItemToItems(item)
+            self.house.player.addItemToItems(item: item)
             self.container.removeItemFromItems(withName: item.name)
-            self.endCookingItemInOven(item)
+            self.endCookingItemInOven(item: item)
         }
         if tableView == self.tableViewInventory {
-            self.container.addItemToItems(item)
+            self.container.addItemToItems(item: item)
             self.house.player.removeItemFromItems(withName: item.name)
-            self.startCookingItemInOven(item)
+            self.startCookingItemInOven(item: item)
         }
         self.tableViewContainer.reloadData()
         self.tableViewInventory.reloadData()
@@ -102,9 +104,17 @@ class ContainerController: UIViewController {
         }
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         self.tableViewContainer.reloadData()
         self.tableViewInventory.reloadData()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        // This allows the note to set a new safe box.
+        if let _ = self.container.items.index(where: {$0.name == "Handwritten Note"}) {
+            self.house.safeBox = self.container
+        }
+        
     }
     
     
@@ -112,7 +122,7 @@ class ContainerController: UIViewController {
         var string = ""
         
         if tableView == self.tableViewContainer {
-            string = self.container.name.uppercaseString
+            string = self.container.name.uppercased()
         }
         if tableView == self.tableViewInventory {
             string = "INVENTORY"

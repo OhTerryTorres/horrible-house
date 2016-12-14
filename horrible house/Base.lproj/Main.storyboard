@@ -19,6 +19,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <segue destination="Z4t-PH-kwd" kind="show" identifier="event" id="mlr-eJ-aA2"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tjN-n1-snA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -139,15 +142,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lzi-ig-5Wy">
-                                <rect key="frame" x="46" y="75" width="193" height="93"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="skullClose" translatesAutoresizingMaskIntoConstraints="NO" id="u7r-2U-LOg">
+                                <rect key="frame" x="46" y="334" width="202" height="132"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lzi-ig-5Wy">
+                                <rect key="frame" x="46" y="75" width="229" height="187"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7da-so-j5G">
-                                <rect key="frame" x="46" y="176" width="46" height="30"/>
-                                <state key="normal" title="Button"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7da-so-j5G">
+                                <rect key="frame" x="46" y="334" width="202" height="135"/>
                                 <connections>
                                     <action selector="displayIdea:" destination="lUv-il-Ok1" eventType="touchUpInside" id="l0D-f1-hGz"/>
                                 </connections>
@@ -157,7 +162,9 @@
                     </view>
                     <navigationItem key="navigationItem" id="RY4-vv-MpE"/>
                     <connections>
+                        <outlet property="button" destination="7da-so-j5G" id="dme-Kc-2rL"/>
                         <outlet property="ideaLabel" destination="lzi-ig-5Wy" id="R4X-FP-mCI"/>
+                        <outlet property="skullView" destination="u7r-2U-LOg" id="QL2-Jn-6D9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PMy-Tu-8Zx" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -221,6 +228,7 @@
                         <segue destination="Tiv-2l-Hvk" kind="show" identifier="piano" id="pt3-aK-fHo"/>
                         <segue destination="q9M-av-qCm" kind="show" identifier="phone" id="TS1-hB-ixs"/>
                         <segue destination="nL1-SK-Mbr" kind="show" identifier="container" id="KsL-VB-EkQ"/>
+                        <segue destination="hKi-lL-f4o" kind="show" identifier="gameOver" id="Vji-qK-1Av"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jKI-sM-cWU" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -307,16 +315,16 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="You died, idiot!" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xNT-0q-z6e">
-                                <rect key="frame" x="20" y="101" width="214" height="100"/>
+                                <rect key="frame" x="20" y="101" width="262" height="280"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="31"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X1W-N7-ACQ">
-                                <rect key="frame" x="16" y="246" width="182" height="30"/>
+                                <rect key="frame" x="16" y="436" width="182" height="30"/>
                                 <state key="normal" title="Well, there you go"/>
                                 <connections>
-                                    <segue destination="cRs-Ct-yfD" kind="unwind" unwindAction="backToTitle:" id="7Ov-cP-qo1"/>
+                                    <segue destination="cRs-Ct-yfD" kind="unwind" identifier="" unwindAction="backToGame:" id="ihK-Hh-jPo"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -413,7 +421,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Xsf-A4-8x3">
-                                <rect key="frame" x="0.0" y="154" width="214" height="30"/>
+                                <rect key="frame" x="0.0" y="179" width="254" height="30"/>
                                 <state key="normal" title="ENTER THE HOUSE"/>
                                 <connections>
                                     <action selector="startGame:" destination="jI2-Yt-DWI" eventType="touchUpInside" id="lct-h7-sJU"/>
@@ -615,7 +623,11 @@
             <point key="canvasLocation" x="624" y="1828"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="skullClose" width="148" height="135"/>
+    </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="0f1-80-p8F"/>
+        <segue reference="Vji-qK-1Av"/>
+        <segue reference="mlr-eJ-aA2"/>
     </inferredMetricsTieBreakers>
 </document>

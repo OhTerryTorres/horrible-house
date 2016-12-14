@@ -27,10 +27,10 @@ class Room: NSObject, DictionaryBased, ItemBased, ActionPacked, Detailed, Inhabi
         for (key, value) in withDictionary {
             if key == "name" { self.name = value as! String }
             if key == "explanation" { self.explanation = value as! String }
-            if key == "details" { self.setDetailsForArrayOfDictionaries(value as! [Dictionary<String, AnyObject>]) }
-            if key == "actions" { self.setActionsForArrayOfDictionaries(value as! [Dictionary<String, AnyObject>]) }
-            if key == "items" { self.setItemsForDictionary(value as! [Dictionary<String, AnyObject>]) }
-            if key == "characters" { self.setCharactersForDictionary(value as! [Dictionary<String, AnyObject>]) }
+            if key == "details" { self.setDetailsForArrayOfDictionaries(dictArray: value as! [Dictionary<String, AnyObject>]) }
+            if key == "actions" { self.setActionsForArrayOfDictionaries(dictArray: value as! [Dictionary<String, AnyObject>]) }
+            if key == "items" { self.setItemsForDictionary(dictArray: value as! [Dictionary<String, AnyObject>]) }
+            if key == "characters" { self.setCharactersForDictionary(dictArray: value as! [Dictionary<String, AnyObject>]) }
             if key == "placementGuidelines" {
                 self.placementGuidelines = value as? Dictionary<String, AnyObject>
             }
@@ -71,24 +71,24 @@ class Room: NSObject, DictionaryBased, ItemBased, ActionPacked, Detailed, Inhabi
     
     // MARK: ENCODING
     
-    func encodeWithCoder(coder: NSCoder) {
-        coder.encodeObject(self.name, forKey: "name")
-        coder.encodeObject(self.explanation, forKey: "explanation")
+    public func encode(with coder: NSCoder) {
+        coder.encode(self.name, forKey: "name")
+        coder.encode(self.explanation, forKey: "explanation")
         
-        coder.encodeObject(self.details, forKey: "details")
-        coder.encodeObject(self.actions, forKey: "actions")
+        coder.encode(self.details, forKey: "details")
+        coder.encode(self.actions, forKey: "actions")
         
-        coder.encodeInteger(self.position.x, forKey: "x")
-        coder.encodeInteger(self.position.y, forKey: "y")
-        coder.encodeInteger(self.position.z, forKey: "z")
+        coder.encode(self.position.x, forKey: "x")
+        coder.encode(self.position.y, forKey: "y")
+        coder.encode(self.position.z, forKey: "z")
         
-        coder.encodeInteger(self.timesEntered, forKey: "timesEntered")
+        coder.encode(self.timesEntered, forKey: "timesEntered")
         
-        coder.encodeObject(self.characters, forKey: "characters")
-        coder.encodeObject(self.items, forKey: "items")
+        coder.encode(self.characters, forKey: "characters")
+        coder.encode(self.items, forKey: "items")
         
         if let placementGuidelines = self.placementGuidelines {
-            coder.encodeObject(placementGuidelines, forKey: "placementGuidelines")
+            coder.encode(placementGuidelines, forKey: "placementGuidelines")
         }
 
         
@@ -97,15 +97,15 @@ class Room: NSObject, DictionaryBased, ItemBased, ActionPacked, Detailed, Inhabi
     required convenience init?(coder decoder: NSCoder) {
         self.init()
         
-        self.name = decoder.decodeObjectForKey("name") as! String
-        self.explanation = decoder.decodeObjectForKey("explanation") as! String
-        self.position = (x: decoder.decodeIntegerForKey("x"), y: decoder.decodeIntegerForKey("y"), z: decoder.decodeIntegerForKey("z"))
-        self.timesEntered = decoder.decodeIntegerForKey("timesEntered")
-        self.details = decoder.decodeObjectForKey("details") as! [Detail]
-        self.actions = decoder.decodeObjectForKey("actions") as! [Action]
-        self.characters = decoder.decodeObjectForKey("characters") as! [Character]
-        self.items = decoder.decodeObjectForKey("items") as! [Item]
-        if let placementGuidelines = decoder.decodeObjectForKey("placementGuidelines") as? Dictionary<String, AnyObject>? {
+        self.name = decoder.decodeObject(forKey: "name") as! String
+        self.explanation = decoder.decodeObject(forKey: "explanation") as! String
+        self.position = (x: decoder.decodeInteger(forKey: "x"), y: decoder.decodeInteger(forKey: "y"), z: decoder.decodeInteger(forKey: "z"))
+        self.timesEntered = decoder.decodeInteger(forKey: "timesEntered")
+        self.details = decoder.decodeObject(forKey: "details") as! [Detail]
+        self.actions = decoder.decodeObject(forKey: "actions") as! [Action]
+        self.characters = decoder.decodeObject(forKey: "characters") as! [Character]
+        self.items = decoder.decodeObject(forKey: "items") as! [Item]
+        if let placementGuidelines = decoder.decodeObject(forKey: "placementGuidelines") as? Dictionary<String, AnyObject>? {
             self.placementGuidelines = placementGuidelines
         }
 

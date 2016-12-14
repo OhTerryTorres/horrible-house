@@ -10,24 +10,31 @@ import UIKit
 
 class GameClock: NSObject, NSCoding {
     
-    var startTime : GameTime = GameTime(hours: 11, minutes: 59, seconds: 50)
+    var startTime : GameTime = GameTime(hours: 11, minutes: 45, seconds: 50)
     var endTime : GameTime = GameTime(hours: 12, minutes: 0, seconds: 0)
-    var currentTime : GameTime = GameTime(hours: 11, minutes: 30, seconds: 0)
+    var currentTime : GameTime = GameTime(hours: 11, minutes: 50, seconds: 0)
     var secondsPerTurn = 30
     var reachedEndTime = false
     var didClockChime = false
     
-    var timer = NSTimer()
+    var timer : Timer?
     var isPaused = true
+    
+    var turnsPassed = 0
     
     override init() {
         super.init()
         
         self.currentTime = self.startTime
         
-        self.timer = NSTimer.scheduledTimerWithTimeInterval(1, target:self, selector: #selector(GameClock.addSecond), userInfo: nil, repeats: true)
         
         
+        
+    }
+    
+    func startTimer() {
+        self.timer = Timer.scheduledTimer(timeInterval: 1, target:self, selector: #selector(GameClock.addSecond), userInfo: nil, repeats: true)
+        self.isPaused = false
     }
     
     init(
@@ -46,7 +53,7 @@ class GameClock: NSObject, NSCoding {
         self.currentTime = currentTime
         self.secondsPerTurn = secondsPerTurn
         self.reachedEndTime = reachedEndTime
-        self.timer = NSTimer.scheduledTimerWithTimeInterval(1, target:self, selector: #selector(GameClock.addSecond), userInfo: nil, repeats: true)
+        self.timer = Timer.scheduledTimer(timeInterval: 1, target:self, selector: #selector(GameClock.addSecond), userInfo: nil, repeats: true)
         self.isPaused = isPaused
         self.didClockChime = didClockChime
     }
@@ -66,14 +73,16 @@ class GameClock: NSObject, NSCoding {
     
     func endGame() {
         self.reachedEndTime = true
-        self.timer.invalidate()
+        self.timer?.invalidate()
     }
     
     func pauseResume() {
-        if isPaused{
-            isPaused = false
-        } else {
-            isPaused = true
+        if timer != nil {
+            if isPaused{
+                isPaused = false
+            } else {
+                isPaused = true
+            }
         }
     }
     
@@ -82,7 +91,7 @@ class GameClock: NSObject, NSCoding {
         
         self.currentTime = currentTime
         
-        self.timer = NSTimer.scheduledTimerWithTimeInterval(1, target:self, selector: #selector(GameClock.addSecond), userInfo: nil, repeats: true)
+        self.timer = Timer.scheduledTimer(timeInterval: 1, target:self, selector: #selector(GameClock.addSecond), userInfo: nil, repeats: true)
     }
     
     
@@ -117,14 +126,14 @@ class GameClock: NSObject, NSCoding {
     
     // MARK: ENCODING
     
-    func encodeWithCoder(coder: NSCoder) {
-        coder.encodeObject(self.startTime, forKey: "startTime")
-        coder.encodeObject(self.endTime, forKey: "endTime")
-        coder.encodeObject(self.currentTime, forKey: "currentTime")
+    public func encode(with coder: NSCoder) {
+        coder.encode(self.startTime, forKey: "startTime")
+        coder.encode(self.endTime, forKey: "endTime")
+        coder.encode(self.currentTime, forKey: "currentTime")
         
-        coder.encodeInteger(self.secondsPerTurn, forKey: "secondsPerTurn")
-        coder.encodeBool(self.reachedEndTime, forKey: "isBroken")
-        coder.encodeBool(self.didClockChime, forKey:  "didClockChime")
+        coder.encode(self.secondsPerTurn, forKey: "secondsPerTurn")
+        coder.encode(self.reachedEndTime, forKey: "isBroken")
+        coder.encode(self.didClockChime, forKey:  "didClockChime")
         
         
     }
@@ -132,12 +141,12 @@ class GameClock: NSObject, NSCoding {
     required convenience init?(coder decoder: NSCoder) {
         self.init()
         
-        self.startTime = decoder.decodeObjectForKey("startTime") as! GameTime
-        self.endTime = decoder.decodeObjectForKey("endTime") as! GameTime
-        self.currentTime = decoder.decodeObjectForKey("currentTime") as! GameTime
-        self.secondsPerTurn = decoder.decodeIntegerForKey("secondsPerTurn")
-        self.reachedEndTime = decoder.decodeBoolForKey("isBroken")
-        self.didClockChime = decoder.decodeBoolForKey("didClockChime")
+        self.startTime = decoder.decodeObject(forKey: "startTime") as! GameTime
+        self.endTime = decoder.decodeObject(forKey: "endTime") as! GameTime
+        self.currentTime = decoder.decodeObject(forKey: "currentTime") as! GameTime
+        self.secondsPerTurn = decoder.decodeInteger(forKey: "secondsPerTurn")
+        self.reachedEndTime = decoder.decodeBool(forKey: "isBroken")
+        self.didClockChime = decoder.decodeBool(forKey: "didClockChime")
 
 
     }
