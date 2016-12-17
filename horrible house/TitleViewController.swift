@@ -25,9 +25,7 @@ class TitleViewController: UIViewController {
         self.startGameButton.titleLabel!.font = Font.basicFont
         self.restartGameButton.titleLabel!.font = Font.basicFont
         
-        
-        let s = String(translate: "Hello, $player")
-        print("\(s)")
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -39,9 +37,8 @@ class TitleViewController: UIViewController {
     }
 
     @IBAction func startGame(sender: AnyObject) {
-        if let houseData = UserDefaults.standard
-            .object(forKey: "houseData") {
-            self.house = NSKeyedUnarchiver.unarchiveObject(with: (houseData as! NSData) as Data) as? House
+        if let houseData = UserDefaults.standard.data(forKey: "houseData") {
+            self.house = NSKeyedUnarchiver.unarchiveObject(with: houseData) as? House
             (UIApplication.shared.delegate as! AppDelegate).house = self.house!
             performSegue(withIdentifier: "segue", sender: self)
         } else {
@@ -52,20 +49,23 @@ class TitleViewController: UIViewController {
     @IBAction func restartGame(sender: AnyObject) {
         UserDefaults.standard.set(nil, forKey: "houseData")
         self.house = (UIApplication.shared.delegate as! AppDelegate).house
+        print("MY ASSSSS")
         performSegue(withIdentifier: "segue", sender: self)
     }
     
-    func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        print("FUUUUCK")
         let tbc = segue.destination as! TabBarController
         let nvc = tbc.viewControllers![0] as! UINavigationController
         let exc = nvc.viewControllers[0] as! ExplorationController
         exc.house = self.house!
-
+        exc.itemCount = self.house!.currentRoom.items.count
+        print("exc.house.currentRoom.name is \(exc.house.currentRoom.name)")
     }
     
     /*
     @IBAction func backToTitle(segue: UIStoryboardSegue) {
-       (UIApplication.sharedApplication().delegate as! AppDelegate).house = House(layout: House.LayoutOptions.b)
+       (UIApplication.sharedApplication().delegate as! AppDelegate).house = House(layout: House.LayoutOptions.a)
     }
     */
 }

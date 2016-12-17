@@ -23,34 +23,26 @@ extension Array {
     
 }
 
-extension Collection {
-    /// Return a copy of `self` with its elements shuffled
-    func shuffle() -> [Generator.Element] {
-        var list = Array(self)
-        list.shuffleInPlace()
-        return list
+extension MutableCollection where Indices.Iterator.Element == Index {
+    /// Shuffles the contents of this collection.
+    mutating func shuffle() {
+        let c = count
+        guard c > 1 else { return }
+        
+        for (firstUnshuffled , unshuffledCount) in zip(indices, stride(from: c, to: 1, by: -1)) {
+            let d: IndexDistance = numericCast(arc4random_uniform(numericCast(unshuffledCount)))
+            guard d != 0 else { continue }
+            let i = index(firstUnshuffled, offsetBy: d)
+            swap(&self[firstUnshuffled], &self[i])
+        }
     }
 }
 
-extension MutableCollection where Index == Int {
-    /// Shuffle the elements of `self` in-place.
-    mutating func shuffleInPlace() {
-        // empty and single-element collections don't shuffle
-        if count < 2 { return }
-        
-        // *********** will this work?
-        for i in startIndex..<endIndex {
-            let j = Int(arc4random_uniform(UInt32(endIndex))) + i
-            guard i != j else { continue }
-            swap(&self[i], &self[j])
-        }
-        
-        /*
-         for i in 0..<count - 1 {
-         let j = Int(arc4random_uniform(UInt32(count - i))) + i
-         guard i != j else { continue }
-         swap(&self[i], &self[j])
-         }
-        */
+extension Sequence {
+    /// Returns an array with the contents of this sequence, shuffled.
+    func shuffled() -> [Iterator.Element] {
+        var result = Array(self)
+        result.shuffle()
+        return result
     }
 }

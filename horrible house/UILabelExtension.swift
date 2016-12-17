@@ -151,36 +151,4 @@ extension String {
     }
     
     
-    init?(translate: String) {
-        self = translate
-        var s = translate
-        for (key, value) in dictFromTextFile() {
-            s = s.replace(target: key, withString: value)
-        }
-        
-        self = s
-    }
-    
-    func dictFromTextFile() -> [String:String] {
-        var textFile = ""
-        let file = "file.txt"
-        if let dirs : [String] = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.allDomainsMask, true) {
-            let dir = dirs[0] //documents directory
-            let path = dir + file
-            
-            //writing
-            do { try textFile = String(contentsOfFile: path, encoding: String.Encoding.utf8) }
-            catch { }
-            
-        }
-        
-        var dict : [String:String] = [:]
-        let textLines = textFile.components(separatedBy: NSCharacterSet.newlines)
-        for textItem in textLines {
-            dict[textItem.components(separatedBy:":")[0]] = textItem.components(separatedBy:":")[1]
-        }
-        
-        return dict
-    }
-    
 }

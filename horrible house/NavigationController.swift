@@ -11,17 +11,12 @@ import UIKit
 class NavigationController: UINavigationController {
     
     override func awakeFromNib() {
+        print("klerf")
         
         self.navigationBar.setStyle()
         self.navigationBar.titleTextAttributes = [ NSFontAttributeName: Font.titleFont! ]
         self.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        
-        
-        if var frame = self.navigationItem.titleView?.frame {            
-            
-            frame.origin.x = 10
-            self.navigationItem.titleView!.frame = frame
-        }
+
     }
 
 }

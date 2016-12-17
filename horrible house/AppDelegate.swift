@@ -14,26 +14,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     
-    var house = House(layout: House.LayoutOptions.b)
+    var house = House(layout: House.LayoutOptions.a)
 
 
-    private func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.        
         
-        
-        
-        // *** WRITE keywords to file
-        let file = "file.txt" //this is the file. we will write to and read from it
-        let text = "$player:Kevin\r$ship:SS Stupid\r$firstMate:Allen" //just a text
-        if let dirs : [String] = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.allDomainsMask, true) {
-            let dir = dirs[0] //documents directory
-            let path = dir + file
-            
-            //writing
-            do { try text.write(toFile: path, atomically: false, encoding: String.Encoding.utf8) }
-            catch { }
-            
-        }
         
         // Change status bar background color
         let statWindow = UIApplication.shared.value(forKey:"statusBarWindow") as! UIView

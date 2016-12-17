@@ -115,7 +115,6 @@ class Character: NSObject, NSCoding, ItemBased {
     func addItemsToInventory(items: [Item]) {
         // DEPOSIT ITEMS INTO PLAYER INVENTORY
         for item in items {
-            print("ExC – adding \(item.name) to inventory")
             self.items += [item]
         }
     }

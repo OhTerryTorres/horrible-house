@@ -16,7 +16,7 @@
 				<key>explanation</key>
 				<string>There is a big heavy chest against the wall.</string>
 				<key>maxCapacity</key>
-				<string></string>
+				<integer>50</integer>
 				<key>items</key>
 				<array>
 					<dict>

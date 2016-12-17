@@ -18,8 +18,7 @@ class ContainerController: UIViewController {
     @IBOutlet var tableViewContainer: UITableView!
     @IBOutlet var tableViewInventory: UITableView!
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath:
-        IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         var items : [Item] = []
         var identifier = ""
@@ -45,7 +44,7 @@ class ContainerController: UIViewController {
         return cell
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
         
         var items : [Item] = []
         if tableView == self.tableViewContainer {
@@ -118,7 +117,7 @@ class ContainerController: UIViewController {
     }
     
     
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         var string = ""
         
         if tableView == self.tableViewContainer {
@@ -132,7 +131,7 @@ class ContainerController: UIViewController {
     }
     
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var rows = 0
         if tableView == self.tableViewContainer {
             rows = self.container.items.count
@@ -144,7 +143,7 @@ class ContainerController: UIViewController {
         return rows
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView?) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     

@@ -26,7 +26,7 @@ class Item: NSObject, DictionaryBased, ActionPacked, Detailed, ItemBased, NSCodi
     // MARK: For Containers
     
     var items : [Item] = []
-    var maxCapacity : Int?
+    var maxCapacity = 0
     var isContainer : Bool?
     
     // MARK: For the oven
@@ -43,10 +43,6 @@ class Item: NSObject, DictionaryBased, ActionPacked, Detailed, ItemBased, NSCodi
         super.init()
         for (key, value) in withDictionary {
             if key == "name" { self.name = value as! String }
-            if self.name == "Shovel" {
-                print("UHOH")
-                
-            }
             
             if key == "explanation" { self.explanation = value as! String }
             if key == "inventoryDescription" { self.inventoryDescription = value as! String }
@@ -65,13 +61,14 @@ class Item: NSObject, DictionaryBased, ActionPacked, Detailed, ItemBased, NSCodi
             // Container properties
             
             if key == "items" {
-                print("ITEM – name is \(name)")
                 self.setItemsForDictionary(dictArray: value as! [Dictionary<String, AnyObject>])
             }
+            
             if key == "maxCapacity" {
-                self.maxCapacity = value as? Int
+                let number = value as! NSNumber
+                self.maxCapacity = Int(number)
             }
-            if self.items.count > 0 || self.maxCapacity! > 0 { self.isContainer = true }
+            if self.items.count > 0 || self.maxCapacity > 0 { self.isContainer = true }
         }
         
         // Adds a default TAKE action to every item.
@@ -79,9 +76,8 @@ class Item: NSObject, DictionaryBased, ActionPacked, Detailed, ItemBased, NSCodi
         // First, check to see if there isn't already a customized TAKE action for the item.
         
         if let _ = self.actions.index(where: {$0.name.range(of: "Take") != nil}) {
-            print("ITEM – \(self.name) already has a Take action")
+
         } else if self.canCarry == true {
-            print("ITEM – \(self.name) needs a Take action")
             self.enableCarrying()
         }
         
@@ -124,7 +120,7 @@ class Item: NSObject, DictionaryBased, ActionPacked, Detailed, ItemBased, NSCodi
         hidden: Bool,
         inventoryEvent: String?,
         items: [Item],
-        maxCapacity: Int?,
+        maxCapacity: Int,
         isContainer: Bool?,
         cookingTimeBegan: GameTime?
         ) {
@@ -137,7 +133,7 @@ class Item: NSObject, DictionaryBased, ActionPacked, Detailed, ItemBased, NSCodi
         self.hidden = hidden
         if let ie = inventoryEvent { self.inventoryEvent = ie }
         self.items = items
-        if let mc = maxCapacity { self.maxCapacity = mc }
+        self.maxCapacity = maxCapacity
         if let ic = isContainer { self.isContainer = ic }
         if let ctb = cookingTimeBegan { self.cookingTimeBegan = ctb }
     }
@@ -181,9 +177,7 @@ class Item: NSObject, DictionaryBased, ActionPacked, Detailed, ItemBased, NSCodi
         
         coder.encode(self.items, forKey: "items")
         
-        if let maxCapacity = self.maxCapacity {
-            coder.encode(maxCapacity, forKey: "maxCapacity")
-        }
+        coder.encode(maxCapacity, forKey: "maxCapacity")
         
         if let isContainer = self.isContainer {
             coder.encode(isContainer, forKey: "isContainer")

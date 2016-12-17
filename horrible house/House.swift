@@ -42,13 +42,13 @@ class House : NSObject, NSCoding {
         // 6 is Second -> First Stairs.
         
         // This gives us two rows with four rooms.
-        static let a = [
+        static let b = [
             [[1, 2],
             [1, 1]]
         ]
         // This gives us three floors!
         // Each array needs the same number of rows and columns
-        static let b = [
+        static let a = [
             [[6, 1, 0, 0],
             [1, 1, 0, 0,],
             [0, 0, 0, 0,]], // second floor = 2
@@ -148,10 +148,10 @@ class House : NSObject, NSCoding {
         
         // Player starts in foyer on initilization
         if let foyer = self.necessaryRooms["Foyer"] {
-            foyer.timesEntered += 1
-            self.currentRoom = foyer
-            self.player.position = self.currentRoom.position
-            self.player.addRoomNameToRoomHistory(roomName: self.currentRoom.name)
+            print("putting player in foyer")
+            self.player.position = foyer.position
+            self.player.addRoomNameToRoomHistory(roomName: foyer.name)
+            self.setCurrentRoomToPlayerRoom()
         }
         
         self.setSafeBox()
@@ -201,7 +201,7 @@ class House : NSObject, NSCoding {
             rooms += [room]
         }
         
-        rooms.shuffleInPlace()
+        rooms.shuffle()
         return rooms
     }
     

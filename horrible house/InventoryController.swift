@@ -24,22 +24,22 @@ class InventoryController: UITableViewController {
         
     }
     
-    func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         self.inventoryArray = house.player.items
         self.tableView.reloadData()
     }
     
 
-    func numberOfSectionsInTableView(tableView: UITableView?) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return self.inventoryArray.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         
         cell.setStyle()
@@ -67,7 +67,7 @@ class InventoryController: UITableViewController {
         return cell
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
         let item = self.inventoryArray[indexPath.row]
         
         if let eventName = item.inventoryEvent {
@@ -79,7 +79,7 @@ class InventoryController: UITableViewController {
     }
     
     
-    func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         (UIApplication.shared.delegate as! AppDelegate).house = self.house
         
