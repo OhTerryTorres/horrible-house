@@ -55,7 +55,7 @@ class PianoController: UIViewController {
     
     func drawPianoKeys() {
         // White keys
-        for i : CGFloat in stride(from: 0, to: 4, by: 1) {
+        for i : CGFloat in stride(from: 0, to: 7, by: 1) {
             let key = SuperButton(type: UIButtonType.custom) as SuperButton
             key.frame = CGRect(x: 0, y: (i * (self.keyHeight) + 1 + self.keyHeight), width: self.view.frame.size.width, height: (self.keyHeight) - 2)
             key.setBackgroundImage(UIImage(named: "white.png"), for: UIControlState.normal)

@@ -47,13 +47,13 @@ class ClockController: UIViewController {
         
     }
     
-    func viewWillDisappear() {
+    override func viewWillDisappear(_ animated: Bool) {
         self.clockView.removeFromSuperview()
         self.fullView.removeFromSuperview()
         self.timer.invalidate()
     }
     
-    func viewWillAppear() {
+    override func viewWillAppear(_ animated: Bool) {
         self.house = (UIApplication.shared.delegate as! AppDelegate).house
         self.timer = Timer.scheduledTimer(timeInterval: 1, target:self, selector: #selector(drawClockFace), userInfo: nil, repeats: true)
         
@@ -69,13 +69,29 @@ class ClockController: UIViewController {
     func drawClockBase() {
         self.fullView = UIView(frame: CGRect(x: self.view.frame.origin.x, y: self.view.frame.size.height * 0.2, width: self.view.frame.size.width, height: self.view.frame.size.height))
         
-        self.clockView = View(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.width))
+        self.clockView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.width))
+        self.drawClockMarkers(rect: clockView.frame)
+        
+        let circlePath = UIBezierPath(arcCenter: CGPoint(x: clockView.frame.midX,y: clockView.frame.midY), radius: CGFloat(self.fullView.frame.width/3.5), startAngle: CGFloat(0), endAngle:CGFloat(M_PI * 2), clockwise: true)
+        
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.path = circlePath.cgPath
+        
+        //change the fill color
+        shapeLayer.fillColor = UIColor.clear.cgColor
+        //you can change the stroke color
+        shapeLayer.strokeColor = Color.specialColor.cgColor
+        //you can change the line width
+        shapeLayer.lineWidth = 3.0
+        
         
         fullView.addSubview(clockView)
         self.view.addSubview(fullView)
         self.view.setStyleInverse()
         self.fullView.setStyleInverse()
         self.clockView.setStyleInverse()
+        
+        self.fullView.layer.addSublayer(shapeLayer)
     }
     
     func drawClockFace() {
@@ -92,6 +108,40 @@ class ClockController: UIViewController {
         if self.house.gameClock.reachedEndTime {
             self.drawCrack()
         }
+        
+    }
+    
+    func drawClockMarkers(rect:CGRect) {
+        
+        // obtain context
+        guard let ctx = UIGraphicsGetCurrentContext() else {
+            return
+        }
+        
+        let startAngle: CGFloat = 0.0
+        let endAngle = 2 * CGFloat.pi
+        let center = CGPoint(x: rect.midX, y: rect.midY)
+        let rad = rect.width/3.5
+        
+        // set fill color
+        ctx.setFillColor(Color.foregroundColor.cgColor)
+        
+        // set stroke color
+        ctx.setStrokeColor(Color.specialColor.cgColor)
+        
+        // set line width
+        ctx.setLineWidth(4.0)
+        // use to fill and stroke path (see http://stackoverflow.com/questions/13526046/cant-stroke-path-after-filling-it )
+        
+        // add the circle to the context
+        ctx.addArc(center: center, radius: rad, startAngle: startAngle, endAngle: endAngle, clockwise: true)
+        
+        // draw the path
+        ctx.drawPath(using: CGPathDrawingMode.fillStroke);
+        
+        secondMarkers(ctx: ctx, x: rect.midX, y: rect.midY, radius: rad, sides: 60, color: Color.specialColor)
+        
+        drawText(rect: rect, ctx: ctx, x: rect.midX, y: rect.midY, radius: rad, sides: .twelve, color: Color.specialColor)
         
     }
     
@@ -408,43 +458,3 @@ enum NumberOfNumerals:Int {
     case two = 2, four = 4, twelve = 12
 }
 
-class View: UIView {
-    
-    
-    func drawRect(rect:CGRect)
-        
-    {
-        
-        // obtain context
-        let ctx = UIGraphicsGetCurrentContext()
-        
-        // decide on radius
-        let rad = rect.width/3.5
-        
-        let endAngle = CGFloat(2*M_PI)
-        
-        // add the circle to the context
-        ctx?.addArc(center: CGPoint(x: rect.midX, y: rect.midY), radius: rad, startAngle: 0, endAngle: endAngle, clockwise: true)
-        
-        // set fill color
-        ctx!.setFillColor(Color.foregroundColor.cgColor)
-        
-        // set stroke color
-        ctx!.setStrokeColor(Color.specialColor.cgColor)
-        
-        // set line width
-        ctx!.setLineWidth(4.0)
-        // use to fill and stroke path (see http://stackoverflow.com/questions/13526046/cant-stroke-path-after-filling-it )
-        
-        // draw the path
-        ctx!.drawPath(using: CGPathDrawingMode.fillStroke);
-        
-        secondMarkers(ctx: ctx!, x: rect.midX, y: rect.midY, radius: rad, sides: 60, color: Color.specialColor)
-        
-        drawText(rect: rect, ctx: ctx!, x: rect.midX, y: rect.midY, radius: rad, sides: .twelve, color: Color.specialColor)
-        
-        
-        
-        
-    }
-}

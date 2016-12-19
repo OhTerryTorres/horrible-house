@@ -23,8 +23,8 @@ extension ItemBased {
             self.items += [item!]
             
             // This takes the items back out if it already exists in the Foyer box
-            if let boxData = UserDefaults.standard.object(forKey: "boxData") {
-                if let box = NSKeyedUnarchiver.unarchiveObject(with: (boxData as! NSData) as Data) as? Item {
+            if let boxData = UserDefaults.standard.data(forKey: "boxData") {
+                if let box = NSKeyedUnarchiver.unarchiveObject(with: boxData) as? Item {
                     if let _ = box.items.index(where: {$0.name == item!.name}) {
                         print("ITEMBASED - item is already in the box")
                         if let index = self.items.index(where: {$0.name == item!.name}) {

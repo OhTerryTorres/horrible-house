@@ -168,8 +168,8 @@ class Action: NSObject, NSCoding, DictionaryBased, RuleBased {
         
         // This checks boxData to see if an item revealed by the action might
         // have already been find, and uses a rule to hide itself as a result
-        if let boxData = UserDefaults.standard.object(forKey: "boxData") {
-            if let _ = NSKeyedUnarchiver.unarchiveObject(with: boxData as! Data) as? Item {
+        if let boxData = UserDefaults.standard.data(forKey: "boxData") {
+            if let _ = NSKeyedUnarchiver.unarchiveObject(with: boxData) as? Item {
                 for itemName in revealItems {
                     let rule = Rule(name: itemName, type: Rule.RuleType.nopeDidStoreItem)
                     self.rules += [rule]

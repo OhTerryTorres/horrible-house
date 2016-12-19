@@ -214,8 +214,7 @@ If you want to check the balance of your savings account, press 1. To check on t
 				<key>name</key>
 				<string>Press 1</string>
 				<key>explanation</key>
-				<string>{[special]Please enter your account number, followed by the pound key.}
-If you want to check the balance of your savings account, press 1. To check on the status of a loan payment, press 2. For more information on opening an account, press 3. For all other inquiries, press 0.}</string>
+				<string>{[special]Please enter your account number, followed by the pound key.}</string>
 				<key>actions</key>
 				<array>
 					<dict>

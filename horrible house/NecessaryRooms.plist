@@ -100,7 +100,7 @@
 				<key>name</key>
 				<string>Grandfather Clock</string>
 				<key>explanation</key>
-				<string>A grandfather stands tall against the wall, its pendulum still swinging silently.</string>
+				<string>A grandfather clock stands tall against the wall, its pendulum still swinging silently.</string>
 				<key>actions</key>
 				<array>
 					<dict>

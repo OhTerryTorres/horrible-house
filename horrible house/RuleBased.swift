@@ -162,15 +162,15 @@ extension RuleBased {
                 }
                 
             case Rule.RuleType.didStoreItem:
-                if let boxData = UserDefaults.standard.object(forKey: "boxData") {
-                    if let box = NSKeyedUnarchiver.unarchiveObject(with: (boxData as! NSData) as Data) as? Item {
+                if let boxData = UserDefaults.standard.data(forKey: "boxData") {
+                    if let box = NSKeyedUnarchiver.unarchiveObject(with: boxData) as? Item {
                         if let _ = box.items.index(where: {$0.name == rule.name}) {
                         } else { rulesFollowed = false }
                     }
                 }
             case Rule.RuleType.nopeDidStoreItem:
-                if let boxData = UserDefaults.standard.object(forKey:"boxData") {
-                    if let box = NSKeyedUnarchiver.unarchiveObject(with: (boxData as! NSData) as Data) as? Item {
+                if let boxData = UserDefaults.standard.data(forKey:"boxData") {
+                    if let box = NSKeyedUnarchiver.unarchiveObject(with:boxData) as? Item {
                         if let _ = box.items.index(where: {$0.name == rule.name}) {
                             rulesFollowed = false
                         }

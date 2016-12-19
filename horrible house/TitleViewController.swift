@@ -29,10 +29,11 @@ class TitleViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        if let _ = UserDefaults.standard.object(forKey: "houseData") {
+        if let _ = UserDefaults.standard.data(forKey: "houseData") {
             self.startGameButton.setTitle("RETURN TO THE HOUSE", for: UIControlState.normal)
         } else {
             self.restartGameButton.isHidden = true
+            self.startGameButton.setTitle("ENTER THE HOUSE", for: UIControlState.normal)
         }
     }
 
@@ -47,14 +48,13 @@ class TitleViewController: UIViewController {
     }
 
     @IBAction func restartGame(sender: AnyObject) {
-        UserDefaults.standard.set(nil, forKey: "houseData")
+        UserDefaults.standard.removeObject(forKey: "houseData")
         self.house = (UIApplication.shared.delegate as! AppDelegate).house
-        print("MY ASSSSS")
         performSegue(withIdentifier: "segue", sender: self)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        print("FUUUUCK")
+
         let tbc = segue.destination as! TabBarController
         let nvc = tbc.viewControllers![0] as! UINavigationController
         let exc = nvc.viewControllers[0] as! ExplorationController
@@ -63,9 +63,9 @@ class TitleViewController: UIViewController {
         print("exc.house.currentRoom.name is \(exc.house.currentRoom.name)")
     }
     
-    /*
-    @IBAction func backToTitle(segue: UIStoryboardSegue) {
-       (UIApplication.sharedApplication().delegate as! AppDelegate).house = House(layout: House.LayoutOptions.a)
+    
+    @IBAction func backToTitle(_ segue: UIStoryboardSegue) {
+       (UIApplication.shared.delegate as! AppDelegate).house = House(layout: House.LayoutOptions.a)
     }
-    */
+    
 }

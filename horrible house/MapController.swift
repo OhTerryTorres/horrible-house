@@ -214,7 +214,8 @@ class MapController: UIViewController {
         }
         
         // Icon for NPC
-        if (self.house.roomForName(name: sender.qualifier)?.characters.count)! > 0 || (self.house.necessaryRooms[sender.qualifier]?.characters.count)! > 0 {
+        print("sender.qualifier is \(sender.qualifier)")
+        if (self.house.roomForName(name: sender.qualifier)?.characters.count)! > 0 {
             let iconItem = UIBarButtonItem()
             iconItem.title = "🐙"
             self.roomNameBar.items! += [iconItem]

@@ -66,6 +66,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let houseData = NSKeyedArchiver.archivedData(withRootObject: self.house)
         UserDefaults.standard.set(houseData, forKey: "houseData")
         UserDefaults.standard.synchronize()
+        print("data archived")
     }
 
     // MARK: - Core Data stack

@@ -51,8 +51,8 @@ class Character: NSObject, NSCoding, ItemBased {
         }
         
         if self.name == "player" {
-            if let statsData = UserDefaults.standard.object(forKey: "statsData") {
-                self.stats = NSKeyedUnarchiver.unarchiveObject(with: statsData as! Data) as! [String : [String]]
+            if let statsData = UserDefaults.standard.data(forKey: "statsData") {
+                self.stats = NSKeyedUnarchiver.unarchiveObject(with: statsData) as! [String : [String]]
             } else {
                 self.stats = ["roomsFound" : [""], "itemsFound" : [""]]
             }

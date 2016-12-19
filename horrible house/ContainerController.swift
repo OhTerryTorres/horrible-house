@@ -9,7 +9,7 @@
 
 import UIKit
 
-class ContainerController: UIViewController {
+class ContainerController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     var container = Item()
 
@@ -19,6 +19,7 @@ class ContainerController: UIViewController {
     @IBOutlet var tableViewInventory: UITableView!
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        print("creating cell")
         
         var items : [Item] = []
         var identifier = ""
@@ -39,7 +40,7 @@ class ContainerController: UIViewController {
         cell.setStyle()
         cell.textLabel!.numberOfLines = 0
         cell.textLabel?.text = item.name
-        cell.detailTextLabel!.text = item.inventoryDescription
+        cell.detailTextLabel?.text = item.inventoryDescription
         
         return cell
     }
@@ -126,7 +127,7 @@ class ContainerController: UIViewController {
         if tableView == self.tableViewInventory {
             string = "INVENTORY"
         }
-        
+        print("title for header in section \(section) is \(string)")
         return string
     }
     
@@ -140,15 +141,17 @@ class ContainerController: UIViewController {
         if tableView == self.tableViewInventory {
             rows = self.house.player.items.count
         }
+        print("rows in section \(section) is \(rows)")
         return rows
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
+        print("number of sections in tableView is 1")
         return 1
     }
     
     
-    func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         
         let header:UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
         var frame = header.frame
@@ -166,6 +169,14 @@ class ContainerController: UIViewController {
         self.view.setStyle()
         self.tableViewContainer.setStyle()
         self.tableViewInventory.setStyle()
+        
+        self.tableViewContainer.dataSource = self
+        self.tableViewContainer.delegate = self
+        self.tableViewContainer.register(UITableViewCell.self, forCellReuseIdentifier: "container")
+        
+        self.tableViewInventory.dataSource = self
+        self.tableViewInventory.delegate = self
+        self.tableViewInventory.register(UITableViewCell.self, forCellReuseIdentifier: "inventory")
 
     }
     

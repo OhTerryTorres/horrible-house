@@ -10,7 +10,7 @@ import UIKit
 
 class GameClock: NSObject, NSCoding {
     
-    var startTime : GameTime = GameTime(hours: 11, minutes: 59, seconds: 50)
+    var startTime : GameTime = GameTime(hours: 11, minutes: 50, seconds: 50)
     var endTime : GameTime = GameTime(hours: 12, minutes: 0, seconds: 0)
     var currentTime : GameTime = GameTime(hours: 11, minutes: 50, seconds: 0)
     var secondsPerTurn = 30

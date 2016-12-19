@@ -131,7 +131,7 @@ class House : NSObject, NSCoding {
         
         self.events = getEventsFromPlist(withFilename: "Events")
         
-        if let _ = UserDefaults.standard.object(forKey: "roomsData") {
+        if let _ = UserDefaults.standard.data(forKey: "roomsData") {
             self.loadNecessaryRoomsDataFromDefaults()
             self.loadMapDataFromDefaults()
             self.loadRoomsDataFromDefaults()
@@ -294,70 +294,69 @@ class House : NSObject, NSCoding {
         self.saveRoomsDataToDefaults()
         self.saveNPCDataToDefaults()
         self.saveMapDataToDefaults()
+        UserDefaults.standard.synchronize()
         
     }
     
     func loadNecessaryRoomsDataFromDefaults() {
-        if let necessaryRoomsData = UserDefaults.standard.object(forKey: "necessaryRoomsData") {
-            self.necessaryRooms = (NSKeyedUnarchiver.unarchiveObject(with: necessaryRoomsData as! Data) as? [String : Room])!
+        if let necessaryRoomsData = UserDefaults.standard.data(forKey: "necessaryRoomsData") {
+            self.necessaryRooms = NSKeyedUnarchiver.unarchiveObject(with: necessaryRoomsData) as! [String : Room]
         }
     }
     
     func loadRoomsDataFromDefaults() {
-        if let roomsData = UserDefaults.standard.object(forKey: "roomsData") {
-            self.rooms = (NSKeyedUnarchiver.unarchiveObject(with: roomsData as! Data) as? [Room])!
+        if let roomsData = UserDefaults.standard.data(forKey: "roomsData") {
+            self.rooms = NSKeyedUnarchiver.unarchiveObject(with: roomsData) as! [Room]
         }
     }
     
     func loadNPCDataFromDefaults() {
-        if let npcData = UserDefaults.standard.object(forKey: "npcData") {
-            self.npcs = (NSKeyedUnarchiver.unarchiveObject(with: npcData as! Data) as? [Character])!
+        if let npcData = UserDefaults.standard.data(forKey: "npcData") {
+            self.npcs = NSKeyedUnarchiver.unarchiveObject(with: npcData) as! [Character]
         }
     }
     func loadMapDataFromDefaults() {
-        if let mapData = UserDefaults.standard.object(forKey: "mapData") {
-            self.map = (NSKeyedUnarchiver.unarchiveObject(with: mapData as! Data) as? [[[Room]]])!
+        if let mapData = UserDefaults.standard.data(forKey: "mapData") {
+            self.map = NSKeyedUnarchiver.unarchiveObject(with: mapData) as! [[[Room]]]
         }
     }
     
     func saveNecessaryRoomsDataToDefaults() {
-        if let _ = UserDefaults.standard.object(forKey: "necessaryRoomsData") {
+        if let _ = UserDefaults.standard.data(forKey: "necessaryRoomsData") {
         } else {
             let necessaryRoomsData = NSKeyedArchiver.archivedData(withRootObject: self.necessaryRooms)
             UserDefaults.standard.set(necessaryRoomsData, forKey: "necessaryRoomsData")
-            UserDefaults.standard
-                .synchronize()
+            
             print("necessary rooms archived")
         }
     }
     
     func saveRoomsDataToDefaults() {
-        if let _ = UserDefaults.standard
-            .object(forKey: "roomsData") {
+        if let _ = UserDefaults.standard.data(forKey: "roomsData") {
         } else {
             let roomsData = NSKeyedArchiver.archivedData(withRootObject: self.rooms)
             UserDefaults.standard.set(roomsData, forKey: "roomsData")
-            UserDefaults.standard.synchronize()
+    
             print("rooms archived")
         }
     }
     
     func saveNPCDataToDefaults() {
-        if let _ = UserDefaults.standard.object(forKey: "npcData") {
+        if let _ = UserDefaults.standard.data(forKey: "npcData") {
         } else {
             let npcData = NSKeyedArchiver.archivedData(withRootObject: self.npcs)
             UserDefaults.standard.set(npcData, forKey: "npcData")
-            UserDefaults.standard.synchronize()
+
             print("npcs archived")
         }
     }
     
     func saveMapDataToDefaults() {
-        if let _ = UserDefaults.standard.object(forKey: "mapData") {
+        if let _ = UserDefaults.standard.data(forKey: "mapData") {
         } else {
             let mapData = NSKeyedArchiver.archivedData(withRootObject: self.map)
             UserDefaults.standard.set(mapData, forKey: "mapData")
-            UserDefaults.standard.synchronize()
+
             print("map archived")
         }
     }
@@ -1148,8 +1147,8 @@ class House : NSObject, NSCoding {
     
     
     func setSafeBox() {
-        if let boxData = UserDefaults.standard.object(forKey:"boxData") {
-            if let box = NSKeyedUnarchiver.unarchiveObject(with: boxData as! Data) as? Item {
+        if let boxData = UserDefaults.standard.data(forKey:"boxData") {
+            if let box = NSKeyedUnarchiver.unarchiveObject(with: boxData) as? Item {
                 self.safeBox = box
             }
         } else {

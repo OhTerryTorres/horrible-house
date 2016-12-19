@@ -98,8 +98,8 @@ class Item: NSObject, DictionaryBased, ActionPacked, Detailed, ItemBased, NSCodi
     
     func restoreBoxContents() {
         // This helps the Box in the Foyer remember its contents across games.
-        if let boxData = UserDefaults.standard.object(forKey: "boxData") {
-            if let box = NSKeyedUnarchiver.unarchiveObject(with: boxData as! Data) as? Item {
+        if let boxData = UserDefaults.standard.data(forKey: "boxData") {
+            if let box = NSKeyedUnarchiver.unarchiveObject(with: boxData) as? Item {
                 if self.name == box.name {
                     self.items = box.items
                 }

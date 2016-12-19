@@ -25,6 +25,7 @@ extension UILabel {
         
         while str.range(of: "}") != nil {
             
+            print("TAGS: string with tags is ''\(string)''");
             
             let tagStartStartRange = str.range(of: "{[")
             let tagStartEndRange = str.range(of: "]")
