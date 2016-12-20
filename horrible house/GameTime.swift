@@ -8,26 +8,29 @@
 
 import UIKit
 
-class GameTime {
+class GameTime: NSObject, NSCoding {
     
     var hours : Int = 12
     var minutes : Int = 0
     var seconds : Int = 0
     
-    init() {
+    override init() {
         
     }
     
-    init(var hours: Int, var minutes: Int, var seconds:Int) {
+    init(hours: Int, minutes: Int, seconds:Int) {
+        var seconds = seconds
+        var minutes = minutes
+        var hours = hours
         while seconds >= 60 {
             seconds -= 60
-            minutes++
+            minutes += 1
         }
         self.seconds = seconds
         
         while minutes >= 60 {
             minutes -= 60
-            hours++
+            hours += 1
         }
         self.minutes = minutes
         
@@ -51,5 +54,24 @@ class GameTime {
         self.hours = newTime.hours
         self.minutes = newTime.minutes
         self.seconds = newTime.seconds
+    }
+    
+    
+    // MARK: ENCODING
+    
+    public func encode(with coder: NSCoder) {
+        coder.encode(self.hours, forKey: "hours")
+        coder.encode(self.minutes, forKey: "minutes")
+        coder.encode(self.seconds, forKey: "seconds")
+        
+    }
+    
+    required convenience init?(coder decoder: NSCoder) {
+        
+        self.init(
+            hours: decoder.decodeInteger(forKey: "hours"),
+            minutes: decoder.decodeInteger(forKey: "minutes"),
+            seconds: decoder.decodeInteger(forKey: "seconds")
+        )
     }
 }

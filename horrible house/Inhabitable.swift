@@ -18,7 +18,6 @@ extension Inhabitable {
         for dict in dictArray {
             let character = Character(withDictionary: dict)
             self.characters += [character]
-            print("\(character.name)")
         }
     }
 }

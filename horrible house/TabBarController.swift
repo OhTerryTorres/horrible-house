@@ -13,7 +13,10 @@ class TabBarController : UITabBarController {
     var defaultViewControllers : [UIViewController] = []
     
     override func awakeFromNib() {
+        
         self.defaultViewControllers = self.viewControllers!
+        self.tabBar.setStyle()
+        self.tabBar.backgroundImage = UIImage()
     }
     
     // Change this so that the appropriate tabs aren't taken away from a saved game
@@ -22,20 +25,20 @@ class TabBarController : UITabBarController {
         var viewControllers = self.viewControllers
         var i = 0
         for viewController in viewControllers! {
-            if viewController.title?.rangeOfString("Map") != nil && (UIApplication.sharedApplication().delegate as! AppDelegate).house.player.items.indexOf({$0.name == "Map"}) == nil {
-                viewControllers?.removeAtIndex(i)
+            if viewController.title?.range(of: "Map") != nil && (UIApplication.shared.delegate as! AppDelegate).house.player.items.index(where: {$0.name == "Map"}) == nil {
+                viewControllers?.remove(at: i)
                 print("no Map tab")
             }
-            else if viewController.title?.rangeOfString("Time") != nil && (UIApplication.sharedApplication().delegate as! AppDelegate).house.player.items.indexOf({$0.name == "Pocketwatch"}) == nil {
-                viewControllers?.removeAtIndex(i)
+            else if viewController.title?.range(of: "Time") != nil && (UIApplication.shared.delegate as! AppDelegate).house.player.items.index(where: {$0.name == "Pocketwatch"}) == nil {
+                viewControllers?.remove(at: i)
                 print("no Time tab")
             }
-            else if viewController.title?.rangeOfString("Skull") != nil && (UIApplication.sharedApplication().delegate as! AppDelegate).house.player.items.indexOf({$0.name == "Skull"}) == nil {
-                viewControllers?.removeAtIndex(i)
+            else if viewController.title?.range(of: "Skull") != nil && (UIApplication.shared.delegate as! AppDelegate).house.player.items.index(where: {$0.name == "Skull"}) == nil {
+                viewControllers?.remove(at: i)
                 print("no Skull tab")
             }
-            else if viewController.title?.rangeOfString("Item") != nil && (UIApplication.sharedApplication().delegate as! AppDelegate).house.player.items.count == 0 {
-                viewControllers?.removeAtIndex(i)
+            else if viewController.title?.range(of: "Item") != nil && (UIApplication.shared.delegate as! AppDelegate).house.player.items.count == 0 {
+                viewControllers?.remove(at: i)
                 print("no Item tab")
             }
             else {i += 1}
@@ -43,9 +46,9 @@ class TabBarController : UITabBarController {
         print("viewControllers.count is \(viewControllers!.count)")
         self.viewControllers = viewControllers
         
-        if self.viewControllers?.count <= 1 {
-            self.tabBar.hidden = true
-        } else { self.tabBar.hidden = false }
+        if (self.viewControllers?.count)! < 2 {
+            self.tabBar.isHidden = true
+        } else { self.tabBar.isHidden = false }
     }
     
     func refreshViewControllers() {
@@ -54,9 +57,9 @@ class TabBarController : UITabBarController {
         removeExcessViewControllersFromTabBarController()
     }
     
-    func addViewControllerToTabBarController(tabIndex : ExplorationController.TabIndex) {
+    func addViewControllerToTabBarController(tabIndex : TabIndex) {
         
-        self.tabBar.hidden = false
+        self.tabBar.isHidden = false
         
         var viewControllers : [UIViewController] = []
         
@@ -69,24 +72,24 @@ class TabBarController : UITabBarController {
         
         switch tabIndex {
         case .inventory: // INVENTORY
-            let ic = storyboard.instantiateViewControllerWithIdentifier("NavigationInventoryController") as! UINavigationController
-            if self.viewControllers?.count > 2 {
-                viewControllers.insert(ic, atIndex: 1)
+            let ic = storyboard.instantiateViewController(withIdentifier: "NavigationInventoryController") as! UINavigationController
+            if (self.viewControllers?.count)! > 2 {
+                viewControllers.insert(ic, at: 1)
             } else { viewControllers.append(ic) }
         case .map: // MAP
-            let mc = storyboard.instantiateViewControllerWithIdentifier("NavigationMapController") as! UINavigationController
-            if self.viewControllers?.count > 3 {
-                viewControllers.insert(mc, atIndex: 2)
+            let mc = storyboard.instantiateViewController(withIdentifier: "NavigationMapController") as! UINavigationController
+            if (self.viewControllers?.count)! > 3 {
+                viewControllers.insert(mc, at: 2)
             } else { viewControllers.append(mc) }
         case .clock: // CLOCK
-            let cc = storyboard.instantiateViewControllerWithIdentifier("NavigationClockController") as! UINavigationController
-            if self.viewControllers?.count > 4 {
-                viewControllers.insert(cc, atIndex: 3)
+            let cc = storyboard.instantiateViewController(withIdentifier: "NavigationClockController") as! UINavigationController
+            if (self.viewControllers?.count)! > 4 {
+                viewControllers.insert(cc, at: 3)
             } else { viewControllers.append(cc) }
         case .skull: // SKULL
-            let sc = storyboard.instantiateViewControllerWithIdentifier("NavigationSkullController") as! UINavigationController
-            if self.viewControllers?.count > 5 {
-                viewControllers.insert(sc, atIndex: 4)
+            let sc = storyboard.instantiateViewController(withIdentifier: "NavigationSkullController") as! UINavigationController
+            if (self.viewControllers?.count)! > 5 {
+                viewControllers.insert(sc, at: 4)
             }
             viewControllers.append(sc)
         default:
@@ -98,9 +101,3 @@ class TabBarController : UITabBarController {
     
 }
 
-extension UITabBarController {
-    
-    
-    
-    
-}

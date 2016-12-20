@@ -17,33 +17,35 @@ extension UILabel {
     // with the "Dining Room" text being the color Color.roomColor.
     
     
-    func setAttributedTextWithTags(var string: String) {
+    func setAttributedTextWithTags(string: String) {
+        var str = string
         
         var mutableStringArray = [NSMutableAttributedString]()
         var rangeAndTagArray = [(range : NSRange, tag : String)]()
         
-        while string.rangeOfString("}") != nil {
+        while str.range(of: "}") != nil {
             
-            let tagStartStartRange = string.rangeOfString("{[")
-            let tagStartEndRange = string.rangeOfString("]")
+            print("TAGS: string with tags is ''\(string)''");
             
-            let tag = string.substringWithRange(Range<String.Index>(start: tagStartStartRange!.endIndex, end: tagStartEndRange!.startIndex))
+            let tagStartStartRange = str.range(of: "{[")
+            let tagStartEndRange = str.range(of: "]")
             
+            let tag = str.substring(with: tagStartStartRange!.upperBound..<tagStartEndRange!.lowerBound)
             
-            let tagStartRange = Range<String.Index>(start: tagStartStartRange!.startIndex, end: tagStartEndRange!.endIndex)
+            let tagStartRange = tagStartStartRange!.lowerBound..<tagStartEndRange!.upperBound
             
-            let tagEndRange = string.rangeOfString("}")
+            let tagEndRange = str.range(of: "}")
             
-            var newString = string.stringByReplacingCharactersInRange(tagEndRange!, withString: "")
-            newString = newString.stringByReplacingCharactersInRange(tagStartRange, withString: "")
+            var newString = str.replacingCharacters(in: tagEndRange!, with: "")
+            newString = newString.replacingCharacters(in: tagStartRange, with: "")
             
-            var b = string.stringByReplacingCharactersInRange(Range<String.Index>(start: tagEndRange!.startIndex, end: string.endIndex), withString: "")
+            var b = str.replacingCharacters(in: tagEndRange!.lowerBound..<str.endIndex, with: "")
 
-            b = b.stringByReplacingCharactersInRange(Range<String.Index>(start: string.startIndex, end: tagStartRange.endIndex), withString: "")
+            b = b.replacingCharacters(in: str.startIndex..<tagStartRange.upperBound, with: "")
             
-            let a = newString.stringByReplacingCharactersInRange(Range<String.Index>(start: tagStartRange.startIndex, end: newString.endIndex), withString: "")
+            let a = newString.replacingCharacters(in: tagStartRange.lowerBound..<newString.endIndex, with: "")
             
-            string = newString
+            str = newString
             
             let affectedNSRange = NSMakeRange(a.characters.count, b.characters.count)
             
@@ -55,7 +57,7 @@ extension UILabel {
             /// then apply new attributes using each of those ranges.
             
             let mutableString = NSMutableAttributedString(string: newString)
-            mutableString.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: affectedNSRange)
+            mutableString.addAttribute(NSForegroundColorAttributeName, value: UIColor.red, range: affectedNSRange)
             
             mutableStringArray += [mutableString]
             
@@ -64,11 +66,13 @@ extension UILabel {
         }
         
         
-        let newMutableString = NSMutableAttributedString(string: string)
+        let newMutableString = NSMutableAttributedString(string: str)
         
         for (range,tag) in rangeAndTagArray {
-            newMutableString.addAttribute(NSForegroundColorAttributeName, value: textColorForTag(tag), range: range)
+            newMutableString.addAttribute(NSForegroundColorAttributeName, value: textColorForTag(tag: tag), range: range)
         }
+        
+        newMutableString.addAttributes([ NSFontAttributeName: Font.basicFont!], range: NSRange(location:0, length:newMutableString.length))
         
         self.attributedText = newMutableString
         
@@ -99,36 +103,52 @@ extension UILabel {
             }
         }
         */
+
         
     }
     
-    
+    // ***
     func setTextWithTypeAnimation(typedText: String) {
         self.text = ""
-        dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0)) {
+        DispatchQueue.global(qos: .background).async {
             for character in typedText.characters {
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     self.text = self.text! + String(character)
                 }
-                NSThread.sleepForTimeInterval(0.02)
+                sleep(UInt32(0.02))
             }
         }
     }
     
     func textColorForTag(tag: String) -> UIColor {
-        var textColor = UIColor.blackColor()
+        var textColor = UIColor.black
         
-        if (tag.rangeOfString("room") != nil) {
-            textColor = Color.roomColor
+        if (tag.range(of: "room") != nil) {
+            textColor = Color.textRoomColor
         }
-        if (tag.rangeOfString("item") != nil) {
-            textColor = Color.itemColor
+        if (tag.range(of: "item") != nil) {
+            textColor = Color.textItemColor
         }
-        if (tag.rangeOfString("special") != nil) {
-            textColor = Color.specialColor
+        if (tag.range(of: "special") != nil) {
+            textColor = Color.textSpecialColor
         }
         
         return textColor
+    }
+    
+    
+}
+
+extension String {
+    
+    func contains(s: String) -> Bool
+    {
+        return self.range(of: s) != nil ? true : false
+    }
+    
+    func replace(target: String, withString: String) -> String
+    {
+        return self.replacingOccurrences(of: target, with: withString, options: String.CompareOptions.literal, range: nil)
     }
     
     

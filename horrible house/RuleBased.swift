@@ -25,7 +25,7 @@ extension RuleBased {
     func isFollowingTheRules() -> Bool {
         var rulesFollowed = true
         
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let house = appDelegate.house
         
         for rule in rules {
@@ -33,15 +33,15 @@ extension RuleBased {
                 
             case Rule.RuleType.hasItem:
                 rulesFollowed = false
-                if let _ = house.player.items.indexOf({$0.name == rule.name}) {
-                    print("RULEBASED – player does NOT have \(rule.name)")
+                if let _ = house.player.items.index(where: {$0.name == rule.name}) {
+                    print("RULEBASED – player DOES have \(rule.name). Rule followed!")
                     rulesFollowed = true
                 }
                 
             case Rule.RuleType.nopeHasItem:
                 rulesFollowed = true
-                if let _ = house.player.items.indexOf({$0.name == rule.name}) {
-                    print("RULEBASED – player DOES have \(rule.name)")
+                if let _ = house.player.items.index(where: {$0.name == rule.name}) {
+                    print("RULEBASED – player DOES have \(rule.name). Rule broken!")
                     rulesFollowed = false
                 }
                 
@@ -50,22 +50,22 @@ extension RuleBased {
             case Rule.RuleType.nopeMetCharacter:
                 break
             case Rule.RuleType.enteredRoom:
-                var i = 0; for room in house.rooms {
-                    if room.timesEntered > 0 { i += 1 }
-                }; if i == 0 { rulesFollowed = false }
+                if let room = house.roomForName(name: rule.name) {
+                    if room.timesEntered == 0 { rulesFollowed = false }
+                }
             case Rule.RuleType.nopeEnteredRoom:
-                var i = 0; for room in house.rooms {
-                    if room.timesEntered == 0 { i += 1 }
-                }; if i == 0 { rulesFollowed = false }
+                if let room = house.roomForName(name: rule.name) {
+                    if room.timesEntered > 0 { rulesFollowed = false }
+                }
             case Rule.RuleType.completedEvent:
-                if let index = house.events.indexOf({$0.name == rule.name}) {
+                if let index = house.events.index(where: {$0.name == rule.name}) {
                     if house.events[index].completed == false {
                         rulesFollowed = false
                     }
                 }
                 break
             case Rule.RuleType.nopeCompletedEvent:
-                if let index = house.events.indexOf({$0.name == rule.name}) {
+                if let index = house.events.index(where: {$0.name == rule.name}) {
                     if house.events[index].completed == true {
                         rulesFollowed = false
                     }
@@ -73,7 +73,7 @@ extension RuleBased {
                 break
             case Rule.RuleType.inRoomWithCharacter:
                 print("RULEBASED – RuleType:  inRoomWithCharacter")
-                if let index = house.currentRoom.characters.indexOf({$0.name == rule.name}) {
+                if let index = house.currentRoom.characters.index(where: {$0.name == rule.name}) {
                     let character = house.currentRoom.characters[index]
                     if character.hidden == true {
                         rulesFollowed = false
@@ -85,11 +85,97 @@ extension RuleBased {
                 break
             case Rule.RuleType.nopeInRoomWithCharacter:
                 print("RULEBASED – RuleType:  nopeInRoomWithCharacter")
-                if let _ = house.currentRoom.characters.indexOf({$0.name == rule.name}) {
+                if let _ = house.currentRoom.characters.index(where: {$0.name == rule.name}) {
                     print("RULEBASED – player IS in room with \(rule.name)")
                     rulesFollowed = false
                 }
                 break
+            case Rule.RuleType.timePassed:
+                let hRange = rule.name.index(rule.name.startIndex, offsetBy: 2)..<rule.name.endIndex
+                let h = Int(rule.name.replacingCharacters(in: hRange, with: ""))
+                let mRange = rule.name.startIndex..<rule.name.index(rule.name.startIndex, offsetBy: 3)
+                let m = Int(rule.name.replacingCharacters(in: mRange, with: ""))
+                let time = GameTime(hours: h!, minutes: m!, seconds: 0)
+                if house.gameClock.currentTime.totalTimeInSeconds() < time.totalTimeInSeconds() {
+                    rulesFollowed = false
+                }
+                break
+            case Rule.RuleType.nopeTimePassed:
+                let hRange = rule.name.index(rule.name.startIndex, offsetBy: 2)..<rule.name.endIndex
+                let h = Int(rule.name.replacingCharacters(in: hRange, with: ""))
+                let mRange = rule.name.startIndex..<rule.name.index(rule.name.startIndex, offsetBy: 3)
+                let m = Int(rule.name.replacingCharacters(in: mRange, with: ""))
+                let time = GameTime(hours: h!, minutes: m!, seconds: 0)
+                if house.gameClock.currentTime.totalTimeInSeconds() >= time.totalTimeInSeconds() {
+                    rulesFollowed = false
+                }
+                break
+                
+            case Rule.RuleType.turnsPassed:
+                let turns = Int(rule.name)
+                if house.gameClock.turnsPassed < turns!  {
+                    rulesFollowed = false
+                }
+                break
+            case Rule.RuleType.nopeTurnsPassed:
+                let turns = Int(rule.name)
+                if house.gameClock.turnsPassed >= turns! {
+                    rulesFollowed = false
+                }
+                break
+                
+            case Rule.RuleType.occupyingRoom:
+                if rule.name != house.currentRoom.name {
+                    rulesFollowed = false
+                }
+                
+            case Rule.RuleType.roomInDirection:
+                if rule.name.lowercased().range(of: "north") != nil {
+                    if house.doesRoomExistAtPosition(position: (x: house.player.position.x, y: house.player.position.y + 1, z: house.player.position.z)) == false {
+                        rulesFollowed = false
+                    }
+                }
+                if rule.name.lowercased().range(of: "south") != nil {
+                    if house.doesRoomExistAtPosition(position: (x: house.player.position.x, y: house.player.position.y - 1, z: house.player.position.z)) == false {
+                        rulesFollowed = false
+                    }
+                }
+                if rule.name.lowercased().range(of: "west") != nil {
+                    if house.doesRoomExistAtPosition(position: (x: house.player.position.x - 1, y: house.player.position.y, z: house.player.position.z)) == false {
+                        rulesFollowed = false
+                    }
+                }
+                if rule.name.lowercased().range(of: "east") != nil {
+                    if house.doesRoomExistAtPosition(position: (x: house.player.position.x + 1, y: house.player.position.y, z: house.player.position.z)) == false {
+                        rulesFollowed = false
+                    }
+                }
+                if rule.name.lowercased().range(of: "upstairs") != nil {
+                    if house.canCharacterGoUpstairs(character: house.player) == false {
+                        rulesFollowed = false
+                    }
+                }
+                if rule.name.lowercased().range(of: "downstairs") != nil {
+                    if house.canCharacterGoDownstairs(character: house.player) == false {
+                        rulesFollowed = false
+                    }
+                }
+                
+            case Rule.RuleType.didStoreItem:
+                if let boxData = UserDefaults.standard.data(forKey: "boxData") {
+                    if let box = NSKeyedUnarchiver.unarchiveObject(with: boxData) as? Item {
+                        if let _ = box.items.index(where: {$0.name == rule.name}) {
+                        } else { rulesFollowed = false }
+                    }
+                }
+            case Rule.RuleType.nopeDidStoreItem:
+                if let boxData = UserDefaults.standard.data(forKey:"boxData") {
+                    if let box = NSKeyedUnarchiver.unarchiveObject(with:boxData) as? Item {
+                        if let _ = box.items.index(where: {$0.name == rule.name}) {
+                            rulesFollowed = false
+                        }
+                    }
+                }
             default:
                 break;
             }

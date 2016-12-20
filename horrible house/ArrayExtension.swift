@@ -9,38 +9,40 @@
 import UIKit
 
 extension Array {
-    func shiftRight(var amount: Int = 1) -> [Element] {
+    func shiftRight(amount: Int = 1) -> [Element] {
+        var amount = amount
         assert(-count...count ~= amount, "Shift amount out of bounds")
         if amount < 0 { amount += count }  // this needs to be >= 0
         return Array(self[amount ..< count] + self[0 ..< amount])
     }
     
     mutating func shiftRightInPlace(amount: Int = 1) {
-        self = shiftRight(amount)
+        self = shiftRight(amount: amount)
     }
     
     
 }
 
-extension CollectionType {
-    /// Return a copy of `self` with its elements shuffled
-    func shuffle() -> [Generator.Element] {
-        var list = Array(self)
-        list.shuffleInPlace()
-        return list
-    }
-}
-
-extension MutableCollectionType where Index == Int {
-    /// Shuffle the elements of `self` in-place.
-    mutating func shuffleInPlace() {
-        // empty and single-element collections don't shuffle
-        if count < 2 { return }
+extension MutableCollection where Indices.Iterator.Element == Index {
+    /// Shuffles the contents of this collection.
+    mutating func shuffle() {
+        let c = count
+        guard c > 1 else { return }
         
-        for i in 0..<count - 1 {
-            let j = Int(arc4random_uniform(UInt32(count - i))) + i
-            guard i != j else { continue }
-            swap(&self[i], &self[j])
+        for (firstUnshuffled , unshuffledCount) in zip(indices, stride(from: c, to: 1, by: -1)) {
+            let d: IndexDistance = numericCast(arc4random_uniform(numericCast(unshuffledCount)))
+            guard d != 0 else { continue }
+            let i = index(firstUnshuffled, offsetBy: d)
+            swap(&self[firstUnshuffled], &self[i])
         }
+    }
+}
+
+extension Sequence {
+    /// Returns an array with the contents of this sequence, shuffled.
+    func shuffled() -> [Iterator.Element] {
+        var result = Array(self)
+        result.shuffle()
+        return result
     }
 }

@@ -1,4 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="Test1.xcdatamodel" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
-    <elements/>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15F34" minimumToolsVersion="Automatic">
+    <entity name="Action" syncable="YES"/>
+    <entity name="Character" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Detail" syncable="YES"/>
+    <entity name="Event" syncable="YES"/>
+    <entity name="GameClock" syncable="YES"/>
+    <entity name="GameTime" syncable="YES"/>
+    <entity name="House" syncable="YES"/>
+    <entity name="Item" syncable="YES"/>
+    <entity name="Room" syncable="YES"/>
+    <entity name="Rule" syncable="YES"/>
+    <entity name="Skull" syncable="YES"/>
+    <entity name="Stage" syncable="YES"/>
+    <elements>
+        <element name="House" positionX="-63" positionY="-18" width="128" height="45"/>
+        <element name="Room" positionX="-54" positionY="-9" width="128" height="45"/>
+        <element name="Character" positionX="-36" positionY="9" width="128" height="60"/>
+        <element name="Action" positionX="-18" positionY="27" width="128" height="45"/>
+        <element name="Rule" positionX="0" positionY="45" width="128" height="45"/>
+        <element name="Item" positionX="18" positionY="63" width="128" height="45"/>
+        <element name="Event" positionX="36" positionY="81" width="128" height="45"/>
+        <element name="Stage" positionX="-9" positionY="36" width="128" height="45"/>
+        <element name="Detail" positionX="0" positionY="45" width="128" height="45"/>
+        <element name="GameTime" positionX="9" positionY="54" width="128" height="45"/>
+        <element name="GameClock" positionX="18" positionY="63" width="128" height="45"/>
+        <element name="Skull" positionX="27" positionY="72" width="128" height="45"/>
+    </elements>
 </model>

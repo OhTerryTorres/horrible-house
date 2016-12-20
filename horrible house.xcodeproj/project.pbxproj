@@ -17,6 +17,8 @@
 		CE0478A91C6C145A008E23E1 /* Rooms.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE0478A81C6C145A008E23E1 /* Rooms.plist */; };
 		CE0478AB1C6C3452008E23E1 /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0478AA1C6C3452008E23E1 /* Room.swift */; };
 		CE0478AD1C6C3B4F008E23E1 /* House.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0478AC1C6C3B4F008E23E1 /* House.swift */; };
+		CE16A0B31D58D9F900AA744E /* Behavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE16A0B21D58D9F900AA744E /* Behavior.swift */; };
+		CE16A0B51D5D0C2E00AA744E /* GameOverController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE16A0B41D5D0C2D00AA744E /* GameOverController.swift */; };
 		CE2AD7B51CCF950B00B1353C /* GameTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2AD7B41CCF950B00B1353C /* GameTime.swift */; };
 		CE2AD7B71CCF95B500B1353C /* GameClock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2AD7B61CCF95B500B1353C /* GameClock.swift */; };
 		CE2F7A971CA224C100A3025D /* DictionaryBased.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2F7A961CA224C100A3025D /* DictionaryBased.swift */; };
@@ -25,6 +27,7 @@
 		CE2F7AA01CA2FA3200A3025D /* ActionPacked.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2F7A9F1CA2FA3200A3025D /* ActionPacked.swift */; };
 		CE3205731C703AD000EAA581 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3205721C703AD000EAA581 /* ArrayExtension.swift */; };
 		CE3780CD1CF63D0900345457 /* Inhabitable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3780CC1CF63D0900345457 /* Inhabitable.swift */; };
+		CE3B95331D22B86E00129984 /* TitleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3B95321D22B86E00129984 /* TitleViewController.swift */; };
 		CE3BEA4E1CB6B1550062AFAF /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3BEA4D1CB6B1550062AFAF /* TabBarController.swift */; };
 		CE3BEA501CB717710062AFAF /* MapController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3BEA4F1CB717710062AFAF /* MapController.swift */; };
 		CE3C3CE41CA8CBEF00BA551F /* PianoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3C3CE31CA8CBEF00BA551F /* PianoController.swift */; };
@@ -43,13 +46,14 @@
 		CE3C3D001CA9871F00BA551F /* black5.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = CE3C3CF41CA9871F00BA551F /* black5.mp3 */; };
 		CE3C3D011CA9871F00BA551F /* white7.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = CE3C3CF51CA9871F00BA551F /* white7.mp3 */; };
 		CE3C3D031CA98B9D00BA551F /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE3C3D021CA98B9D00BA551F /* AudioToolbox.framework */; };
-		CE3C3D051CA9C5FC00BA551F /* Characters.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE3C3D041CA9C5FC00BA551F /* Characters.plist */; };
 		CE49423D1CBD3F07009F42DF /* SuperButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE49423C1CBD3F07009F42DF /* SuperButton.swift */; };
 		CE50D0C81C9D91AC007AF0E2 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE50D0C71C9D91AC007AF0E2 /* Event.swift */; };
 		CE50D0CA1C9DA8B2007AF0E2 /* Events.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE50D0C91C9DA8B2007AF0E2 /* Events.plist */; };
 		CE50D0CC1CA03A75007AF0E2 /* EventController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE50D0CB1CA03A75007AF0E2 /* EventController.swift */; };
 		CE50D0F71CA1C0D6007AF0E2 /* NecessaryRooms.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE50D0F61CA1C0D6007AF0E2 /* NecessaryRooms.plist */; };
+		CE510C671D514041001DDCD8 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE510C661D514041001DDCD8 /* NavigationController.swift */; };
 		CE59B8311CB69A6B00D9A8BB /* InventoryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE59B8301CB69A6B00D9A8BB /* InventoryController.swift */; };
+		CE5FBEB91D66699F00D94B1D /* GameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5FBEB81D66699F00D94B1D /* GameController.swift */; };
 		CE6F27B51C90B42500B21818 /* ExplorationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6F27B41C90B42500B21818 /* ExplorationController.swift */; };
 		CE6F27B71C9326DD00B21818 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6F27B61C9326DD00B21818 /* Action.swift */; };
 		CE6F27B91C93279300B21818 /* Rule.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6F27B81C93279300B21818 /* Rule.swift */; };
@@ -101,6 +105,8 @@
 		CE0478A81C6C145A008E23E1 /* Rooms.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Rooms.plist; sourceTree = "<group>"; };
 		CE0478AA1C6C3452008E23E1 /* Room.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
 		CE0478AC1C6C3B4F008E23E1 /* House.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = House.swift; sourceTree = "<group>"; };
+		CE16A0B21D58D9F900AA744E /* Behavior.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Behavior.swift; sourceTree = "<group>"; };
+		CE16A0B41D5D0C2D00AA744E /* GameOverController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameOverController.swift; sourceTree = "<group>"; };
 		CE2AD7B41CCF950B00B1353C /* GameTime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameTime.swift; sourceTree = "<group>"; };
 		CE2AD7B61CCF95B500B1353C /* GameClock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameClock.swift; sourceTree = "<group>"; };
 		CE2F7A961CA224C100A3025D /* DictionaryBased.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryBased.swift; sourceTree = "<group>"; };
@@ -109,6 +115,7 @@
 		CE2F7A9F1CA2FA3200A3025D /* ActionPacked.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionPacked.swift; sourceTree = "<group>"; };
 		CE3205721C703AD000EAA581 /* ArrayExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		CE3780CC1CF63D0900345457 /* Inhabitable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Inhabitable.swift; sourceTree = "<group>"; };
+		CE3B95321D22B86E00129984 /* TitleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleViewController.swift; sourceTree = "<group>"; };
 		CE3BEA4D1CB6B1550062AFAF /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		CE3BEA4F1CB717710062AFAF /* MapController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapController.swift; sourceTree = "<group>"; };
 		CE3C3CE31CA8CBEF00BA551F /* PianoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoController.swift; sourceTree = "<group>"; };
@@ -127,13 +134,14 @@
 		CE3C3CF41CA9871F00BA551F /* black5.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = black5.mp3; path = sound/black5.mp3; sourceTree = SOURCE_ROOT; };
 		CE3C3CF51CA9871F00BA551F /* white7.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = white7.mp3; path = sound/white7.mp3; sourceTree = SOURCE_ROOT; };
 		CE3C3D021CA98B9D00BA551F /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
-		CE3C3D041CA9C5FC00BA551F /* Characters.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Characters.plist; sourceTree = "<group>"; };
 		CE49423C1CBD3F07009F42DF /* SuperButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuperButton.swift; sourceTree = "<group>"; };
 		CE50D0C71C9D91AC007AF0E2 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		CE50D0C91C9DA8B2007AF0E2 /* Events.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Events.plist; sourceTree = "<group>"; };
 		CE50D0CB1CA03A75007AF0E2 /* EventController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventController.swift; sourceTree = "<group>"; };
 		CE50D0F61CA1C0D6007AF0E2 /* NecessaryRooms.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = NecessaryRooms.plist; sourceTree = "<group>"; };
+		CE510C661D514041001DDCD8 /* NavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		CE59B8301CB69A6B00D9A8BB /* InventoryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InventoryController.swift; sourceTree = "<group>"; };
+		CE5FBEB81D66699F00D94B1D /* GameController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameController.swift; sourceTree = "<group>"; };
 		CE6F27B41C90B42500B21818 /* ExplorationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExplorationController.swift; sourceTree = "<group>"; };
 		CE6F27B61C9326DD00B21818 /* Action.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
 		CE6F27B81C93279300B21818 /* Rule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rule.swift; sourceTree = "<group>"; };
@@ -208,13 +216,12 @@
 				CE2F7A9C1CA2DF3800A3025D /* Protocols */,
 				CE2F7A9D1CA2DF5600A3025D /* GameObjects */,
 				CE2F7A9E1CA2DF6F00A3025D /* ViewControllers */,
-				CE04787A1C6C10FD008E23E1 /* Main.storyboard */,
 				CE3C3CE71CA9863900BA551F /* Media.xcassets */,
+				CE04787A1C6C10FD008E23E1 /* Main.storyboard */,
 				CE3C3CE91CA9865F00BA551F /* Sounds */,
 				CE0478821C6C10FD008E23E1 /* LaunchScreen.storyboard */,
 				CE0478A81C6C145A008E23E1 /* Rooms.plist */,
 				CE50D0F61CA1C0D6007AF0E2 /* NecessaryRooms.plist */,
-				CE3C3D041CA9C5FC00BA551F /* Characters.plist */,
 				CE50D0C91C9DA8B2007AF0E2 /* Events.plist */,
 				CEB91C421CD97A5200249297 /* Skull.plist */,
 				CE0478851C6C10FD008E23E1 /* Info.plist */,
@@ -262,6 +269,7 @@
 				CE6F27BC1C9335C900B21818 /* Character.swift */,
 				CE6F27B61C9326DD00B21818 /* Action.swift */,
 				CE6F27B81C93279300B21818 /* Rule.swift */,
+				CE16A0B21D58D9F900AA744E /* Behavior.swift */,
 				CE6F27BA1C932A2600B21818 /* Item.swift */,
 				CE50D0C71C9D91AC007AF0E2 /* Event.swift */,
 				CE6F27BE1C933DE400B21818 /* Stage.swift */,
@@ -276,15 +284,18 @@
 		CE2F7A9E1CA2DF6F00A3025D /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				CE5FBEB81D66699F00D94B1D /* GameController.swift */,
 				CE6F27B41C90B42500B21818 /* ExplorationController.swift */,
+				CE3B95321D22B86E00129984 /* TitleViewController.swift */,
+				CEB91C401CD7C39D00249297 /* SkullController.swift */,
 				CE50D0CB1CA03A75007AF0E2 /* EventController.swift */,
 				CE59B8301CB69A6B00D9A8BB /* InventoryController.swift */,
 				CE3BEA4F1CB717710062AFAF /* MapController.swift */,
-				CEB91C401CD7C39D00249297 /* SkullController.swift */,
 				CEB6D24E1CDBB55D0070CCCB /* ClockController.swift */,
 				CEB6D2541CE11D380070CCCB /* ContainerController.swift */,
 				CE3C3CE31CA8CBEF00BA551F /* PianoController.swift */,
 				CE006FC91CC3008700A18D63 /* PhoneController.swift */,
+				CE16A0B41D5D0C2D00AA744E /* GameOverController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -314,6 +325,7 @@
 				CEF40DD41CAE9F1100F1B08B /* UILabelExtension.swift */,
 				CE3205721C703AD000EAA581 /* ArrayExtension.swift */,
 				CE3BEA4D1CB6B1550062AFAF /* TabBarController.swift */,
+				CE510C661D514041001DDCD8 /* NavigationController.swift */,
 				CE49423C1CBD3F07009F42DF /* SuperButton.swift */,
 				CEF40DD61CAEA1E400F1B08B /* Style.swift */,
 			);
@@ -383,18 +395,24 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0720;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Terry Torres";
 				TargetAttributes = {
 					CE0478721C6C10FC008E23E1 = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = 4Q996R58Y9;
+						LastSwiftMigration = 0800;
 					};
 					CE0478891C6C10FD008E23E1 = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = 4Q996R58Y9;
+						LastSwiftMigration = 0800;
 						TestTargetID = CE0478721C6C10FC008E23E1;
 					};
 					CE0478941C6C10FD008E23E1 = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = 4Q996R58Y9;
+						LastSwiftMigration = 0800;
 						TestTargetID = CE0478721C6C10FC008E23E1;
 					};
 				};
@@ -439,7 +457,6 @@
 				CE0478841C6C10FD008E23E1 /* LaunchScreen.storyboard in Resources */,
 				CE0478A91C6C145A008E23E1 /* Rooms.plist in Resources */,
 				CE3C3CFD1CA9871F00BA551F /* white5.mp3 in Resources */,
-				CE3C3D051CA9C5FC00BA551F /* Characters.plist in Resources */,
 				CE3C3CF71CA9871F00BA551F /* black1.mp3 in Resources */,
 				CE3C3CFB1CA9871F00BA551F /* white4.mp3 in Resources */,
 				CE3C3CE81CA9863900BA551F /* Media.xcassets in Resources */,
@@ -481,6 +498,7 @@
 				CE6F28071C99C99D00B21818 /* Detail.swift in Sources */,
 				CE6F27BB1C932A2600B21818 /* Item.swift in Sources */,
 				CE6F27B51C90B42500B21818 /* ExplorationController.swift in Sources */,
+				CE510C671D514041001DDCD8 /* NavigationController.swift in Sources */,
 				CE0478AB1C6C3452008E23E1 /* Room.swift in Sources */,
 				CE3BEA4E1CB6B1550062AFAF /* TabBarController.swift in Sources */,
 				CE3C3CE41CA8CBEF00BA551F /* PianoController.swift in Sources */,
@@ -490,10 +508,14 @@
 				CE6F27B91C93279300B21818 /* Rule.swift in Sources */,
 				CEF40DD51CAE9F1100F1B08B /* UILabelExtension.swift in Sources */,
 				CE2AD7B51CCF950B00B1353C /* GameTime.swift in Sources */,
+				CE5FBEB91D66699F00D94B1D /* GameController.swift in Sources */,
 				CE6F27BD1C9335C900B21818 /* Character.swift in Sources */,
 				CE3780CD1CF63D0900345457 /* Inhabitable.swift in Sources */,
+				CE3B95331D22B86E00129984 /* TitleViewController.swift in Sources */,
 				CE0478AD1C6C3B4F008E23E1 /* House.swift in Sources */,
+				CE16A0B51D5D0C2E00AA744E /* GameOverController.swift in Sources */,
 				CE0478771C6C10FD008E23E1 /* AppDelegate.swift in Sources */,
+				CE16A0B31D58D9F900AA744E /* Behavior.swift in Sources */,
 				CE2F7A971CA224C100A3025D /* DictionaryBased.swift in Sources */,
 				CE2F7A9B1CA2351500A3025D /* ItemBased.swift in Sources */,
 				CE2AD7B71CCF95B500B1353C /* GameClock.swift in Sources */,
@@ -560,6 +582,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -569,13 +592,17 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Terry Torres (98GP2FZ9DQ)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 4Q996R58Y9;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -604,6 +631,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -613,13 +641,17 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Terry Torres (98GP2FZ9DQ)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 4Q996R58Y9;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -633,6 +665,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -640,22 +673,31 @@
 		CE04789F1C6C10FD008E23E1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 4Q996R58Y9;
 				INFOPLIST_FILE = "horrible house/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.terry-torres.horrible-house";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "387ce77d-8e7c-4e8c-9388-407052d3b8e2";
+				PROVISIONING_PROFILE_SPECIFIER = "Horrible House Development Profile";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
 		CE0478A01C6C10FD008E23E1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				DEVELOPMENT_TEAM = 4Q996R58Y9;
 				INFOPLIST_FILE = "horrible house/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.terry-torres.horrible-house";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "2de558a9-2933-43d4-8fd0-e0f08abe6f95";
+				PROVISIONING_PROFILE_SPECIFIER = "Horrible House Distribution";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -663,10 +705,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "horrible houseTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.terry-torres.horrible-houseTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/horrible house.app/horrible house";
 			};
 			name = Debug;
@@ -675,10 +720,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				INFOPLIST_FILE = "horrible houseTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.terry-torres.horrible-houseTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/horrible house.app/horrible house";
 			};
 			name = Release;
@@ -687,10 +735,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				"CODE_SIGN_ENTITLEMENTS[sdk=*]" = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "horrible houseUITests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.terry-torres.horrible-houseUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = "horrible house";
 				USES_XCTRUNNER = YES;
 			};
@@ -700,10 +750,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				"CODE_SIGN_ENTITLEMENTS[sdk=*]" = "";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				INFOPLIST_FILE = "horrible houseUITests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.terry-torres.horrible-houseUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = "horrible house";
 				USES_XCTRUNNER = YES;
 			};

@@ -2,6 +2,158 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>9</key>
+	<dict>
+		<key>name</key>
+		<string>Storage Room</string>
+		<key>explanation</key>
+		<string>The room&apos;s moisture is easily notice by its smell. The floor here is actually earthen.</string>
+		<key>items</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Heavy Chest</string>
+				<key>explanation</key>
+				<string>There is a big heavy chest against the wall.</string>
+				<key>maxCapacity</key>
+				<integer>50</integer>
+				<key>items</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Junk</string>
+						<key>inventoryDescription</key>
+						<string>Just worthless.</string>
+					</dict>
+				</array>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Skull</string>
+				<key>explanation</key>
+				<string>There is a human skull laying in the dirt.</string>
+				<key>inventoryDescription</key>
+				<string>Someone&apos;s skull.</string>
+				<key>hidden</key>
+				<string></string>
+				<key>canCarry</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>placementGuidelines</key>
+		<dict>
+			<key>floor</key>
+			<integer>0</integer>
+		</dict>
+	</dict>
+	<key>8</key>
+	<dict>
+		<key>name</key>
+		<string>Courtyard</string>
+		<key>explanation</key>
+		<string>This place is open to the sky, but surrounded on all sides by walls. Paving stones lead out from the center to each exit. Weeds grow wild and tall where the ground is exposed.</string>
+		<key>placementGuidelines</key>
+		<dict>
+			<key>floor</key>
+			<integer>1</integer>
+			<key>middle</key>
+			<string></string>
+		</dict>
+		<key>items</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Something Important</string>
+				<key>inventoryDescription</key>
+				<string>It&apos;s seems like it, anyway.</string>
+				<key>hidden</key>
+				<string></string>
+				<key>canCarry</key>
+				<string></string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Fountain</string>
+				<key>explanation</key>
+				<string>There is a fountain with a wide basin in the center.</string>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Check the fountain</string>
+						<key>result</key>
+						<string>The basin is backed up with murky water and filled with scum and water-loving plantlife.</string>
+					</dict>
+				</array>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Shed</string>
+				<key>explanation</key>
+				<string>There is a shed at one corner.</string>
+				<key>maxCapacity</key>
+				<integer>20</integer>
+				<key>items</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Shovel</string>
+						<key>inventoryDescription</key>
+						<string>Old, but sturdy.</string>
+						<key>actions</key>
+						<array>
+							<dict>
+								<key>name</key>
+								<string>Dig through the grass with the {[item]shovel}</string>
+								<key>result</key>
+								<string>You can&apos;t find anything with a cursory search, but a paving stone was loosened in the process.</string>
+								<key>rules</key>
+								<array>
+									<string>\occupyingCourtyard</string>
+								</array>
+								<key>replaceAction</key>
+								<dict>
+									<key>name</key>
+									<string>Lift up loose stone with {[item]shovel}</string>
+									<key>result</key>
+									<string>There&apos;s Something Important embedded in the earth underneath.</string>
+									<key>rules</key>
+									<array>
+										<string>\occupyingCourtyard</string>
+										<string>\nopeHasSomething Important</string>
+									</array>
+									<key>onceOnly</key>
+									<string></string>
+									<key>revealItems</key>
+									<array>
+										<string>Something Important</string>
+									</array>
+								</dict>
+							</dict>
+							<dict>
+								<key>name</key>
+								<string>Dig up floor with {[item]shovel}</string>
+								<key>result</key>
+								<string>As you dig, something lands with a thud along with a shovelful of dirt.</string>
+								<key>onceOnly</key>
+								<string></string>
+								<key>revealItems</key>
+								<array>
+									<string>Skull</string>
+								</array>
+								<key>rules</key>
+								<array>
+									<string>\occupyingStorage Room</string>
+								</array>
+							</dict>
+						</array>
+					</dict>
+				</array>
+			</dict>
+		</array>
+		<key>actions</key>
+		<array/>
+	</dict>
 	<key>7</key>
 	<dict>
 		<key>name</key>
@@ -12,6 +164,26 @@
 		<array>
 			<dict>
 				<key>name</key>
+				<string>Rubber Band</string>
+				<key>inventoryDescription</key>
+				<string>Used, but still tensile.</string>
+				<key>hidden</key>
+				<string></string>
+				<key>canCarry</key>
+				<string></string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Paper Clip</string>
+				<key>inventoryDescription</key>
+				<string>It&apos;s been bent out of shape.</string>
+				<key>hidden</key>
+				<string></string>
+				<key>canCarry</key>
+				<string></string>
+			</dict>
+			<dict>
+				<key>name</key>
 				<string>Writing Desk</string>
 				<key>explanation</key>
 				<string>A writing desk faces the wall. It has a set of drawers and many compartments for holding letters and other documents.</string>
@@ -19,61 +191,54 @@
 				<array>
 					<dict>
 						<key>name</key>
+						<string>Check one of the letter holders</string>
+						<key>result</key>
+						<string>There is a tangled up rubber band inside.</string>
+						<key>onceOnly</key>
+						<string></string>
+						<key>revealItems</key>
+						<array>
+							<string>Rubber Band</string>
+						</array>
+					</dict>
+					<dict>
+						<key>name</key>
 						<string>Check the top desk drawer</string>
 						<key>result</key>
-						<string>It is filled to the brim with paper clips.</string>
+						<string>It is filled to the brim with paper clips. They all seem at least somewhat used.</string>
+						<key>onceOnly</key>
+						<string></string>
+						<key>revealItems</key>
+						<array>
+							<string>Paper Clip</string>
+						</array>
 					</dict>
 					<dict>
 						<key>name</key>
 						<string>Check the bottom desk drawer</string>
-						<key>triggerEventName</key>
-						<string>Bottom Desk Drawer</string>
+						<key>triggerEvent</key>
+						<dict>
+							<key>eventName</key>
+							<string>Bottom Desk Drawer</string>
+						</dict>
 					</dict>
 				</array>
 			</dict>
 			<dict>
 				<key>name</key>
-				<string>Knife Handle</string>
+				<string>Telephone</string>
 				<key>explanation</key>
-				<string>A knife handle protrudes from the block.</string>
-				<key>inventoryDescription</key>
-				<string>The handle of a kitchen knife.</string>
-				<key>hidden</key>
-				<string></string>
-				<key>canCarry</key>
-				<string></string>
+				<string>There is a telephpone on the desk.</string>
 				<key>actions</key>
 				<array>
 					<dict>
 						<key>name</key>
-						<string>Take {[item]Knife}</string>
-						<key>result</key>
-						<string>When the knife is separated from the knife block, it turns out there&apos;s no blade. It&apos;s just a handle.
-
-Got {[item]Knife Handle}.</string>
-						<key>onceOnly</key>
-						<string></string>
-					</dict>
-				</array>
-			</dict>
-			<dict>
-				<key>name</key>
-				<string>Refrigerator</string>
-				<key>explanation</key>
-				<string>The refrigerator is here, too.</string>
-				<key>maxCapacity</key>
-				<integer>99</integer>
-				<key>items</key>
-				<array>
-					<dict>
-						<key>name</key>
-						<string>Paper Bag</string>
-						<key>explanation</key>
-						<string>There&apos;s a paper bag. It looks like there&apos;s something in it.</string>
-						<key>inventoryDescription</key>
-						<string>A paper bag. There&apos;s something in it.</string>
-						<key>inventoryEvent</key>
-						<string></string>
+						<string>Pick up the phone</string>
+						<key>segue</key>
+						<dict>
+							<key>identifier</key>
+							<string>phone</string>
+						</dict>
 					</dict>
 				</array>
 			</dict>
@@ -99,11 +264,14 @@ Got {[item]Knife Handle}.</string>
 				<string>Look out the window</string>
 				<key>roomChange</key>
 				<string>A hallway with tall windows looking out onto foggy, moonlit landscape. Glass litters the floors below where one windows was broken.</string>
-				<key>triggerEventName</key>
-				<string>Looking Out the Window</string>
+				<key>triggerEvent</key>
+				<dict>
+					<key>eventName</key>
+					<string>The Window</string>
+				</dict>
 				<key>rules</key>
 				<array>
-					<string>\nopeCompletedLooking Out the Window</string>
+					<string>\nopeCompletedThe Window</string>
 				</array>
 			</dict>
 			<dict>
@@ -113,7 +281,7 @@ Got {[item]Knife Handle}.</string>
 				<string>Now that the winow has been smashed, ambient noise from outside can be heard. It&apos;s more comforting than the absolute silence that came before.</string>
 				<key>rules</key>
 				<array>
-					<string>\completedLooking Out the Window</string>
+					<string>\completedThe Window</string>
 				</array>
 			</dict>
 		</array>
@@ -339,10 +507,13 @@ Got {[item]Knife Handle}.</string>
 				<key>actions</key>
 				<array>
 					<dict>
+						<key>segue</key>
+						<dict>
+							<key>identifier</key>
+							<string>piano</string>
+						</dict>
 						<key>name</key>
 						<string>Check the piano</string>
-						<key>segue</key>
-						<string>piano</string>
 					</dict>
 				</array>
 			</dict>
@@ -357,11 +528,11 @@ Got {[item]Knife Handle}.</string>
 						<key>name</key>
 						<string>Check the table</string>
 						<key>result</key>
-						<string>There are playing cards assembled on the table. It looks as though there was a game of gin in progress.</string>
+						<string>There are playing cards assembled on the table. It looks as though there was a game of gin rummy in progress.</string>
 						<key>replaceAction</key>
 						<dict>
 							<key>name</key>
-							<string>How do you play gin?</string>
+							<string>How do you play gin rummy?</string>
 							<key>result</key>
 							<string>Gin rummy is a two-player game in which you accumulate points by getting melds: cards that either share the same rank as each other or run in sequence with eachother in the same suit.  For example, 7 of spades, 7 of clubs, and 7 of diamonds would make up a set, while 10 of hearts, Jack of hearts, and Queen of hearts would be a run.
 
@@ -369,7 +540,7 @@ You must also try to get rid of cards that are not in a set or run. On your turn
 
 Cards that aren&apos;t part of a set or run are deadwood. Deadwood cards have a scores equal to their number - aces are 1, and face cards are 10.
 
-A round ends when a player, &quot;knocks&quot; with 10 or fewer point of deadwood. They place their discard face down, then lays out their hand, separating melds from deadwood. The other player can then attempt to add their own deadwood to the knocking player&apos;s melds. The knocking player receives a score equal to the difference between the two hands.
+A round ends when a player discards a card and &quot;knocks&quot; with 10 or fewer point of deadwood. They then lay out their hand, separating melds from deadwood. The other player can then attempt to add their own deadwood to the knocking player&apos;s melds. The knocking player receives a score equal to the difference between the two hands.
 
 If a player &quot;knocks&quot; with no deadwood, they receive an amount of points previously agreed upon - typically 25, assuming that the game is being played to 100.</string>
 							<key>rules</key>
@@ -393,17 +564,6 @@ If a player &quot;knocks&quot; with no deadwood, they receive an amount of point
 				<string></string>
 				<key>canCarry</key>
 				<string></string>
-			</dict>
-		</array>
-		<key>details</key>
-		<array>
-			<dict>
-				<key>explanation</key>
-				<string>There are playing cards on the table.</string>
-				<key>rules</key>
-				<array>
-					<string>\nopeHasPlaying Cards</string>
-				</array>
 			</dict>
 		</array>
 		<key>actions</key>
@@ -448,7 +608,7 @@ If a player &quot;knocks&quot; with no deadwood, they receive an amount of point
 				<key>name</key>
 				<string>Portrait of Dog</string>
 				<key>explanation</key>
-				<string>A small portait</string>
+				<string>A small portait.</string>
 				<key>actions</key>
 				<array>
 					<dict>
@@ -512,18 +672,18 @@ Well, of course, the jaw was literally chiseled when it was sculpted.</string>
 						<string>It appears to be a tranquil farmland scene. It&apos;s surprisingly hard to see the details in the landscape. It&apos;s as though looking at this painting in particular impairs your vision. It&apos;s weird.</string>
 						<key>rules</key>
 						<array>
-							<string>\nopeHasGlasses</string>
+							<string>\nopeHasSpectacles</string>
 						</array>
 					</dict>
 					<dict>
 						<key>name</key>
 						<string>Look at the landscape</string>
 						<key>result</key>
-						<string>With the glasses, you can actually see shapes in the trees that look a bit like numbers.
+						<string>With the spectacles, you can actually see shapes in the trees that look a bit like numbers.
 5 2 7 7 8 5 9</string>
 						<key>rules</key>
 						<array>
-							<string>\hasGlasses</string>
+							<string>\hasSpectacles</string>
 						</array>
 					</dict>
 				</array>
@@ -594,6 +754,7 @@ Well, of course, the jaw was literally chiseled when it was sculpted.</string>
 						<key>rules</key>
 						<array>
 							<string>\nopeHasWrench</string>
+							<string>\nopeDidStoreWrench</string>
 						</array>
 						<key>replaceAction</key>
 						<dict>
@@ -630,6 +791,17 @@ Well, of course, the jaw was literally chiseled when it was sculpted.</string>
 						<key>rules</key>
 						<array>
 							<string>\hasWrench</string>
+						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>Sit on the right loveseat</string>
+						<key>result</key>
+						<string>It&apos;s just barely more comfortable without the wrench in it.</string>
+						<key>rules</key>
+						<array>
+							<string>\nopeHasWrench</string>
+							<string>\didStoreWrench</string>
 						</array>
 					</dict>
 				</array>
@@ -723,12 +895,12 @@ Well, of course, the jaw was literally chiseled when it was sculpted.</string>
 						<key>name</key>
 						<string>Check the credenza</string>
 						<key>result</key>
-						<string>There is a pair of glasses in the credenza.</string>
+						<string>There is a pair of spectacles in the credenza.</string>
 						<key>onceOnly</key>
 						<string></string>
 						<key>revealItems</key>
 						<array>
-							<string>Glasses</string>
+							<string>Spectacles</string>
 						</array>
 					</dict>
 					<dict>
@@ -743,11 +915,11 @@ Well, of course, the jaw was literally chiseled when it was sculpted.</string>
 			</dict>
 			<dict>
 				<key>name</key>
-				<string>Glasses</string>
+				<string>Spectacles</string>
 				<key>explanation</key>
 				<string>A pair of round, wiry spectacles sits exposed in the credenza.</string>
 				<key>inventoryDescription</key>
-				<string>A pair of round, wiry spectacles</string>
+				<string>A pair of round, wire-framed glasses.</string>
 				<key>hidden</key>
 				<string></string>
 				<key>canCarry</key>
@@ -763,8 +935,11 @@ Well, of course, the jaw was literally chiseled when it was sculpted.</string>
 					<dict>
 						<key>name</key>
 						<string>Sit at the table</string>
-						<key>triggerEventName</key>
-						<string>The Dining Table</string>
+						<key>triggerEvent</key>
+						<dict>
+							<key>eventName</key>
+							<string>The Dining Table</string>
+						</dict>
 					</dict>
 				</array>
 			</dict>

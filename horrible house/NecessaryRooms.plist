@@ -2,21 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>3 - 2</key>
+	<key>5</key>
 	<dict>
 		<key>name</key>
-		<string>Second Floor Landing</string>
+		<string>2nd Floor Landing</string>
 		<key>explanation</key>
-		<string>The top of the staircase that leads down to the ground floor.</string>
+		<string>Stairs leading down to the first floor are here.</string>
 		<key>actions</key>
-		<array>
-			<dict>
-				<key>name</key>
-				<string>Go downstairs</string>
-				<key>changeFloor</key>
-				<integer>1</integer>
-			</dict>
-		</array>
+		<array/>
 	</dict>
 	<key>4</key>
 	<dict>
@@ -25,14 +18,7 @@
 		<key>explanation</key>
 		<string>Stairs leading up to the second floor are here.</string>
 		<key>actions</key>
-		<array>
-			<dict>
-				<key>name</key>
-				<string>Go upstairs</string>
-				<key>changeFloor</key>
-				<integer>2</integer>
-			</dict>
-		</array>
+		<array/>
 	</dict>
 	<key>3</key>
 	<dict>
@@ -41,14 +27,7 @@
 		<key>explanation</key>
 		<string>The only thing illuminating the area is light from upstairs. You can barely see in front of you.</string>
 		<key>actions</key>
-		<array>
-			<dict>
-				<key>name</key>
-				<string>Go upstairs</string>
-				<key>changeFloor</key>
-				<integer>1</integer>
-			</dict>
-		</array>
+		<array/>
 	</dict>
 	<key>2</key>
 	<dict>
@@ -57,14 +36,7 @@
 		<key>explanation</key>
 		<string>A hallway with a set of stairs leading down into darkness.</string>
 		<key>actions</key>
-		<array>
-			<dict>
-				<key>name</key>
-				<string>Go downstairs</string>
-				<key>changeFloor</key>
-				<integer>0</integer>
-			</dict>
-		</array>
+		<array/>
 	</dict>
 	<key>1</key>
 	<dict>
@@ -77,13 +49,48 @@
 			<dict>
 				<key>name</key>
 				<string>Leave</string>
-				<key>result</key>
-				<string>Okay, so long.</string>
-				<key>roomChange</key>
-				<string></string>
+				<key>segue</key>
+				<dict>
+					<key>identifier</key>
+					<string>gameOver</string>
+					<key>qualifier</key>
+					<string>You put a hole in the door and climbed through it. Goodbye!</string>
+				</dict>
 				<key>rules</key>
 				<array>
 					<string>\hasHole</string>
+				</array>
+			</dict>
+		</array>
+		<key>characters</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Living Armor</string>
+				<key>explanation</key>
+				<string>A full suit of medieval armor stands here holding a spiked mace.</string>
+				<key>behaviors</key>
+				<array>
+					<dict>
+						<key>qualifier</key>
+						<string></string>
+						<key>type</key>
+						<string>PursuePlayer</string>
+						<key>rules</key>
+						<array>
+							<string>\timePassed12:00</string>
+						</array>
+					</dict>
+					<dict>
+						<key>qualifier</key>
+						<string></string>
+						<key>type</key>
+						<string>Default</string>
+						<key>rules</key>
+						<array>
+							<string>\nopeTimePassed12:00</string>
+						</array>
+					</dict>
 				</array>
 			</dict>
 		</array>
@@ -93,7 +100,7 @@
 				<key>name</key>
 				<string>Grandfather Clock</string>
 				<key>explanation</key>
-				<string>A grandfather stands tall against the wall, its pendulum still swinging silently.</string>
+				<string>A grandfather clock stands tall against the wall, its pendulum still swinging silently.</string>
 				<key>actions</key>
 				<array>
 					<dict>
@@ -106,9 +113,29 @@
 			</dict>
 			<dict>
 				<key>name</key>
+				<string>Mirror</string>
+				<key>explanation</key>
+				<string>A portrait-sized mirror with a gilded frame hangs on the other wall.</string>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Look in the mirror</string>
+						<key>triggerEvent</key>
+						<dict>
+							<key>eventName</key>
+							<string>The Mirror</string>
+						</dict>
+					</dict>
+				</array>
+			</dict>
+			<dict>
+				<key>name</key>
 				<string>Map</string>
 				<key>inventoryDescription</key>
 				<string>A map of the house.</string>
+				<key>explanation</key>
+				<string>There&apos;s a broad piece of parchment here with curled edges.</string>
 				<key>canCarry</key>
 				<string></string>
 			</dict>
@@ -117,6 +144,8 @@
 				<string>Skull</string>
 				<key>inventoryDescription</key>
 				<string>Someone&apos;s skull. It can talk?</string>
+				<key>explanation</key>
+				<string>There&apos;s a skull.</string>
 				<key>canCarry</key>
 				<string></string>
 			</dict>
@@ -134,7 +163,7 @@
 				<key>explanation</key>
 				<string>There&apos;s a butterfly net lying on the floor.</string>
 				<key>inventoryDescription</key>
-				<string>A butterfly net with a long handle</string>
+				<string>A butterfly net with a long handle.</string>
 				<key>actions</key>
 				<array>
 					<dict>
@@ -176,7 +205,16 @@ Got {[item]Huge Bat}.</string>
 				<key>inventoryDescription</key>
 				<string>It&apos;s just a box.</string>
 				<key>maxCapacity</key>
-				<integer>99</integer>
+				<integer>20</integer>
+				<key>items</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Handwritten Note</string>
+						<key>inventoryDescription</key>
+						<string>&quot;Put things in me for later.&quot;</string>
+					</dict>
+				</array>
 			</dict>
 		</array>
 	</dict>

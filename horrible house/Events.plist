@@ -2,6 +2,408 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>8</key>
+	<dict>
+		<key>name</key>
+		<string>The Mirror</string>
+		<key>stages</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>The Mirror</string>
+				<key>explanation</key>
+				<string>Looking into the mirror allows you to reflect.</string>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>{[special]I&apos;m fine}</string>
+						<key>triggerEvent</key>
+						<dict/>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>{[special]Is this the house I remember?}</string>
+						<key>triggerEvent</key>
+						<dict>
+							<key>eventName</key>
+							<string>The Mirror</string>
+							<key>stageName</key>
+							<string>New House</string>
+						</dict>
+					</dict>
+				</array>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>New House</string>
+				<key>explanation</key>
+				<string>Is this the house I remember?</string>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>{[special]Yes, it will do fine.}</string>
+						<key>triggerEvent</key>
+						<dict>
+							<key>eventName</key>
+							<string>The Mirror</string>
+							<key>stageName</key>
+							<string>The Mirror</string>
+						</dict>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>{[special]No, it was different.}</string>
+						<key>triggerEvent</key>
+						<dict/>
+					</dict>
+				</array>
+			</dict>
+		</array>
+	</dict>
+	<key>7</key>
+	<dict>
+		<key>name</key>
+		<string>Star69</string>
+		<key>stages</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Star69</string>
+				<key>explanation</key>
+				<string>{[special]Hello. Welcome to Atreides Savings and Loan. Please listen closely, as our menu items have recently changed.
+
+If you want to check the balance of your savings account, press 1. To check on the status of a loan payment, press 2. For more information on opening an account, press 3. For all other inquiries, press 0.}</string>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Hang up</string>
+						<key>triggerEvent</key>
+						<dict/>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>Press 1</string>
+						<key>triggerEvent</key>
+						<dict>
+							<key>eventName</key>
+							<string>Star69</string>
+							<key>stageName</key>
+							<string>Press 1</string>
+						</dict>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>Press 2</string>
+						<key>triggerEvent</key>
+						<dict>
+							<key>eventName</key>
+							<string>Star69</string>
+							<key>stageName</key>
+							<string>Press 2</string>
+						</dict>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>Press 3</string>
+						<key>triggerEvent</key>
+						<dict>
+							<key>eventName</key>
+							<string>Star69</string>
+							<key>stageName</key>
+							<string>Press 3</string>
+						</dict>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>Press 0</string>
+						<key>triggerEvent</key>
+						<dict>
+							<key>eventName</key>
+							<string>Star69</string>
+							<key>stageName</key>
+							<string>Press 0</string>
+						</dict>
+					</dict>
+				</array>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Press 1</string>
+				<key>explanation</key>
+				<string>{[special]Please enter your account number, followed by the pound key.}</string>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Hang up</string>
+						<key>triggerEvent</key>
+						<dict/>
+					</dict>
+				</array>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Press 2</string>
+				<key>explanation</key>
+				<string>{[special]Please enter your account number, followed by the pound key.}</string>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Hang up</string>
+						<key>triggerEvent</key>
+						<dict/>
+					</dict>
+				</array>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Press 3</string>
+				<key>explanation</key>
+				<string>{[special]Hello. You&apos;ve reached the voice mailbox of Atreides Savings and Loan. Please call again during normal hours, Monday through Friday from 9 to 5, and Saturday from 9 to 12:30. Feel free to leave a message after the tone with your name and phone number.}
+
+There is a beep.</string>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Hang up</string>
+						<key>triggerEvent</key>
+						<dict/>
+					</dict>
+				</array>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Press 0</string>
+				<key>explanation</key>
+				<string>{[special]Hello. You&apos;ve reached the voice mailbox of Atreides Savings and Loan. Please call again during normal hours, Monday through Friday from 9 to 5, and Saturday from 9 to 12:30. Feel free to leave a message after the tone with your name and phone number.}
+
+There is a beep.</string>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Hang up</string>
+						<key>triggerEvent</key>
+						<dict/>
+					</dict>
+				</array>
+			</dict>
+		</array>
+	</dict>
+	<key>6</key>
+	<dict>
+		<key>name</key>
+		<string>911</string>
+		<key>stages</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>911</string>
+				<key>explanation</key>
+				<string>Someone on the other end asks for your emergency. They can&apos;t seem to hear you. They ask twice more. Then they hang up.</string>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Hang up</string>
+						<key>triggerEvent</key>
+						<dict/>
+					</dict>
+				</array>
+			</dict>
+		</array>
+	</dict>
+	<key>5</key>
+	<dict>
+		<key>name</key>
+		<string>5277859</string>
+		<key>stages</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>5277859</string>
+				<key>explanation</key>
+				<string>You hear a voice through the receiver. It sounds prerecorded.
+
+{[special]If you&apos;re locked out of the storage room again, keep tapping on the jar in the pantry.}
+
+The recording repeats once more until there is a click.</string>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Hang up</string>
+						<key>triggerEvent</key>
+						<dict/>
+					</dict>
+				</array>
+			</dict>
+		</array>
+		<key>rules</key>
+		<array/>
+	</dict>
+	<key>4</key>
+	<dict>
+		<key>name</key>
+		<string>Living Armor</string>
+		<key>sudden</key>
+		<string></string>
+		<key>stages</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>!ENCOUNTER!</string>
+				<key>explanation</key>
+				<string>The full suit of medieval armor stomps toward you with a clank. It raises a spiked mace high.</string>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>Run to the north</string>
+						<key>triggerEvent</key>
+						<dict/>
+						<key>moveCharacter</key>
+						<dict>
+							<key>characterName</key>
+							<string>player</string>
+							<key>directionName</key>
+							<string>North</string>
+						</dict>
+						<key>rules</key>
+						<array>
+							<string>\roomInDirectionNorth</string>
+						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>Run to the west</string>
+						<key>triggerEvent</key>
+						<dict/>
+						<key>moveCharacter</key>
+						<dict>
+							<key>characterName</key>
+							<string>player</string>
+							<key>directionName</key>
+							<string>West</string>
+						</dict>
+						<key>rules</key>
+						<array>
+							<string>\roomInDirectionWest</string>
+						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>Run to the south</string>
+						<key>triggerEvent</key>
+						<dict/>
+						<key>moveCharacter</key>
+						<dict>
+							<key>characterName</key>
+							<string>player</string>
+							<key>directionName</key>
+							<string>South</string>
+						</dict>
+						<key>rules</key>
+						<array>
+							<string>\roomInDirectionSouth</string>
+						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>Run to the east</string>
+						<key>triggerEvent</key>
+						<dict/>
+						<key>moveCharacter</key>
+						<dict>
+							<key>characterName</key>
+							<string>player</string>
+							<key>directionName</key>
+							<string>East</string>
+						</dict>
+						<key>rules</key>
+						<array>
+							<string>\roomInDirectionEast</string>
+						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>Run upstairs</string>
+						<key>triggerEvent</key>
+						<dict/>
+						<key>moveCharacter</key>
+						<dict>
+							<key>characterName</key>
+							<string>player</string>
+							<key>directionName</key>
+							<string>Upstairs</string>
+						</dict>
+						<key>rules</key>
+						<array>
+							<string>\roomInDirectionUpstairs</string>
+						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>Run downstairs</string>
+						<key>triggerEvent</key>
+						<dict/>
+						<key>moveCharacter</key>
+						<dict>
+							<key>characterName</key>
+							<string>player</string>
+							<key>directionName</key>
+							<string>Downstairs</string>
+						</dict>
+						<key>rules</key>
+						<array>
+							<string>\roomInDirectionDownstairs</string>
+						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>Ask that it stop doing that</string>
+						<key>triggerEvent</key>
+						<dict>
+							<key>eventName</key>
+							<string>Living Armor</string>
+							<key>stageName</key>
+							<string>!FAILURE!</string>
+						</dict>
+					</dict>
+				</array>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>!FAILURE!</string>
+				<key>explanation</key>
+				<string>Your concerns don&apos;t seem to impede the living armor as its mace falls unceasingly onto your skull.</string>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>segue</key>
+						<dict>
+							<key>identifier</key>
+							<string>gameOver</string>
+							<key>qualifier</key>
+							<string>You should have run!</string>
+						</dict>
+						<key>name</key>
+						<string>Accept your fate</string>
+					</dict>
+				</array>
+			</dict>
+		</array>
+		<key>rules</key>
+		<array>
+			<string>\inRoomWithLiving Armor</string>
+			<string>\timePassed12:00</string>
+		</array>
+	</dict>
 	<key>3</key>
 	<dict>
 		<key>name</key>
@@ -18,8 +420,8 @@
 					<dict>
 						<key>name</key>
 						<string>Close the drawer</string>
-						<key>triggerEventName</key>
-						<string></string>
+						<key>triggerEvent</key>
+						<dict/>
 					</dict>
 				</array>
 				<key>items</key>
@@ -83,6 +485,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]C}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -128,6 +534,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]E}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -139,6 +549,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]F}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -150,6 +564,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]G}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -161,6 +579,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]H}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -172,6 +594,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]I}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -183,6 +609,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]J}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -194,6 +624,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]K}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -205,6 +639,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]L}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -216,6 +654,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]M}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -227,6 +669,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]N}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -238,6 +684,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]O}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -249,6 +699,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]P}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -260,6 +714,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]Q}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -271,6 +729,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]R}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -282,6 +744,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]S}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -293,8 +759,28 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]T}</string>
+								<key>result</key>
+								<string>There is a single tortilla chip inside. It seems to have been somewhat preserved in the folder.</string>
+								<key>revealItems</key>
+								<array>
+									<string>Tortilla Chip</string>
+								</array>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>Tortilla Chip</string>
+						<key>inventoryDescription</key>
+						<string>It is old and hard.</string>
+						<key>actions</key>
+						<array/>
+						<key>hidden</key>
+						<string></string>
+						<key>canCarry</key>
+						<string></string>
 					</dict>
 					<dict>
 						<key>name</key>
@@ -304,6 +790,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]U}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -315,6 +805,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]V}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -326,6 +820,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]W}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -337,6 +835,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]X}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -348,6 +850,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]Y}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -359,6 +865,10 @@ January 22, 1979
 							<dict>
 								<key>name</key>
 								<string>{[special]Z}</string>
+								<key>result</key>
+								<string>It&apos;s empty.</string>
+								<key>onceOnly</key>
+								<string></string>
 							</dict>
 						</array>
 					</dict>
@@ -369,16 +879,16 @@ January 22, 1979
 	<key>2</key>
 	<dict>
 		<key>name</key>
-		<string>Looking Out the Window</string>
+		<string>The Window</string>
 		<key>rules</key>
 		<array>
-			<string>\playerInRoomWithHuge Bat</string>
+			<string>\nopeInRoomWithHuge Bat</string>
 		</array>
 		<key>stages</key>
 		<array>
 			<dict>
 				<key>name</key>
-				<string>Looking Out the Window</string>
+				<string>The Window</string>
 				<key>explanation</key>
 				<string>After looking down on the overgrown yard for moment, there is a crash and a shower of broken glass and something flies through the window.</string>
 				<key>actions</key>
@@ -393,12 +903,33 @@ January 22, 1979
 								<string>Huge Bat</string>
 								<key>explanation</key>
 								<string>A huge bat is flapping around, looking for a way out.</string>
-								<key>behavior</key>
-								<string>Roam</string>
+								<key>behaviors</key>
+								<array>
+									<dict>
+										<key>qualifier</key>
+										<string></string>
+										<key>type</key>
+										<string>Random</string>
+										<key>rules</key>
+										<array>
+											<string>\nopeHasPocketwatch</string>
+										</array>
+									</dict>
+									<dict>
+										<key>qualifier</key>
+										<string></string>
+										<key>type</key>
+										<string>Default</string>
+										<key>rules</key>
+										<array>
+											<string>\hasPocketwatch</string>
+										</array>
+									</dict>
+								</array>
 							</dict>
 						</array>
-						<key>triggerEventName</key>
-						<string></string>
+						<key>triggerEvent</key>
+						<dict/>
 					</dict>
 				</array>
 			</dict>
@@ -432,8 +963,8 @@ January 22, 1979
 					<dict>
 						<key>name</key>
 						<string>Forget about it</string>
-						<key>triggerEventName</key>
-						<string></string>
+						<key>triggerEvent</key>
+						<dict/>
 					</dict>
 				</array>
 				<key>items</key>
@@ -441,6 +972,8 @@ January 22, 1979
 					<dict>
 						<key>name</key>
 						<string>Sticky Thing</string>
+						<key>inventoryDescription</key>
+						<string>It is, or was, covered in... blood?</string>
 						<key>actions</key>
 						<array>
 							<dict>
@@ -452,8 +985,8 @@ January 22, 1979
 								</array>
 								<key>onceOnly</key>
 								<string></string>
-								<key>triggerEventName</key>
-								<string></string>
+								<key>triggerEvent</key>
+								<dict/>
 							</dict>
 						</array>
 						<key>hidden</key>
@@ -517,8 +1050,8 @@ No, wait. That was just a shadow from a breeze that moved the curtain against th
 					<dict>
 						<key>name</key>
 						<string>Get up from table</string>
-						<key>triggerEventName</key>
-						<string></string>
+						<key>triggerEvent</key>
+						<dict/>
 					</dict>
 				</array>
 			</dict>
