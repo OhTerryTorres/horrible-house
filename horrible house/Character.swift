@@ -60,16 +60,6 @@ class Character: NSObject, NSCoding, ItemBased {
         }
     }
 
-    func getMemories() -> Int {
-        var memories = 0
-        if let roomsFound = self.stats["roomsFound"] {
-            memories += roomsFound.count
-        }
-        if let itemsFound = self.stats["itemsFound"] {
-            memories += itemsFound.count
-        }
-        return memories
-    }
     
     init(name:String, position:(x: Int, y: Int, z: Int)) {
         self.name = name

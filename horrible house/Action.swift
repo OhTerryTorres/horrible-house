@@ -159,10 +159,6 @@ class Action: NSObject, NSCoding, DictionaryBased, RuleBased {
             }
             
             
-            if key == "textEntryTitle" {
-                self.textEntryTitle = value as? String
-            }
-            
         }
         
         

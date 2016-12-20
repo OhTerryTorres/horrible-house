@@ -286,15 +286,15 @@
 			children = (
 				CE5FBEB81D66699F00D94B1D /* GameController.swift */,
 				CE6F27B41C90B42500B21818 /* ExplorationController.swift */,
+				CE3B95321D22B86E00129984 /* TitleViewController.swift */,
+				CEB91C401CD7C39D00249297 /* SkullController.swift */,
 				CE50D0CB1CA03A75007AF0E2 /* EventController.swift */,
 				CE59B8301CB69A6B00D9A8BB /* InventoryController.swift */,
 				CE3BEA4F1CB717710062AFAF /* MapController.swift */,
-				CEB91C401CD7C39D00249297 /* SkullController.swift */,
 				CEB6D24E1CDBB55D0070CCCB /* ClockController.swift */,
 				CEB6D2541CE11D380070CCCB /* ContainerController.swift */,
 				CE3C3CE31CA8CBEF00BA551F /* PianoController.swift */,
 				CE006FC91CC3008700A18D63 /* PhoneController.swift */,
-				CE3B95321D22B86E00129984 /* TitleViewController.swift */,
 				CE16A0B41D5D0C2D00AA744E /* GameOverController.swift */,
 			);
 			name = ViewControllers;

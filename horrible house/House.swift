@@ -21,7 +21,7 @@ class House : NSObject, NSCoding {
         static func roomName (id: Int) -> String {
             let n = [
                 "No Room", // 0
-                "No Room", // This would correspond to the "normal" room state, so it shouldn't come up.
+                "No Room", // 1. This would correspond to the "normal" room state, so it shouldn't come up.
                 "Foyer", // 2
                 "Basement Stairs", // 3
                 "Basement Landing", // 4
@@ -107,9 +107,6 @@ class House : NSObject, NSCoding {
     // This remember which container is the player's
     // designated safe box.
     var safeBox = Item()
-    
-    
-    var inFlashback = false
     
     
     // The pipeline will store the potential actions for every character
@@ -201,6 +198,8 @@ class House : NSObject, NSCoding {
             rooms += [room]
         }
         
+        
+        // *** Comment out this line to make the room layout fixe every time
         rooms.shuffle()
         return rooms
     }
@@ -986,8 +985,7 @@ class House : NSObject, NSCoding {
         
         // MOVE CHARACTER TO A NEW ROOM
         self.moveCharacter(character: character, withAction: action)
-        
-        self.handleTextEntry(action: action)
+
     }
     
     
@@ -1159,26 +1157,6 @@ class House : NSObject, NSCoding {
     }
     
     
-    func setupFlashback() {
-        self.npcs = House.flashbackNPCs
-        for (_, value) in self.necessaryRooms {
-            value.characters = []
-        }
-        for npc in self.npcs {
-            npc.position = self.necessaryRooms["Foyer"]!.position
-            self.necessaryRooms["Foyer"]!.characters += [npc]
-        }
-        
-        self.gameClock.turnsPassed -= (1 + self.player.getMemories())
-        
-    }
-    
-    static let flashbackNPCs : [Character] = [
-        Character(name: "Armor", position: (0,0,0), items: [], explanation: "A full suit of medieval armor stands here holding a spiked mace.", hidden: false, behaviors: [], startingRoom: "", roomHistory: [], stats: [:]),
-        Character(name: "Woman", position: (0,0,0), items: [], explanation: "A stern-looking woman is here.", hidden: false, behaviors: [], startingRoom: "", roomHistory: [], stats: [:]),
-        Character(name: "Young Woman", position: (0,0,0), items: [], explanation: "There is a shaky young woman.", hidden: false, behaviors: [], startingRoom: "", roomHistory: [], stats: [:])
-    ]
-    
     // MARK: ENCODING
     
     required convenience init?(coder decoder: NSCoder) {
@@ -1272,49 +1250,6 @@ class House : NSObject, NSCoding {
         self.safeBox = safeBox
     }
     
-    
-    
-    // MARK: POST-HORRIBLE HOUSE CHANGES
-    
-    func writeChangeToTextFile(change: (key: String, value: AnyObject)) {
-        var textFile = ""
-        let file = "file.txt"
-        if let dirs : [String] = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.allDomainsMask, true) {
-            let dir = dirs[0] //documents directory
-            let path = dir + file
-            
-            //writing
-            do { try textFile = String(contentsOfFile: path, encoding: String.Encoding.utf8) }
-            catch { }
-            
-        }
-        
-        var dict : [String:String] = [:]
-        let textLines = textFile.components(separatedBy: NSCharacterSet.newlines)
-        for textItem in textLines {
-            var value = textItem.components(separatedBy: ":")[1]
-            if textItem.components(separatedBy:":")[0] == change.key {
-                value = change.value as! String
-            }
-            dict[textItem.components(separatedBy:":")[0]] = value
-        }
-    }
-    
-    
-    func handleTextEntry(action: Action) {
-        if let title = action.textEntryTitle {
-            let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
-            alert.addTextField(configurationHandler: { (textField) -> Void in textField.text = "" })
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
-                let textField = alert.textFields![0] as UITextField
-                print("Text field: \(textField.text)")
-                if title.lowercased().range(of: "name") != nil {
-                    self.player.name = textField.text!
-                }
-            
-            }))
-        }
-    }
     
     
 }

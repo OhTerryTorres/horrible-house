@@ -134,7 +134,7 @@
 								<key>name</key>
 								<string>Dig up floor with {[item]shovel}</string>
 								<key>result</key>
-								<string>As you dig, something lands with s thud along with a shovelful of dirt.</string>
+								<string>As you dig, something lands with a thud along with a shovelful of dirt.</string>
 								<key>onceOnly</key>
 								<string></string>
 								<key>revealItems</key>

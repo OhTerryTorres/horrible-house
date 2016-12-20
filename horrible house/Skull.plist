@@ -2,6 +2,20 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>14</key>
+	<dict>
+		<key>name</key>
+		<string>Item: Junk</string>
+		<key>detail</key>
+		<dict>
+			<key>explanation</key>
+			<string>You picked up some junk. Why?</string>
+			<key>rules</key>
+			<array>
+				<string>\hasJunk</string>
+			</array>
+		</dict>
+	</dict>
 	<key>13</key>
 	<dict>
 		<key>name</key>
