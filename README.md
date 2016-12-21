@@ -101,7 +101,7 @@ In the case that you wish to check the negative of one of these rules (for examp
 The House class has a <b>GameClock</b> object which begins counting when the game begins. The GameClock class has values (startTime and endTime) that can be edited, in conjunction with action or event rule sets, depending on the needs of the game.
 
 ###NPC Behaviors
-NPC characters, like the player, can carry items. NPCs can also be given an array of <b>behaviors</b>. These behaviors can be executed based on the rules associated with them. Currently, NPCs can stay in the room they’re spawned (Default), roam from room to room (Random), or go to the room the player is in (PursuePlayer).
+NPC characters can be given an array of <b>behaviors</b>. These behaviors can be executed based on the rules associated with them. Currently, NPCs can stay in the room they’re spawned (Default), roam from room to room (Random), travel toward a specific room (GoToRoom), or go to the room the player is in (PursuePlayer).
 
 ###Tab Bar Items
 The GameController is embedded in a Tab Bar Controller. Depending on what the player is holding, the available tabs can change. Picking up your first item adds the Inventory tab. Depending on the items picked up, the Map and Time tabs can be added.
