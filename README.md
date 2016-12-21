@@ -94,6 +94,7 @@ Rules are used to define whether are not a player can interact with the game in 
 - timePassedHH:MM
 - didStoreItemName
 - occupyingRoomName
+</br></br>
 In the case that you wish to check the negative of one of these rules (for example, if the player does NOT have an item), then add the word “nope” to the beginning of your rule and capitalize the next word (nopeHasItemName).
 
 ###GameClock
