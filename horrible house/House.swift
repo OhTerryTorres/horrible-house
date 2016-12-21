@@ -682,6 +682,8 @@ class House : NSObject, NSCoding {
                     // Follow player
                     case .PursuePlayer:
                         self.pipeline += [self.npcBehaviorPursuePlayerActionSet(npc: npc)]
+                    case .GoToRoom:
+                        self.pipeline += [self.npcBehaviorGoToRoomActionSet(npc: npc, room: roomForName(name: behavior.qualifier)!)]
                         
                     default:
                         break
@@ -719,88 +721,6 @@ class House : NSObject, NSCoding {
         return (action, Action.ActionType.Room, npc, room, self.currentEvent.currentStage, Action.ResolutionType.Exploration)
     }
     
-    /*
-    func npcBehaviorPursuePlayerActionSetOLD(npc: Character) -> (Action, Action.ActionType, Character, Room, Stage?, Action.ResolutionType) {
-        
-        // Keep in mind where the character currently is
-        let currentPosition = npc.position
-        // Find where the player is, for comparison
-        var targetPosition = self.player.position
-        // The position to which the character will move
-        // when calculations are complete.
-        var potentialPosition = currentPosition
-        
-        // First, in case the player is on another floor,
-        // set the targetPosition to the staircase that
-        // can access that floor.
-        if currentPosition.z > targetPosition.z {
-            if currentPosition.z == 2 {
-                targetPosition = self.necessaryRooms[RoomType.roomName(RoomType.stairsDownToFirst)]!.position
-            } else if currentPosition.z == 1 {
-                targetPosition = self.necessaryRooms[RoomType.roomName(RoomType.stairsDownToBasement)]!.position
-            }
-        } else if currentPosition.z < targetPosition.z {
-            if currentPosition.z == 0 {
-                targetPosition = self.necessaryRooms[RoomType.roomName(RoomType.stairsUpToFirst)]!.position
-            } else if currentPosition.z == 1 {
-                targetPosition = self.necessaryRooms[RoomType.roomName(RoomType.stairsUpToSecond)]!.position
-            }
-        }
-        
-        // Now that we have a target: 
-        // Here we set up default values for the new postion
-        var x = 0
-        var y = 0
-        var z = 0
-        var lookingForNewPosition = true
-        
-        if currentPosition.x > targetPosition.x && lookingForNewPosition {
-            if self.doesRoomExistAtPosition((x:currentPosition.x-1, y:currentPosition.y, z:currentPosition.z)) {
-                potentialPosition.x -= 1
-                x -= 1
-                lookingForNewPosition = false
-            }
-        }
-        if currentPosition.x < targetPosition.x && lookingForNewPosition {
-            if self.doesRoomExistAtPosition((x:currentPosition.x+1, y:currentPosition.y, z:currentPosition.z)) {
-                potentialPosition.x += 1
-                x += 1
-                lookingForNewPosition = false
-            }
-        }
-        if currentPosition.y > targetPosition.y && lookingForNewPosition {
-            if self.doesRoomExistAtPosition((x:currentPosition.x, y:currentPosition.y-1, z:currentPosition.z)) {
-                potentialPosition.y -= 1
-                y -= 1
-                lookingForNewPosition = false
-            }
-        }
-        if currentPosition.y < targetPosition.y && lookingForNewPosition {
-            if self.doesRoomExistAtPosition((x:currentPosition.x, y:currentPosition.y+1, z:currentPosition.z)) {
-                potentialPosition.y += 1
-                y += 1
-                lookingForNewPosition = false
-            }
-        }
-        if potentialPosition == targetPosition && lookingForNewPosition {
-            if canCharacterGoUpstairs(npc) {
-                potentialPosition.z += 1
-                z += 1
-            }
-            if canCharacterGoDownstairs(npc) {
-                potentialPosition.z -= 1
-                z -= 1
-            }
-        }
-        
-        let room = roomForPosition((x, y, z))
-        let action = Action()
-        action.moveCharacter = (npc.name, room!.name, nil)
-        
-        return (action, Action.ActionType.Room, npc, self.currentRoom, self.currentEvent.currentStage, Action.ResolutionType.Exploration)
-        
-    }
-    */
     
     func npcBehaviorPursuePlayerActionSet(npc: Character) -> (Action, Action.ActionType, Character, Room, Stage?, Action.ResolutionType) {
         
@@ -880,6 +800,84 @@ class House : NSObject, NSCoding {
         
     }
     
+    
+    func npcBehaviorGoToRoomActionSet(npc: Character, room: Room) -> (Action, Action.ActionType, Character, Room, Stage?, Action.ResolutionType) {
+        
+        // Keep in mind where the character currently is
+        let currentPosition = npc.position
+        // Find where the player is, for comparison
+        var targetPosition = room.position
+        // The position to which the character will move
+        // when calculations are complete.
+        
+        // First, in case the player is on another floor,
+        // set the targetPosition to the staircase that
+        // can access that floor.
+        if currentPosition.z > targetPosition.z {
+            if currentPosition.z == 2 {
+                targetPosition = self.necessaryRooms[RoomType.roomName(id: RoomType.stairsDownToFirst)]!.position
+            } else if currentPosition.z == 1 {
+                targetPosition = self.necessaryRooms[RoomType.roomName(id: RoomType.stairsDownToBasement)]!.position
+            }
+        } else if currentPosition.z < targetPosition.z {
+            if currentPosition.z == 0 {
+                targetPosition = self.necessaryRooms[RoomType.roomName(id: RoomType.stairsUpToFirst)]!.position
+            } else if currentPosition.z == 1 {
+                targetPosition = self.necessaryRooms[RoomType.roomName(id: RoomType.stairsUpToSecond)]!.position
+            }
+        }
+        
+        
+        let roomsAroundNPC = getRoomsAroundCharacter(character: npc)
+        var potentialRooms : [Room] = []
+        for room in roomsAroundNPC {
+            print("room.name is \(room.name)")
+            if currentPosition.x > targetPosition.x {
+                if room.position.x < currentPosition.x {
+                    potentialRooms += [room]
+                }
+            }
+            if currentPosition.x < targetPosition.x {
+                if room.position.x > currentPosition.x {
+                    potentialRooms += [room]
+                }
+            }
+            if currentPosition.y > targetPosition.y {
+                if room.position.y < currentPosition.y {
+                    potentialRooms += [room]
+                }
+            }
+            if currentPosition.y < targetPosition.y {
+                if room.position.y > currentPosition.y {
+                    potentialRooms += [room]
+                }
+            }
+            
+        }
+        
+        if currentPosition == targetPosition {
+            if canCharacterGoUpstairs(character: npc) {
+                potentialRooms += [roomInDirection(direction: House.Direction.Upstairs, fromPosition: npc.position)!]
+            }
+            if canCharacterGoDownstairs(character: npc) {
+                potentialRooms += [roomInDirection(direction: House.Direction.Downstairs, fromPosition: npc.position)!]
+            }
+        }
+        
+        
+        var room = Room()
+        if potentialRooms.count > 0 {
+            let index = Int(arc4random_uniform(UInt32(potentialRooms.count)))
+            room = potentialRooms[index]
+        } else { room = roomForPosition(position: npc.position)!}
+        
+        
+        let action = Action()
+        action.moveCharacter = (npc.name, room.name, nil)
+        
+        return (action, Action.ActionType.Room, npc, self.currentRoom, self.currentEvent.currentStage, Action.ResolutionType.Exploration)
+        
+    }
     
     
     
