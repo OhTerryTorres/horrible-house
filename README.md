@@ -1,4 +1,5 @@
 # HORRIBLE HOUSE
+<p align="center"><img src="http://i.imgur.com/njOBorq.gif"><img src="http://i.imgur.com/nAvB5od.gif"><img src="http://i.imgur.com/MgmHnlu.gif"><img src="http://i.imgur.com/GI2AwQf.gif"><img src="http://i.imgur.com/3L61m0b.gif"></p>
 
 Horrible House is a haunted house text adventure for iOS. You are in a mysterious haunted house for mysterious reasons, and you must explore it until midnight, at which point… Something bad might happen!
 
@@ -47,10 +48,11 @@ Placement guidelines are optional parameters within a room dictionary that can d
 - <b>floor</b>: which floor the room is meant to be on. By default, the values options are 0 (basement), 1, and 2.
 - <b>edge</b>: room is place at the edge the floor, with a wall on at least one side.
 - <b>middle</b>: room is in the middle of the floor, surrounded on most sides by another room.
+</br></br>
 If, while the house object is first initialized, every room’s placement guidelines are unable to be satisfied, placement guidelines may be broken at random.
 
 ####Shuffling the room layout
-If you wish you define a static layout to your house object, simply search for and comment out “<b>rooms.shuffle()</b>”. Have the house laid out the way you wish for it to be will likely require testing.
+If you wish you define a static layout for your house object, simply search for and comment out “<b>rooms.shuffle()</b>”. Have the house laid out the way you wish for it to be will likely require testing.
 
 ###Events.plist
 Events, as outlined in the Event.plist, are context-sensitive situations that are triggered based on actions that take place in rooms, or even other events. They can be arranged to take place in more than one location depending on when and how they are triggered. Events are broken down into <b>stages</b>, allowing events to be manifest in different ways depending on </b>rule</b> sets, (items held, previous events triggered). Stages, like rooms, are organized into dictionaries that in turn contain other arrays of dictionaries that allow the player to make different choices.
