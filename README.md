@@ -10,6 +10,7 @@ An object in the <b>House</b> class is created at the game’s beginning to cont
 ###House.layout and LayoutOptions
 House’s <b>layout</b> variable is the basis for the game’s room layout. Layout is an array of an array of an array of Int values. This variable can be set to any of the preset <b>LayoutOptions</b> – by default, LayoutOptions.a.
 
+```
 static let a = [
             [[6, 1, 0, 0],
             [1, 1, 0, 0,],
@@ -23,6 +24,7 @@ static let a = [
             [0, 0, 1, 1],
             [0, 0, 0, 0]]  // basement = 0
         ]
+```
 
 The numerical values in the LayoutOptions correspond to certain kinds of rooms, as defined in House’s <b>RoomType</b> struct.
 
