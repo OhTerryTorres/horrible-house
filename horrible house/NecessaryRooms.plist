@@ -73,9 +73,9 @@
 				<array>
 					<dict>
 						<key>qualifier</key>
-						<string>Office</string>
+						<string></string>
 						<key>type</key>
-						<string>GoToRoom</string>
+						<string>PursuePlayer</string>
 						<key>rules</key>
 						<array>
 							<string>\timePassed12:00</string>
