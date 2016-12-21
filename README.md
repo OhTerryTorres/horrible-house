@@ -113,3 +113,6 @@ The Style class contains two Structs: Color and Font. These can be changed to al
 
 
 
+
+######Copyright (C) 2016 Terry Torres
+######Credit "Terry Torres" or "the Horrible House engine" on any download page.
