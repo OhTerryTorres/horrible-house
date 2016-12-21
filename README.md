@@ -95,7 +95,7 @@ Rules are used to define whether are not a player can interact with the game in 
 - didStoreItemName
 - occupyingRoomName
 </br></br>
-In the case that you wish to check the negative of one of these rules (for example, if the player does NOT have an item), then add the word “nope” to the beginning of your rule and capitalize the next word (nopeHasItemName).
+In the case that you wish to check the negative of one of these rules (for example, if the player does NOT have the item named "Key"), then add the word “nope” to the beginning of your rule and capitalize the next word (nopeHasKey).
 
 ###GameClock
 The House class has a <b>GameClock</b> object which begins counting when the game begins. The GameClock class has values (startTime and endTime) that can be edited, in conjunction with action or event rule sets, depending on the needs of the game.
