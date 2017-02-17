@@ -34,7 +34,7 @@ The numerical values in the LayoutOptions correspond to certain kinds of rooms, 
 All LayoutOptions, however, have to be uniform. That is, every floor array needs to have the same number of rows and columns. A crash is possible, otherwise.
 
 ###Data structure of the room .plist files
-Each .plist contains a dictionary. Each dictionary, in turn, contains dictionaries of inhabitable <b>rooms</b>. Along with information for each room – like a name and description – the room dictionaries contain arrays of other dictionaries of <b>items</b> in the room. The item dictionaries in turn contain arrays of dictionaries of <b>actions</b> that can be performed with those items. On the creation of the House object at the game’s start, these dictionaries are all used to initialized every room, item, and action.
+Each .plist contains a dictionary. Each dictionary, in turn, contains dictionaries of inhabitable <b>rooms</b>. Along with information for each room – like a name and description – the room dictionaries contain arrays of other dictionaries of <b>items</b> in the room. The item dictionaries in turn contain arrays of dictionaries of <b>actions</b> that can be performed with those items. On the creation of the House object at the game’s start, these dictionaries are all used to initialize every room, item, and action.
 
 
 ###Rooms.plist
@@ -52,10 +52,10 @@ Placement guidelines are optional parameters within a room dictionary that can d
 If, while the house object is first initialized, every room’s placement guidelines are unable to be satisfied, placement guidelines may be broken at random.
 
 ####Shuffling the room layout
-If you wish you define a static layout for your house object, simply search for and comment out “<b>rooms.shuffle()</b>”. Have the house laid out the way you wish for it to be will likely require testing.
+If you wish you define a static layout for your house object, simply search for and comment out “<b>rooms.shuffle()</b>”. Creating a static, custom layour for your house will likely require testing.
 
 ###Events.plist
-Events, as outlined in the Event.plist, are context-sensitive situations that are triggered based on actions that take place in rooms, or even other events. They can be arranged to take place in more than one location depending on when and how they are triggered. Events are broken down into <b>stages</b>, allowing events to be manifest in different ways depending on </b>rule</b> sets, (items held, previous events triggered). Stages, like rooms, are organized into dictionaries that in turn contain other arrays of dictionaries that allow the player to make different choices.
+Events, as outlined in the Event.plist, are context-sensitive situations that are triggered based on actions that take place in rooms, or even other events. They can be arranged to take place in more than one location depending on when and how they are triggered. Events are broken down into <b>stages</b>, allowing events to be manifested in different ways depending on <bb>rule</b> sets, (items held, previous events triggered). Stages, like rooms, are organized into dictionaries that in turn contain other arrays of dictionaries that allow the player to make different choices.
 
 ###Items
 Although rooms themselves can contain actions and provide the player with interactions, but player actions are tied to items within rooms. 
@@ -63,13 +63,13 @@ Although rooms themselves can contain actions and provide the player with intera
 ###Item Keywords
 - <b>hidden</b>: the item is not visible to the player unless revealed through an action
 - <b>canCarry</b>: the item can be taken by the player and added to their inventory
-- <b>maxCapacity</b>: if a number value is paired with this key, the item becomes a container and can be use to contain other, different items.
+- <b>maxCapacity</b>: if a number value is paired with this key, the item becomes a container and can be used to contain other, different items.
 
 ###Actions
 Action objects become the choices your player can take and the method by which they can interact with items in the game world. Every change to the game world of consequence is done by executing and resolving actions.
 
 ###Action Keywords 
-- <b>result</b>: displayed after the action is executed
+- <b>result</b>: displayed above the room description after the action is executed
 - <b>roomChange</b>: replaces the explanatory description of the current room/stage
 - <b>revealItems</b>: the items named in this array are made to be no longer hidden
 - <b>liberateItems</b>: the items named in this array are allowed to be picked up and carried by the player
@@ -78,7 +78,7 @@ Action objects become the choices your player can take and the method by which t
 - <b>spawnCharacters</b>: the character dictionaries in this array are use to initialize new characters, either in the current room or a room named in the character’s startingRoom key.
 - <b>revealCharacters</b>: the characters named in this array are made to be no longer hidden
 - <b>removeCharacters</b>: the characters named in this array are removed entirely from the current game.
-- <b>onceOnly</b>: this key is use to destroy this action after being executed once.
+- <b>onceOnly</b>: this key is used to destroy this action after being executed once.
 - <b>triggerEven</b>t: the event named in this dictionary is triggered at the stage named in this dictionary.
 - <b>replaceAction</b>: this defines a new action that take the place of the current action.
 - <b>moveCharacter</b>: this dictionary defines a character name, and either a room name or direction name, and is used to move that character to that place.
@@ -107,7 +107,7 @@ NPC characters can be given an array of <b>behaviors</b>. These behaviors can be
 The GameController is embedded in a Tab Bar Controller. Depending on what the player is holding, the available tabs can change. Picking up your first item adds the Inventory tab. Depending on the items picked up, the Map and Time tabs can be added.
 
 ###Skull.plist
-Horrible House is built to have an talking Skull item simply called “Skull.” Possessing it allows access to the Skull tab. The skull comments on items, room, and other facets of the house depending on what is written in the Skull plist.
+Horrible House is built to have a talking Skull item simply called “Skull.” Possessing it allows access to the Skull tab. The skull comments on items, room, and other facets of the house depending on what is written in the Skull plist.
 
 ###Style Class
 The Style class contains two Structs: Color and Font. These can be changed to alter the general style of UI elements throughout the game.
